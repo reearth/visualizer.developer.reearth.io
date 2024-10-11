@@ -25,7 +25,7 @@ export default defineConfig({
         },
       },
       social: {
-        github: "https://github.com/reearth/reearth-visualizer",
+        github: "https://github.com/reearth/visualizer.developer.reearth.io",
       },
       sidebar: [
         {
