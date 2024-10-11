@@ -1,0 +1,884 @@
+---
+title: layers
+description: API reference for `reearth.layers`.
+---
+
+The **`reearth.layers`** namespace provides a set of methods to manage and manipulate layers within a reearth scene, allowing plugin developers to add, find, modify, or delete layers programmatically.
+
+import { Code } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import Add3dModelCode from "../../code/plugin-api/layers/add-3d-model";
+import AddMarkerPolylinePolygonCode from "../../code/plugin-api/layers/add-marker-polyline-polygon";
+import Add3dtilesCode from "../../code/plugin-api/layers/add-3dtiles";
+import TypeLayer from "../../code/plugin-api/layers/type-layer";
+import TypeAppearanceMarker from "../../code/plugin-api/layers/type-appearance-marker";
+import TypeAppearancePolyline from "../../code/plugin-api/layers/type-appearance-polyline";
+import TypeAppearancePolygon from "../../code/plugin-api/layers/type-appearance-polygon";
+import TypeAppearanceModel from "../../code/plugin-api/layers/type-appearance-model";
+import TypeAppearance3dtiles from "../../code/plugin-api/layers/type-appearance-3dtiles";
+
+## add
+
+**Description:** This method is used to add a new layer to the **`reearth`** scene. This method is crucial for dynamically enhancing the scene with additional content layers, which can include elements such as imagery, data representations, or interactive widgets. The method takes a **`Layer`** object as its primary argument, which defines the characteristics and properties of the layer being added.
+
+#### Syntax
+
+```ts
+reearth.layers.add: (layer: Layer) => string | undefined;
+```
+
+#### Parameters
+
+- `layer: Layer` - An object that includes all the data and metadata necessary to create and manage a layer. This object defines the characteristics and properties of the layer being added to the scene. The structure of the **`Layer`** object is as follows:
+
+<details>
+  <summary>Layer Type Reference</summary>
+  <Code code={TypeLayer} lang="ts" />
+</details>
+
+#### Return Value
+
+**`string | undefined`**
+
+- The method returns the unique identifier **`id`** of the newly added layer if the operation is successful, providing a reference that can be used for further manipulations or queries. If the operation fails, it returns **`undefined`**.
+
+#### Reference
+
+<details>
+  <summary>Example Usage</summary>
+  <Tabs>
+    <TabItem label="Add Marker Polyline Polygon">
+      <Code code={AddMarkerPolylinePolygonCode} lang="ts" />
+    </TabItem>
+    <TabItem label="Add 3D Model">
+      <Code code={Add3dModelCode} lang="ts" />
+    </TabItem>
+    <TabItem label="Add 3dtiles">
+      <Code code={Add3dtilesCode} lang="ts" />
+    </TabItem>
+  </Tabs>
+</details>
+
+<details>
+  <summary>Appearance Reference</summary>
+  <Tabs>
+    <TabItem label="Marker">
+      <Code code={TypeAppearanceMarker} lang="ts" />
+    </TabItem>
+    <TabItem label="Polyline">
+      <Code code={TypeAppearancePolyline} lang="ts" />
+    </TabItem>
+    <TabItem label="Polygon">
+      <Code code={TypeAppearancePolygon} lang="ts" />
+    </TabItem>
+    <TabItem label="Model">
+      <Code code={TypeAppearanceModel} lang="ts" />
+    </TabItem>
+    <TabItem label="3dtiles">
+      <Code code={TypeAppearance3dtiles} lang="ts" />
+    </TabItem>
+  </Tabs>
+</details>
+
+## find
+
+**Description:** This method provides a way to search for a layer within the `reearth` scene based on a custom search function. This method is crucial for locating a specific layer that matches certain criteria, such as attributes, properties, or conditions defined dynamically. The method takes a callback function that evaluates each layer and returns **`true`** for a layer that meets the desired conditions, facilitating targeted operations or analyses on specific parts of the scene.
+
+**Syntax**: `reearth.layers.find: (
+fn: (layer: Layer, index: number, parents: Layer[]) => boolean,
+) => Layer | undefined`
+
+**Parameters:**
+
+```tsx
+// A callback function used to evaluate each layer within the scene. The function receives three arguments:
+fn: (layer: Layer, index: number, parents: Layer[]) => Layer
+
+// An object that includes all the data and metadata necessary to create and manage a layer.
+layer: Layer
+index: number // The index of the current layer within its level of the hierarchy.
+parents: Layer[] // An array of parent layers, providing context about the layer's location within the hierarchy.
+
+// The function should return true for a layer that matches the search criteria, indicating that this is the layer to be returned.
+boolean
+```
+
+**Return Value**: **`Layer | undefined`**
+
+- Returns the first **`Layer`** object that satisfies the provided testing function. If no layer meets the criteria, the function returns **`undefined`**
+
+**Examples Usage:**
+
+```jsx
+//1. Define a search function to find the first visible layer
+const searchFunction = (layer, index, parents) => {
+  return layer.isVisible === true;
+};
+
+// Use the find method to locate the first visible layer
+const foundLayer = reearth.layers.find(searchFunction);
+
+// Log the result or handle the case where no layer is found
+if (foundLayer) {
+  console.log(`Found visible layer with ID: ${foundLayer.id}`);
+} else {
+  console.log("No visible layer found.");
+}
+
+//2. Search for the first layer that is a 3D Tiles with the title "Re:Earth" and assign it to a variable.
+reearth.layers.find(
+  (layer) => layer.data.type === "3dtiles" && layer.title === "Re:Earth"
+);
+```
+
+## findAll
+
+**Description:** This method performs a comprehensive search through all layers in a project to find and return an array of layers that match a specified condition. This method takes a callback function that is applied to each layer in the project.
+
+**Syntax:** `reearth.layers.findAll: (layer: Layer, index: number, parents: Layer>[]) => boolean) => Layer[]`
+
+**Parameters:**
+
+```tsx
+// A callback function used to evaluate each layer within the scene. The function receives three arguments:
+fn: (layer: Layer, index: number, parents: Layer[]) => boolean
+
+// An object that includes all the data and metadata necessary to create and manage a layer.
+layer: Layer,
+index: number // The index of the current layer within its level of the hierarchy.
+parents: Layer[] // An array of parent layers, providing context about the layer's location within the hierarchy.
+
+// The function should return true for a layer that matches the search criteria, indicating that this is the layer to be returned.
+boolean
+```
+
+**Return Value**: **`Layer[]`**
+
+- Returns an array of **`Layer`** objects that satisfy the conditions specified by the callback function. If no layers meet the criteria, it returns an empty array.
+
+**Example Usage:**
+
+```jsx
+//1. Define a search function to find all layers with a specific visibility setting
+const searchVisibleLayers = (layer) => layer.isVisible;
+
+// Use the findAll method to get all visible layers
+const visibleLayers = reearth.layers.findAll(searchVisibleLayers);
+
+// Output the IDs of the found layers
+console.log(
+  "Visible layers found:",
+  visibleLayers.map((layer) => layer.id)
+);
+
+//2. Function to find all visible layers
+const visibleLayers = reearth.layers.findAll((layer) => layer.isVisible);
+
+// Logging the titles of all found layers
+visibleLayers.forEach((layer) => {
+  console.log("Visible layer:", layer.title);
+});
+
+//3. Filter out layers where the type is "GeoJSON" and the title is exactly "sample".
+let filteredLayers = reearth.layers.findAll(
+  (layer) => layer.data.type === "geojson" && layer.title === "sample"
+);
+
+// Log the array of filtered layers to the console. This array contains all layers that meet the specified conditions.
+console.log("filteredLayers: ", filteredLayers);
+```
+
+## findById
+
+**Description:** This method is designed to retrieve a specific layer object based on its unique identifier (ID). This method is essential for directly accessing a layer when its ID is known, allowing for efficient and precise operations such as editing properties, toggling visibility, or analyzing layer-specific data. It simplifies the process of interacting with individual layers by providing a direct path to them without the need to search or iterate through the entire layer hierarchy. This method takes a single string parameter, which is the ID of the layer you want to find.
+
+**Syntax:** `reearth.layers.findById: (id: string) => Layer | undefined;`
+
+**Parameters:**
+
+```tsx
+layerId: string; //The unique identifier of the layer that is being searched for within the scene.
+```
+
+**Return Value**: **`Layer | undefined`**
+
+- Returns the **`Layer`** object if a layer with the specified ID is found. If no layer matches the provided ID, it returns **`undefined`**.
+
+**Example Usage:**
+
+```jsx
+//1. Directly search with a specific ID
+reearth.layers.findById("01j1rx8xhxsk2wdydew3m8hr6q");
+
+//2. Define the layer ID you are searching for
+const targetLayerId = "01j1rx8xhxsk2wdydew3m8hr6q";
+
+// Attempt to find the layer by its ID
+const layer = reearth.layers.findById(targetLayerId);
+
+// Check if the layer was found and log the result or handle it accordingly
+if (layer) {
+  console.log(`Layer found: ${layer.title}`);
+} else {
+  console.log("No layer found with the specified ID:", targetLayerId);
+}
+
+//3. Function to retrieve a layer by its ID and log its details
+function logLayerDetails(layerId) {
+  const layer = reearth.layers.findById(layerId);
+  if (layer) {
+    console.log("Found layer:", layer);
+  } else {
+    console.log("No layer found with ID:", layerId);
+  }
+}
+
+// Example of using the function with a specific layer ID
+logLayerDetails("01j1rx8xhxsk2wdydew3m8hr6q");
+```
+
+## findByIds
+
+**Description**: This method allows for the retrieval of multiple layers from the `reearth` scene simultaneously based on an array of layer IDs. This method is particularly useful for applications that need to interact with or manipulate several specific layers at once, such as batch updating properties, applying effects, or managing group visibility. This method accepts a spread of string arguments, each representing the ID of a layer, and returns an array where each element corresponds to a **`Layer`** object or **`undefined`**.
+
+**Syntax**: `reearth.layers.findByIds: (...layerId: string[]) => (Layer | undefined)[];`
+
+**Parameters:**
+
+```tsx
+...layerId: string[] // A spread of string arguments, each representing the unique identifier of a layer to be retrieved. This allows for flexible input of one or multiple IDs.
+
+// An object that includes all the data and metadata necessary to create and manage a layer.
+layer: Layer[]
+```
+
+**Return Value**: **`(Layer | undefined)[]`**
+
+- Returns an array containing **`Layer`** objects or **`undefined`** for each input ID, depending on whether the layer with that ID exists in the scene. Each position in the returned array corresponds directly to the position of the ID in the input list, maintaining order consistency. If a layer with a given ID does not exist, the method returns **`undefined`** at that position in the array.
+
+**Example Usage:**
+
+```jsx
+//1. Function to retrieve and log details of multiple layers by their IDs
+function logMultipleLayerDetails(...layerIds) {
+  const layers = reearth.layers.findByIds(...layerIds);
+  layers.forEach((layer, index) => {
+    if (layer) {
+      console.log(`Layer ${index + 1} found:`, layer);
+    } else {
+      console.log(`Layer ${index + 1} not found for ID: ${layerIds[index]}`);
+    }
+  });
+}
+
+// Example call to function with multiple layer IDs
+logMultipleLayerDetails(
+  "01j1rx8xhxsk2wdydew3m8hr6q",
+  "01j90ed9m6bxagb6bvfg4sk49q"
+);
+
+//2. Define an array of layer IDs to be searched
+const layerIds = ["01j1rx8xhxsk2wdydew3m8hr6q", "01j90ed9m6bxagb6bvfg4sk49q"];
+
+// Retrieve the layers by their IDs
+const layers = reearth.layers.findByIds(...layerIds);
+
+// Process the results, handling both found and not found cases
+layers.forEach((layer, index) => {
+  if (layer) {
+    console.log(`Layer found: ID = ${layer.id}, Title = ${layer.title}`);
+  } else {
+    console.log(`No layer found for ID: ${layerIds[index]}`);
+  }
+});
+```
+
+## findFeatureById
+
+**Description**: This method provides a way to retrieve a feature associated with the feature ID. This function accepts a spread of string arguments, each representing the ID of a layer and the ID of a feature and returns a `Feature` objects that match the provided layer ID and Feature ID.
+
+**Syntax**: `reearth.layers.findFeatureById: (layerId: string, featureId: string) => Feature | undefined;`
+
+**Parameters:**
+
+```tsx
+layerId: string // The unique identifier of the layer that is being searched for within the scene.
+featureId: string // The unique identifier of the feature in the layer
+
+// An object that includes all the data and metadata necessary to create and manage a feature.
+feature: Feature = {
+  type: "feature" | "computedFeature";
+  id: string; // feature ID
+  geometry?: Geometry;
+  interval?: [start: Date, end?: Date];;
+  properties?: any;
+  // Map engine specific information.
+  metaData?: {
+    description?: string;
+  };
+  range?: DataRange;
+};
+```
+
+**Return Value**: **`Feature | undefined`**
+
+- Returns a **`Feature`** object if a feature with the specified ID is found in the specified layer. If no feature matches the provided ID, it returns **`undefined`**.
+
+**Example Usage:**
+
+```jsx
+//1. Directly search with a specific ID
+reearth.layers.findFeatureById(
+  "01j90ed9m6bxagb6bvfg4sk49q",
+  "6167fcb5-9564-4c8e-a4d3-d0b419f54ec6"
+);
+
+//2. Define the layer ID and feature ID you are searching for
+const targetLayerId = "01j90ed9m6bxagb6bvfg4sk49q";
+const targetFeatureId = "6167fcb5-9564-4c8e-a4d3-d0b419f54ec6";
+
+// Attempt to find the layer by its ID
+const feature = reearth.layers.findFeatureById(targetLayerId, targetFeatureId);
+
+// Check if the feature was found and log the result or handle it accordingly
+if (feature) {
+  console.log(`feature found: ${feature.type}`);
+} else {
+  console.log("No feature found with the specified ID:", targetFeatureId);
+}
+
+//3. Function to retrieve a feature by its ID and log its details
+function logFeatureDetails(layerId, featureId) {
+  const feature = reearth.layers.findFeatureById(layerId, featureId);
+  if (feature) {
+    console.log("Found feature:", feature);
+  } else {
+    console.log("No feature found with ID:", featureId);
+  }
+}
+
+// Example of using the function with a specific layer ID
+logFeatureDetails(
+  "01j90ed9m6bxagb6bvfg4sk49q",
+  "6167fcb5-9564-4c8e-a4d3-d0b419f54ec6"
+);
+```
+
+## findFeaturesByIds
+
+**Description**: This is designed to retrieve all features that are labeled with one or more specified feature IDs. This function accepts a spread of string arguments, each representing the ID of a layer and the ID of features, and returns an array of **`Feature`** objects that match the provided layer ID and Feature ID.
+
+**Syntax**: `reearth.layers.findFeaturesByIds: (layerId: string, featureId: string[]) => Feature[] | undefined;`
+
+**Parameters:**
+
+```tsx
+layerId: string // The unique identifier of the layer that is being searched for within the scene.
+featureId: string[] // The unique identifier of features in the layer. This allows for flexible input of one or multiple IDs.
+
+// An object that includes all the data and metadata necessary to create and manage a feature.
+feature: Feature[]
+```
+
+**Return Value**: **`(Feature[] | underined)`**
+
+- Returns an array of **`Feature`** objects that have feature IDs found in the specified layer. If no features match the provided IDs, it returns **`undefined`**.
+
+**Example Usage:**
+
+```jsx
+//1. Function to retrieve and log details of multiple layers by their IDs
+function logFeatures(layerId, featureIds) {
+  const features = reearth.layers.findFeaturesByIds(layerId, featureIds);
+  features.forEach((feature, index) => {
+    if (feature) {
+      console.log(`Feature found: ID = ${feature.id}, Type = ${feature.type}`);
+    } else {
+      console.log(`No Feature found for ID: ${feature[index]}`);
+    }
+  });
+}
+
+const layerId = "01j90ed9m6bxagb6bvfg4sk49q";
+const featureIds = [
+  "6167fcb5-9564-4c8e-a4d3-d0b419f54ec6",
+  "abae3164-f8b3-42bb-b194-0379ecc4c653",
+];
+
+// Example call to function with multiple layer IDs
+logFeatures(layerId, featureIds);
+
+//2. Define an array of layer IDs to be searched
+const layerId = "01j90ed9m6bxagb6bvfg4sk49q";
+const featureIds = [
+  "6167fcb5-9564-4c8e-a4d3-d0b419f54ec6",
+  "abae3164-f8b3-42bb-b194-0379ecc4c653",
+];
+
+// Retrieve the layers by their IDs
+const features = reearth.layers.findFeaturesByIds(layerId, featureIds);
+
+// Process the results, handling both found and not found cases
+features.forEach((feature, index) => {
+  if (feature) {
+    console.log(`Feature found: ID = ${feature.id}, Type = ${feature.type}`);
+  } else {
+    console.log(`No Feature found for ID: ${feature[index]}`);
+  }
+});
+```
+
+## hide
+
+**Description:** This method is designed to hide a layer or group of layers based on array of layer IDs provided. This function accepts a spread of string arguments, each representing the unique identifier (ID) of a layer. When invoked, this method sets the visibility of each specified layer to **`false`**, effectively hiding them from view in the project. This is particularly useful for managing the display of layers dynamically, allowing developers to control which elements are visible to the end user at any given time based on specific conditions or interactions.
+
+Syntax: `reearth.layers.hide : (...layerIds: string[]) => void`
+
+**Parameters:**
+
+```tsx
+...layerIds: string[] // A spread of string parameters, where each string is the ID of a layer that needs to be hidden.
+```
+
+**Return Value**: None (**`void`**). The method does not require any input parameters and performs its operation without returning a value.
+
+**Example Usage:**
+
+```jsx
+//1. Define the IDs of layers to be hidden
+const layerIdsToHide = [
+  "01j1rx8xhxsk2wdydew3m8hr6q",
+  "01j90ed9m6bxagb6bvfg4sk49q",
+];
+
+// Hide the specified layers in the Reearth scene
+reearth.layers.hide(...layerIdsToHide);
+
+// Log the action for confirmation
+console.log("Specified layers have been hidden.");
+
+//2. Function to hide multiple layers by their IDs
+function hideSpecificLayers(...layerIds) {
+  reearth.layers.hide(...layerIds);
+  console.log(`Layers with IDs ${layerIds.join(", ")} have been hidden.`);
+}
+
+// Example call to the function to hide layers
+hideSpecificLayers("01j1rx8xhxsk2wdydew3m8hr6q", "01j90ed9m6bxagb6bvfg4sk49q");
+```
+
+## show
+
+**Description:** This method is used to set the visibility of specified layers within the `reearth` scene to true. This function allows users to programmatically control which layers are visible to the user, making it a crucial tool for managing the display of various data sets, features, or graphical elements on the map or scene. It is particularly useful in scenarios where layers need to be dynamically shown or hidden based on user interactions, application states, or specific conditions.
+
+**Syntax:** `reearth.layers.show: (...layerId: string[]) => void;`
+
+**Parameters:**
+
+```tsx
+...layerIds: string[] // A spread of string parameters, where each string is the ID of a layer that needs to be made visible.
+```
+
+**Return Value**: None (**`void`**). The method does not require any input parameters and performs its operation without returning a value.
+
+**Example Usage:**
+
+```jsx
+//1. Define the IDs of layers to be shown
+const layerIdsToShow = [
+  "01j1rx8xhxsk2wdydew3m8hr6q",
+  "01j90ed9m6bxagb6bvfg4sk49q",
+];
+
+// Show the specified layers in the Reearth scene
+reearth.layers.show(...layerIdsToShow);
+
+// Log the action for confirmation
+console.log("Specified layers have been made visible.");
+
+//2. Function to show multiple layers by their IDs
+function showSpecificLayers(...layerIds) {
+  reearth.layers.show(...layerIds);
+  console.log(`Layers with IDs ${layerIds.join(", ")} are now visible.`);
+}
+
+// Example call to the function to show layers
+showSpecificLayers("01j1rx8xhxsk2wdydew3m8hr6q", "01j90ed9m6bxagb6bvfg4sk49q");
+```
+
+## delete
+
+**Description:** This method is used to delete specified layers within the `reearth` scene. This function removes only temporary layers added by the Plugin API. This function allows users to programmatically control which layers are deleted, making it a crucial for managing the layers. The method takes the ID of the layer as its primary argument.
+
+**Syntax:** `reearth.layers.delete: (...layerId: string[]) => void;`
+
+**Parameters:**
+
+```tsx
+...layerIds: string[] // A spread of string parameters, where each string is the ID of a layer that needs to be made visible.
+```
+
+**Return Value**: None (**`void`**). The method does not require any input parameters and performs its operation without returning a value.
+
+**Example Usage:**
+
+```jsx
+//1. Define the IDs of layers to be deleted
+const layerIdsToDelete = [
+  "ed5cade3-4049-4626-a4c6-4e84baaef987",
+  "0cdc12f8-4096-4a3c-84fa-0cc984130559",
+];
+
+// Show the specified layers in the Reearth scene
+reearth.layers.delete(...layerIdsToDelete);
+
+// Log the action for confirmation
+console.log("Specified layers have been deleted.");
+
+//2. Function to delete multiple layers by their IDs
+function deleteSpecificLayers(...layerIds) {
+  reearth.layers.delete(...layerIds);
+  console.log(`Layers with IDs ${layerIds.join(", ")} are deleted.`);
+}
+
+// Example call to the function to show layers
+deleteSpecificLayers(
+  "ed5cade3-4049-4626-a4c6-4e84baaef987",
+  "0cdc12f8-4096-4a3c-84fa-0cc984130559"
+);
+```
+
+## override
+
+**Description:** This method dynamically overrides or sets a specific property for a designated layer identified by its ID. This function can modify the layer properties. The method allows for modifying layer properties on-the-fly, such as visibility, color, or any custom attributes that might have been defined in the layer's structure. This dynamic manipulation is essential for responsive applications where layer attributes need to change in response to user interactions, data updates, or other application logic, without permanently altering the original layer configuration. This function takes two parameters: the ID of the layer and the partial layer object.
+
+**Syntax:** `reearth.layers.override: (id: string, layer: Partial<Layer> & { property?: unknown } ) => void;`
+
+**Parameters:**
+
+```tsx
+id: string // The unique identifier of the layer whose property is to be overridden.
+layer?: Partial<Layer> & { property?: unknown } // It represents an object that can optionally include any properties from the Layer type, and may also have an optional property field of any type.
+```
+
+**Return Value**: None (**`void`**). The method does not require any input parameters and performs its operation without returning a value.
+
+**Example Usage:**
+
+```jsx
+// add a sample layer
+const sampleLayer = {
+  type: "simple",
+  data: {
+    type: "geojson",
+    value: {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [139.6917, 35.6895],
+      },
+    },
+  },
+  marker: {
+    height: 100,
+    style: "image",
+    imageSize: 3,
+    imageColor: "blue",
+    label: true,
+    labelText: "sample",
+    labelPosition: "top",
+    labelTypography: {
+      italic: true,
+    },
+  },
+};
+const layerId = reearth.layers.add(sampleLayer);
+
+//1. Example to set the visible of a layer to hidden
+reearth.layers.override(layerId, { visible: false });
+
+// Example to update the default location property of a layer
+reearth.layers.override(layerId, {
+  data: {
+    type: "geojson",
+    value: {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [139.7917, 35.6895],
+      },
+    },
+  },
+});
+
+// Example to modify the style
+reearth.layers.override(layerId, {
+  marker: {
+    imageSize: 2,
+    imageColor: "red",
+    labelText: "update",
+  },
+});
+
+// Logging a message to confirm the operation
+console.log("Property override applied to specified layers.");
+
+//2. Define the layer ID and new property value
+const layerId = "01hrv2ddxmg7a64xw9mdq81f6k";
+const newProperty = { visible: false, marker: { imageColor: "red" } };
+
+// Override the property of the layer
+reearth.layers.override(layerId, newProperty);
+
+// Log the action to confirm the property override
+console.log(`Property overridden for layer ${layerId}`);
+```
+
+## overridden
+
+**Description:** This is an optional property that provides a layer in the `reearth` scene whose properties are overridden. This method allows users to confirm how the layer is overridden. The flexibility offered by this method is crucial for scenarios where layer properties need to be adjusted in response to user interactions, application state changes, or external data updates.
+
+**Syntax:** `reearth.layers.overriden: OverriddenLayer[];`
+
+**Parameters:**
+
+```tsx
+OverriddenLayer: Omit<Layer, "type" | "children">; // A type that excludes 'type' and 'children' from the layer type definition
+```
+
+**Example Usage:**
+
+```jsx
+// Check if there are any overridden properties defined
+if (reearth.layers.overridden) {
+  console.log("Overridden properties are defined.");
+
+  // Iterate through the overridden properties and log each one
+  Object.entries(reearth.layers.overridden).forEach(([layerId, props]) => {
+    console.log(`Layer ID: ${layerId}, Overridden Properties:`, props);
+  });
+} else {
+  console.log("No overridden properties are defined.");
+}
+```
+
+## ~~layersInViewport~~
+
+## select
+
+**Description:** This method is used to programmatically select a specific layer within the `reearth` scene. This function is essential for highlighting or focusing on a particular layer, potentially triggering additional UI elements or actions, such as displaying an infobox or other contextual information.
+
+**Syntax:** `reearth.layers.select: (layerId?: string) => void;`
+
+**Parameters:**
+
+```tsx
+layerId: string; //　The unique identifier of the layer to be selected.
+```
+
+**Return Value**: None (**`void`**). The method does not require any input parameters and performs its operation without returning a value.
+
+**Example Usage:**
+
+```jsx
+//1. Select a layer by ID
+reearth.layers.select("01j1rx8xhxsk2wdydew3m8hr6q");
+
+//2. Layer ID to be selected
+const layerId = "01j1rx8xhxsk2wdydew3m8hr6q";
+
+// Select the layer
+reearth.layers.select(layerId);
+
+// Log the selection action
+console.log(`Layer ${layerId} has been selected for user interaction.`);
+```
+
+## selectFeature
+
+**Description:** **Description:** This method is used to programmatically select a specific feature within the `reearth` scene. This function is essential for highlighting or focusing on a particular feature, potentially triggering additional UI elements or actions, such as displaying an infobox or other contextual information.
+
+**Syntax:** `reearth.layers.selectFeature: (layerId?: string, featureId?: string) => void;`
+
+**Parameters:**
+
+```tsx
+layerId: string; //　The unique identifier of the layer to be selected.
+featureId: string; // The unique identifier of the feature in the layer
+```
+
+**Return Value**: None (**`void`**). The method does not require any input parameters and performs its operation without returning a value.
+
+**Example Usage:**
+
+```jsx
+//1. Select a feature by layer ID and feature ID
+reearth.layers.selectFeature(
+  "01j90ed9m6bxagb6bvfg4sk49q",
+  "6167fcb5-9564-4c8e-a4d3-d0b419f54ec6"
+);
+
+//2. Layer ID and feature ID to be selected
+const layerId = "01j90ed9m6bxagb6bvfg4sk49q";
+const featureId = "6167fcb5-9564-4c8e-a4d3-d0b419f54ec6";
+
+// Select the layer
+reearth.layers.selectFeature(layerId, featureId);
+
+// Log the selection action
+console.log(`Feature ${featureId} has been selected for user interaction.`);
+```
+
+## selectFeatures
+
+**Description:** **Description:** This method is used to programmatically select specific features within the `reearth` scene. This function is essential for highlighting or focusing on a particular feature, potentially triggering additional UI elements or actions, such as displaying an infobox or other contextual information.
+
+**Syntax:** `reearth.layers.selectFeature: (layers: { layerId?: string; featureId?: string[] }[]) => void;`
+
+**Parameters:**
+
+```tsx
+layers: layers[] {
+	layerId?: string; //　The unique identifier of the layer to be selected.
+	featureId?: string[] // An array of string parameters, where each string is the ID of a feature
+}
+```
+
+**Return Value**: None (**`void`**). The method does not require any input parameters and performs its operation without returning a value.
+
+**Example Usage:**
+
+```jsx
+// add a sample layer
+const chiyodaLayerId = reearth.layers.add({
+  type: "simple",
+  data: {
+    type: "3dtiles",
+    url: "https://assets.cms.plateau.reearth.io/assets/ca/ee4cb0-9ce4-4f6c-bca1-9c7623e84cb1/13100_tokyo23-ku_2022_3dtiles_1_1_op_bldg_13101_chiyoda-ku_lod2_no_texture/tileset.json",
+  },
+  ["3dtiles"]: {
+    selectedFeatureColor: "red",
+  },
+});
+const chuoLayerId = reearth.layers.add({
+  type: "simple",
+  data: {
+    type: "3dtiles",
+    url: "https://assets.cms.plateau.reearth.io/assets/4a/30f295-cd07-46b0-b0ab-4a4b1b3af06b/13100_tokyo23-ku_2022_3dtiles_1_1_op_bldg_13102_chuo-ku_lod2_no_texture/tileset.json",
+  },
+  ["3dtiles"]: {
+    selectedFeatureColor: "red",
+  },
+});
+
+// Select features by layer IDs and feature IDs
+reearth.layers.selectFeatures([
+  {
+    layerId: chiyodaLayerId,
+    featureId: [
+      "f9f2275bcf13a9674ba81473bc129ed6",
+      "b9a4fd90ca6112eccd43bfffd4aeb2fe",
+    ],
+  },
+  {
+    layerId: chuoLayerId,
+    featureId: [
+      "acf77feceabce515700a47021bfe63dc",
+      "4dcf088a80f1eaaf73b1f356f7446298",
+    ],
+  },
+]);
+```
+
+## selected
+
+**Description:** This represents the currently selected layer within a `reearth` project. It is an optional property that holds a **`Layer`** object if a layer is selected, or it may be undefined if no layer is currently selected. This property provides an easy way to access details about the selected layer directly, facilitating operations or interactions that depend on the user's selection, such as querying specific layer data, modifying properties, or displaying additional information in UI components.
+
+**Syntax:** `reearth.layers.selected?: Layer;`
+
+```tsx
+// An object that includes all the data and metadata necessary to create and manage a layer.
+layer: ComputedLayer = {
+  id: string;
+  status: "fetching" | "ready";
+  layer: Layer;
+  originalFeatures: Feature[];
+  features: ComputedFeature[];
+  properties?: any;
+};
+```
+
+**Example Usage:**
+
+```jsx
+//1. Check if there is a selected layer and log its details
+if (reearth.layers.selected) {
+  console.log("Selected Layer ID:", reearth.layers.selected.id);
+  console.log("Selected Layer Title:", reearth.layers.selected.layer.title);
+} else {
+  console.log("No layer is currently selected.");
+}
+
+//2. Example function to update the visibility of the selected layer
+function toggleVisibilityOfSelectedLayer() {
+  if (reearth.layers.selected && reearth.layers.selected.layer.visible) {
+    reearth.layers.override(reearth.layers.selected.id, { visible: false });
+    console.log("Layer visibility turned off:", reearth.layers.selected.id);
+  } else if (reearth.layers.selected) {
+    reearth.layers.override(reearth.layers.selected.id, { visible: true });
+    console.log("Layer visibility turned on:", reearth.layers.selected.id);
+  }
+}
+```
+
+## selectedFeature
+
+**Description:** This represents the currently selected feature within a `reearth` project. It is an optional property that holds a `feature` object if a feature is selected, or it may be undefined if no feature is currently selected. This property provides an easy way to access details about the selected feature directly, facilitating operations or interactions that depend on the user's selection, such as querying specific feature data, modifying properties, or displaying additional information in UI components.
+
+**Syntax:** `reearth.layers.selectedFeature?: feature;`
+
+```tsx
+// A feature object that includes all the data.
+feature?: ComputedFeature = {
+  type: "computedFeature";
+  id: string; // feature ID
+  geometry?: Geometry;
+  interval?: [start: Date, end?: Date];;
+  properties?: any;
+  // Map engine specific information.
+  metaData?: {
+    description?: string;
+  };
+  range?: DataRange;
+  // AppearanceTypes
+  marker?: MarkerAppearance;
+  polyline?: PolylineAppearance;
+  polygon?: PolygonAppearance;
+  model?: ModelAppearance;
+  "3dtiles"?: Cesium3DTilesAppearance;
+};
+```
+
+**Example Usage:**
+
+```jsx
+//1. Check if there is a selected layer and log its details
+if (reearth.layers.selectedFeature) {
+  console.log("Selected Feature ID:", reearth.layers.selectedFeature.id);
+} else {
+  console.log("No Feature is currently selected.");
+}
+
+//2. Example function to check a property of the selected layer
+function toggleVisibilityOfSelectedLayer() {
+  if (reearth.layers.selectedFeature) {
+    console.log("gml_id:", reearth.layers.selectedFeature.properties.gml_id);
+  } else if (reearth.layers.selectedFeature) {
+    console.log("No Feature is currently selected.");
+  }
+}
+```
+
+## On
+
+## Off
