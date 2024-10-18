@@ -1,6 +1,7 @@
 :root {
   --purple-hsl: 240, 61%, 52%;
   --overlay-blurple: hsla(var(--purple-hsl), 0.2);
+  --dark-purple-hsl: 240, 15%, 15%;
 }
 
 :root[data-theme="light"] {
@@ -18,10 +19,20 @@
   background-attachment: fixed;
 }
 
-[data-has-hero] header {
-  background-color: transparent;
+.card {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
 }
 
-[data-has-hero] .hero > img {
-  filter: drop-shadow(0 0 3rem var(--overlay-blurple));
+:root[data-theme="light"] .card {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.page header,
+.page .sidebar-pane {
+  background-color: hsla(var(--dark-purple-hsl), 0.95);
+}
+:root[data-theme="light"] .page header,
+:root[data-theme="light"] .page .sidebar-pane {
+  background-color: rgba(255, 255, 255, 0.5);
 }
