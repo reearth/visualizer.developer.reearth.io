@@ -1,7 +1,6 @@
 :root {
   --purple-hsl: 240, 61%, 52%;
   --overlay-blurple: hsla(var(--purple-hsl), 0.2);
-  --dark-purple-hsl: 240, 15%, 15%;
 }
 
 :root[data-theme="light"] {
@@ -19,7 +18,7 @@
   background-attachment: fixed;
 }
 
-.card {
+.page .card {
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
 }
@@ -29,10 +28,14 @@
 }
 
 .page header,
-.page .sidebar-pane {
-  background-color: hsla(var(--dark-purple-hsl), 0.95);
+:root[data-theme="light"] .page header {
+  background-color: transparent;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
-:root[data-theme="light"] .page header,
+
+.page .sidebar-pane,
 :root[data-theme="light"] .page .sidebar-pane {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: transparent;
+  border-inline-end: 1px solid var(--sl-color-gray-6);
 }
