@@ -1,4 +1,5 @@
-export default `
+// @ts-nocheck
+
 type PolygonAppearance = {
   show?: boolean;
   fill?: boolean;
@@ -15,4 +16,3 @@ type PolygonAppearance = {
   hideIndicator?: boolean;
   selectedFeatureColor?: string; // This doesn't support expression
 };
-`;

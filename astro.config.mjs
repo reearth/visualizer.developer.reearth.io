@@ -7,7 +7,8 @@ export default defineConfig({
   integrations: [
     starlight({
       logo: {
-        src: "/src/assets/houston.webp",
+        dark: "/src/assets/ReearthLogoWhite.svg",
+        light: "/src/assets/ReearthLogoColorful.svg",
         alt: "Re:Earth Visualizer",
       },
       title: {
@@ -36,25 +37,11 @@ export default defineConfig({
           autogenerate: { directory: "introduction" },
         },
         {
-          label: "Getting Started",
-          translations: {
-            ja: "はじめる",
-          },
-          autogenerate: { directory: "getting-started" },
-        },
-        {
           label: "Core Concepts",
           translations: {
             ja: "コアコンセプト",
           },
           autogenerate: { directory: "core-concepts" },
-        },
-        {
-          label: "Plugin API",
-          translations: {
-            ja: "プラグインAPI",
-          },
-          autogenerate: { directory: "plugin-api" },
         },
         {
           label: "Contribution Guide",
@@ -64,11 +51,27 @@ export default defineConfig({
           autogenerate: { directory: "contribution-guide" },
         },
         {
-          label: "FAQ / Troubleshooting",
+          label: "Frontend Development",
+          autogenerate: { directory: "frontend-development" },
+        },
+        {
+          label: "Backend Development",
+          autogenerate: { directory: "backend-development" },
+        },
+        {
+          label: "Plugin Development",
+          autogenerate: { directory: "plugin-development" },
+        },
+        {
+          label: "Plugin API Reference",
+          autogenerate: { directory: "plugin-api" },
+        },
+        {
+          label: "FAQ",
           translations: {
-            ja: "FAQ / トラブルシューティング",
+            ja: "FAQ",
           },
-          autogenerate: { directory: "faq-troubleshooting" },
+          autogenerate: { directory: "faq" },
         },
         {
           label: "Changelog",
@@ -78,7 +81,7 @@ export default defineConfig({
           autogenerate: { directory: "changelog" },
         },
       ],
-      customCss: ["./src/styles/custom.css"],
+      customCss: ["./src/styles/page.css", "./src/styles/custom.css"],
     }),
   ],
 });

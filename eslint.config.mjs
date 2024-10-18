@@ -4,6 +4,6 @@ import config from "eslint-config-reearth";
 export default [
   ...config(),
   {
-    ignores: ["node_modules", "dist", "public"],
+    ignores: ["node_modules", "dist", "public", "src/content/code/**/*.ts"],
   },
 ];

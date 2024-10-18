@@ -1,4 +1,5 @@
-export default `
+// @ts-nocheck
+
 //1. Define a new layer
 const newLayer = {
   // always same
@@ -85,4 +86,3 @@ if (newLayerId) {
 } else {
   console.log("Failed to add layer.");
 }
-`;

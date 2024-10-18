@@ -1,4 +1,5 @@
-export default `
+// @ts-nocheck
+
 type ModelAppearance = {
   show?: boolean;
   url?: string;
@@ -20,4 +21,3 @@ type ModelAppearance = {
   pbr?: boolean;
   imageBasedLightIntensity?: number;
 };
-`;
