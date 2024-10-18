@@ -1,4 +1,5 @@
-export default `
+// @ts-nocheck
+
 type MarkerAppearance = {
   show?: boolean;
   height?: number;
@@ -49,4 +50,3 @@ type MarkerAppearance = {
   hideIndicator?: boolean;
   selectedFeatureColor?: string; // This doesn't support expression
 };
-`;

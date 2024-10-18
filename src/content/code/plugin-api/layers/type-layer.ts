@@ -1,4 +1,5 @@
-export default `
+// @ts-nocheck
+
 // An object that includes all the data and metadata necessary to create and manage a layer.
 type Layer = {
   // The current layer being evaluated.
@@ -62,4 +63,3 @@ type Layer = {
   model?: ModelAppearance;
   "3dtiles"?: Cesium3DTilesAppearance;
 };
-`;

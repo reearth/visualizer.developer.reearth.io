@@ -1,15 +1,34 @@
 ---
-title: Welcome to Re:Earth Visualizer
-description: Get started building your docs site with Starlight.
+title: Re:Earth Visualizerへようこそ
+description: Starlightを使ってドキュメントサイトを作成するためのガイドを始めましょう。
 template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  title: Re:Earth Visualizer
+  tagline: 地図や地理データを作成・可視化するために設計されたオープンソースのウェブベースプラットフォーム。
   actions:
-    - text: Start
-      link: plugin-api/layers/
+    - text: はじめに
+      link: introduction/about
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: GitHubでRe:Earth Visualizerを見る
       icon: external
       variant: minimal
+      link: https://github.com/reearth/reearth-visualizer
 ---
+
+import { CardGrid, Card } from "@astrojs/starlight/components";
+
+<CardGrid stagger>
+  <Card title="地理空間データの可視化" icon="open-book">
+    高度なレンダリング技術を使用して、インタラクティブで没入感のあるマッピング体験により、複雑な地理空間データを可視化します。
+  </Card>
+  <Card title="多様なデータ形式のサポート" icon="document">
+    GeoJSON、CZML、KML、3D
+    Tilesなど、さまざまな地理空間データ形式を効率的かつ柔軟に統合し、可視化します。
+  </Card>
+  <Card title="簡単な公開と共有" icon="rocket">
+    地理空間データや洞察を広範な対象に効果的に伝えるため、ビジュアライゼーションを簡単に公開・共有します。
+  </Card>
+  <Card title="プラグインシステム" icon="puzzle">
+    強力なプラグインシステムを使用して、UIコンポーネントとビジネスロジックのカスタマイズをシームレスに行えます。
+  </Card>
+</CardGrid>

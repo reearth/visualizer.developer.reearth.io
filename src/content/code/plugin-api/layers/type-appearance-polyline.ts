@@ -1,4 +1,5 @@
-export default `
+// @ts-nocheck
+
 type PolylineAppearance = {
   show?: boolean;
   clampToGround?: boolean;
@@ -11,4 +12,3 @@ type PolylineAppearance = {
   hideIndicator?: boolean;
   selectedFeatureColor?: string; // This doesn't support expression
 };
-`;

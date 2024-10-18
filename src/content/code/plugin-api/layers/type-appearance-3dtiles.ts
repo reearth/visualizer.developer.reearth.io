@@ -1,4 +1,5 @@
-export default `
+// @ts-nocheck
+
 type Cesium3DTilesAppearance = {
   show?: boolean;
   color?: string;
@@ -11,4 +12,3 @@ type Cesium3DTilesAppearance = {
   showWireframe?: boolean;
   showBoundingVolume?: boolean;
 };
-`;

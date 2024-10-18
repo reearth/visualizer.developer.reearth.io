@@ -3,13 +3,35 @@ title: Welcome to Re:Earth Visualizer
 description: Get started building your docs site with Starlight.
 template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  title: Re:Earth Visualizer
+  tagline: An open-source web-based platform designed for creating and visualizing maps and geographical data.
   actions:
-    - text: Start
-      link: plugin-api/layers/
+    - text: Get Started
+      link: introduction/about
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: View Re:Earth Visualizer on GitHub
       icon: external
       variant: minimal
+      link: https://github.com/reearth/reearth-visualizer
 ---
+
+import { CardGrid, Card } from "@astrojs/starlight/components";
+
+<CardGrid stagger>
+  <Card title="Geospatial Visualization" icon="open-book">
+    Visualize complex geospatial data with an interactive and immersive mapping
+    experience, powered by advanced rendering technology.
+  </Card>
+  <Card title="Comprehensive Data Format Support" icon="document">
+    Seamlessly integrate diverse geospatial formats, including GeoJSON, CZML,
+    KML, and 3D Tiles, for efficient and versatile data visualization.
+  </Card>
+  <Card title="Effortless Publishing and Sharing" icon="rocket">
+    Publish and share visualizations with ease, ensuring effective communication
+    of geospatial data and insights to a broader audience.
+  </Card>
+  <Card title="Plugin System" icon="puzzle">
+    Extend the platform with a robust plugin system, enabling seamless
+    customization of both UI components and business logic.
+  </Card>
+</CardGrid>

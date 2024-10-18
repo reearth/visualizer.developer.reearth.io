@@ -1,4 +1,5 @@
-export default `
+// @ts-nocheck
+
 const model3D = {
   type: "simple",
   data: {
@@ -24,4 +25,3 @@ const model3D = {
 };
 
 reearth.layers.add(model3D);
-`;
