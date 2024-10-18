@@ -9,6 +9,29 @@ import { Code } from "@astrojs/starlight/components";
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 import { clearNoCheck } from "@code/utils";
 
+## Properties
+
+### layers
+
+This property provides a list of all layers currently exists in the **`reearth`** scene, allowing plugin developers to access and manipulate the layers as needed. The property returns an array of **`LazyLayer`** objects, each representing a distinct layer within the scene.
+
+#### Syntax
+
+```ts
+reearth.layers.layers: LazyLayer[];
+```
+
+#### Return Value
+
+**Type** `LazyLayer[]`
+
+An array of **`LazyLayer`** objects, each representing a distinct layer within the scene.
+
+:::note
+Please note that the **`LazyLayer`** object is a lightweight representation of a layer, you need to expcitly visit its property based on your needs.
+For more information on LazyLayer Types, please refer to [LazyLayer Type](#lazylayer-type) section.
+:::
+
 ## Methods
 
 ### add
@@ -97,19 +120,49 @@ import FindLayerCode from "@code/plugin-api/layers/find-layer?raw";
 
 ### select
 
-**TODO** Description of the event.
+Select event is triggered when a layer is selected within the **`reearth`** scene. The event provides information about the selected layer, including its unique identifier `id`, allowing plugin developers to respond to user interactions or changes in the scene.
+
+#### Syntax
+
+```ts
+reearth.layers.on("select", (layerId: string | undefined, featureId: string | undefined) => void): void;
+```
+
+#### Parameters
+
+##### `layerId`
+
+**Type**: `string | undefined`
+
+The unique identifier of the selected layer. If no layer is selected, the value is `undefined`.
+
+##### `featureId`
+
+**Type**: `string | undefined`
+
+The unique identifier of the selected feature within the layer. If no feature is selected, the value is `undefined`. Usually there will always be a feature selected when a layer is selected.
 
 ## References
 
 ### Layer Type
 
-**TODO** Description of the layer type.
+**TODO** Description of the Layer type.
 
 import TypeLayer from "@code/plugin-api/layers/type-layer?raw";
 
 <Code code={clearNoCheck(TypeLayer)} lang="ts" />
 
+### LazyLayer Type
+
+**TODO** Description of the LazyLayer type.
+
+import TypeLazyLayer from "@code/plugin-api/layers/type-lazylayer?raw";
+
+<Code code={clearNoCheck(TypeLazyLayer)} lang="ts" />
+
 ### Layer Appearance Types
+
+**TODO** Description of the Layer Appearance types.
 
 import TypeAppearanceMarker from "@code/plugin-api/layers/type-appearance-marker?raw";
 import TypeAppearancePolyline from "@code/plugin-api/layers/type-appearance-polyline?raw";
