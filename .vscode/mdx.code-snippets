@@ -22,6 +22,28 @@
     ],
     "description": "Page meta",
   },
+  "Method": {
+    "prefix": "method",
+    "body": [
+      "### `${1:name}`",
+      "",
+      "`${2:description}`",
+      "",
+      "#### Syntax",
+      "",
+      "```ts",
+      "${3:code}",
+      "```",
+      "",
+      "#### Parameters",
+      "",
+      "#### Return Value",
+      "",
+      "#### Example",
+      "",
+    ],
+    "description": "Method",
+  },
   "Parameter": {
     "prefix": "param",
     "body": [
