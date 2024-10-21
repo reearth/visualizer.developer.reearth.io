@@ -7,3 +7,96 @@ sidebar:
     text: New
     variant: tip
 ---
+
+# Re:Earth Local Setup Guide
+
+This guide is designed to help developers set up Re:Earth locally. It includes all the necessary steps, including the installation of Go and Docker, and setting up the environment for both server and web interfaces.
+
+## Step 1: Install Go
+
+Before cloning the Re:Earth repository, make sure you have Go installed on your machine. Go is required for server-side operations.
+
+- Download and install Go from the official site:
+  [Download Go](https://golang.org/dl/)
+
+- Follow the installation instructions for your specific operating system to ensure Go is properly set up.
+
+## Step 2: Clone the Re:Earth Repository
+
+Open your terminal (or PowerShell if you're on Windows) and navigate to your desired working directory, for example, your desktop:
+
+```bash
+cd Desktop
+git clone https://github.com/reearth/reearth-visualizer
+```
+
+- **Note**: If the cloning process takes too long, you can perform a shallow clone to speed it up, which fetches the latest version of the repository without downloading the entire history.
+
+```bash
+git clone --depth 1 https://github.com/reearth/reearth-visualizer
+```
+
+## Step 3: Set Up the Server
+
+### Prerequisites
+
+Ensure that Docker is installed on your machine. Docker is essential for running the Re:Earth server locally.
+
+- Install Docker by following these instructions:
+  [Install Docker](https://docs.docker.com/engine/install/)
+
+### Step 3.1: Initialize the Database
+
+From your cloned directory, navigate to the server folder and set up the database:
+
+```bash
+cd server
+make run-db
+```
+
+### Step 3.2: Configure Environment Variables
+
+Create and configure the `.env` file in the server directory to use mock authentication, which is useful for local testing without setting up an external Auth0 account:
+
+```bash
+touch .env
+echo "REEARTH_MOCKAUTH=true" >> .env
+```
+
+### Step 3.3: Start the Application and Create a Mock User
+
+Start the application and create a mock user. This step is crucial for testing user interactions within the local setup:
+
+```bash
+make run-app
+make mockuser
+```
+
+- **Note**: The `mockuser` command can only be executed successfully if `REEARTH_MOCKAUTH=true` is set in your `.env` file.
+
+## Step 4: Launch the Web Interface
+
+Navigate back to the root directory of your visualizer project and proceed to set up the web interface:
+
+```bash
+cd web
+touch .env
+```
+
+Configure the `.env` file with the necessary settings to connect to your local server and other resources:
+
+```plaintext
+REEARTH_WEB_CESIUM_ION_TOKEN_URL=https://visualizer.test.reearth.dev/cesium_ion_token.txt
+REEARTH_WEB_API=http://localhost:8080/api
+REEARTH_WEB_PLUGINS=http://localhost:8080/plugins
+REEARTH_WEB_AUTH_PROVIDER=mock
+REEARTH_WEB_DEV_PLUGIN_URLS='["http://localhost:5005"]'
+```
+
+Finally, install the necessary web dependencies and start the web application:
+
+```bash
+yarn && yarn start
+```
+
+- You should now be able to access the Re:Earth visualizer locally at `http://localhost:3000/`.
