@@ -10,11 +10,11 @@ sidebar:
 
 # Re:Earth Local Setup Guide
 
-This guide is designed to help developers set up Re:Earth locally. It includes all the necessary steps, including the installation of Go and Docker, and setting up the environment for both server and web interfaces.
+This guide is designed to help developers set up Re:Earth locally and develop plugin. It includes all the necessary steps, including the installation of Go and Docker, and setting up the environment for both server and web interfaces.
 
 ## Step 1: Install Go
 
-Before cloning the Re:Earth repository, make sure you have Go installed on your machine. Go is required for server-side operations.
+Before cloning the Re:Earth repository, make sure you have Go installed on your machine.
 
 - Download and install Go from the official site:
   [Download Go](https://golang.org/dl/)
@@ -100,3 +100,93 @@ yarn && yarn start
 ```
 
 - You should now be able to access the Re:Earth visualizer locally at `http://localhost:3000/`.
+
+## Step 5: Clone the Re:Earth Plugin Repository
+
+Now that the server is up and running, the next step is to clone the Re:Earth plugin repository you wish to edit. For this guide, we'll use the Re:Earth Visualizer Plugin Template.
+
+```bash
+git clone https://github.com/reearth-plugins/reearth-visualizer-plugin-shadcn-template
+```
+
+This repository contains a template for creating visualizer plugins for the Re:Earth platform. It includes basic setup for plugin development such as manifest files, source code structure, and build scripts.
+
+## Step 6: Navigate to the Plugin Directory
+
+After cloning, navigate to the plugin directory:
+
+```bash
+cd reearth-visualizer-plugin-shadcn-template
+```
+
+## Step 7: Explore the Plugin Directory
+
+The plugin directory contains several important files and folders. Here is the structure explained:
+
+```plaintext
+my-project/
+├── node_modules/
+├── public/
+│   └── reearth.yml             // Plugin definition
+├── src/
+│   ├── extensions/
+│   │   └── demo/               // Extension folder, naming by extension ID
+│   │       ├── main/           // UI project for the main view
+│   │       └── demo.ts         // Extension script
+│   └── shared/
+│       ├── components/         // Shared components of ShadCN
+│       ├── lib/                // Shared lib of ShadCN
+│       ├── reearthTypes/       // Shared Re:Earth Visualizer Plugin API types
+│       ├── global.css          // Shared Global CSS of tailwind
+│       └── utils.ts            // Utility functions
+├── dist/                       // Output directory of the plugin build
+├── dist-ui/                    // Output directory for the UI build
+├── package/                    // Directory for packaging the plugin into a zip file
+├── configs/                    // Vite configuration files for both extensions and UI
+├── scripts/
+├── package.json
+└── README.md
+```
+
+## Step 8: Install Dependencies
+
+Before making any changes, install the necessary dependencies to ensure the plugin can be built and tested locally.
+
+```bash
+yarn install
+```
+
+## Step 9: Simplify Plugin Development with Re:Earth Visualizer
+
+Utilize the `yarn dev-build` command to streamline the development and testing process for your Re:Earth plugins. This approach is designed to enhance efficiency and speed in plugin development.
+
+### Step 9.1 Execute the Development Script:
+
+Start by running the `yarn dev-build` script to automate your development setup:
+
+```bash
+yarn dev-build
+```
+
+This script efficiently orchestrates several operations:
+
+- **Starts a Development Server**: Automatically initiates a server dedicated to UI development.
+- **Automates UI Builds**: Continuously compiles the UI as you make changes.
+- **Compiles Extension Scripts**: Concurrently builds your extension scripts.
+- **Launches a Preview Server**: Serves your plugin at `http://localhost:5005`.
+- **Configures Environment Variables**: Automatically updates `REEARTH_WEB_DEV_PLUGIN_URLS='["http://localhost:5005"]'`, triggering a server restart upon changes to `.env`.
+
+### Step 9.2 Utilize Visualizer Tools:
+
+After running the `yarn dev-build`, use the integrated tools in Re:Earth Visualizer for efficient testing and deployment:
+
+- **Install Dev Plugins**:![plugin_install_icon](@assets/install_plugin_icon.png)
+
+  - This tool fetches plugin files directly from the preview server, automatically zips them, and facilitates their installation.
+  - **When to Use**: Click this button when initially setting up your development environment or after any modifications to `reearth.yml`.
+
+- **Reload Dev Plugin Extensions**: ![plugin_install_icon](@assets/refresh_plugin_icon.png)
+  - This tool rapidly reloads all plugin extensions from the preview server.
+  - **Advantage**: Reloading only the plugin itself, not the entire page, significantly accelerates the development cycle.
+
+By following this process, you can enhance your productivity and reduce the time spent on repetitive tasks, allowing you to focus more on creative aspects of plugin development. Enjoy your debvelopment life!
