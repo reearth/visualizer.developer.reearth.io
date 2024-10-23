@@ -13,7 +13,7 @@ import { clearNoCheck } from "@code/utils";
 
 ### show
 
-This method displays a custom HTML content in `reearth` as widget or block base on plugin config. It allows for dynamic control over the visibility and size of the iframe, including support for an operation where the iframe is not visually displayed. It accepts two parameters: The HTML content to be displayed, and the options object which is optional.
+**Description:** This method displays a custom HTML content in `reearth` as widget or block base on plugin config. It allows for dynamic control over the visibility and size of the iframe, including support for an operation where the iframe is not visually displayed. It accepts two parameters: The HTML content to be displayed, and the options object which is optional.
 
 #### Syntax
 
@@ -62,14 +62,106 @@ None `(void)`. The method performs its operation without returning a value.
 
 #### Example
 
-import FindUICode from "@code/plugin-api/ui/show-ui?raw";
+import ShowUICode from "@code/plugin-api/ui/show-ui?raw";
 
-<Code code={clearNoCheck(FindUICode)} lang="ts" />
+<Code code={clearNoCheck(ShowUICode)} lang="ts" />
 
 ### postMessage
 
 **Description:** This allows for communication between the UI and the plugin. Sent data will be automatically encoded as JSON and restored in the iframe's window. So any object that cannot be serialized to JSON will be ignored. It accepts **one parameter:** message. This means that the function can accept a message of any type (strings, numbers or more complex objects)
 
+#### Syntax
+
+```ts
+reearth.ui.postMessage: (message: unknown) => void;
 ```
+
+#### Parameters
+
+##### `message`
+
+**Type**: `unknown`
+
+The function can accept a message of any type (strings, numbers or more complex objects)
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import PostUICode from "@code/plugin-api/ui/post-ui?raw";
+
+<Code code={clearNoCheck(PostUICode)} lang="ts" />
+
+### resize
+
+**Description**: Adjusts the size of an iframe used by the plugin. If width or height is undefined, it will be auto-resized. If a number is specified, it will be treated as pixels. It takes three parameters: width, height and extended (which is optional).
+
+#### Syntax
+
+```ts
+reearth.ui.resize(
+  width: string | number | undefined,
+  height: string | number | undefined,
+  extended?: boolean | undefined
+) => void;
+```
+
+#### Parameters
+
+##### `width`
+
+**Type**: `string | number | undefined`
+
+Width of the iframe of the widget. This field is only available for widgets that are not horizontally extended.
+
+##### `height`
+
+**Type**: `string | number | undefined`
+
+Height of the iframe of the widget. This field is only available for widgets that are not vertically extended.
+
+##### `extended?`
+
+**Optional**
+
+**Type**: `boolean | undefined`
+
+Optional parameter. A boolean indicating whether to extend the iframe. This option is only available for widgets on an extendable area on the widget align system.
+
+- true: The UI element is extended.
+- false: The UI element is not extended.
+- undefined: Leaves the extended state unchanged.
+
+#### Example
+
+import ResizeUICode from "@code/plugin-api/ui/resize-ui?raw";
+
+<Code code={clearNoCheck(ResizeUICode)} lang="ts" />
+
+### close
+
+**Description:** This method is used to close or dismiss the current widget, plugin, iframe, or UI component. It provides a way to programmatically trigger the close operation, akin to a user closing it manually. It takes no parameters.
+
+#### Syntax
+
+```ts
+reearth.ui.close: () => void
+```
+
+#### Parameters
+
+None
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+```
+// Close the currently component
+reearth.ui.close();
 
 ```
