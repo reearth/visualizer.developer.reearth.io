@@ -160,8 +160,60 @@ None `(void)`. The method performs its operation without returning a value.
 
 #### Example
 
-```
+```ts
 // Close the currently component
 reearth.ui.close();
-
 ```
+
+## Events
+
+### on
+
+This allows plugins to listen for specific UI events such as updates or closures, executing the provided callback function whenever these events occur. It supports different types of events, and developers can specify whether the event listener should be triggered only once or multiple times until explicitly removed.
+
+#### Syntax
+
+```ts
+reearth.camera.on<T extends keyof UIEventType>(
+  type: T,
+  callback: (...args: UIEventType[T]) => void,
+  options?: { once?: boolean }
+) => void;
+```
+
+#### Parameters
+
+##### `type`
+
+**Type**: `T`
+
+A string representing the event type to listen for. Common event types include:
+
+- "update": Triggered when the UI is updated.
+- "close": Triggered when the UI is closed.
+
+##### `callback`
+
+**Type**: `(...args: UIEventType[T])`
+
+A function that will be invoked when the event occurs. Each event type can pass different arguments to the callback.
+
+##### `options`
+
+**Type**: `{ once?: boolean }`
+
+**Optional**
+
+An optional object to control the listener’s behavior:
+
+- once: boolean: If `true`, the listener will automatically be removed after it is invoked once. Defaults to `false`.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import UIOnEventCode from "@code/plugin-api/ui/on-event-ui?raw";
+
+<Code code={clearNoCheck(UIOnEventCode)} lang="ts" />
