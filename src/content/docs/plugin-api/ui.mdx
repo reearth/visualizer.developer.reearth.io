@@ -198,6 +198,18 @@ A string representing the event type to listen for. Common event types include:
 
 A function that will be invoked when the event occurs. Each event type can pass different arguments to the callback.
 
+**UIEventType** defines the available events and their argument types:
+
+- update: Triggered when the UI updates.
+- close: Triggered when the UI closes.
+
+```ts
+UIEventType = {
+  update: []; // Example event with no arguments
+  close: [];  // Example event with no arguments
+};
+```
+
 ##### `options`
 
 **Type**: `{ once?: boolean }`
