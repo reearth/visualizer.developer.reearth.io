@@ -174,7 +174,7 @@ This allows plugins to listen for specific UI events such as updates or closures
 #### Syntax
 
 ```ts
-reearth.camera.on<T extends keyof UIEventType>(
+reearth.ui.on<T extends keyof UIEventType>(
   type: T,
   callback: (...args: UIEventType[T]) => void,
   options?: { once?: boolean }
@@ -206,7 +206,7 @@ A function that will be invoked when the event occurs. Each event type can pass 
 
 An optional object to control the listener’s behavior:
 
-- once: boolean: If `true`, the listener will automatically be removed after it is invoked once. Defaults to `false`.
+- once: boolean: If `true`, the listener will automatically be removed after it is invoked once. If `false` or omitted, the listener remains active..
 
 #### Return Value:
 

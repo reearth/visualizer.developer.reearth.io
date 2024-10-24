@@ -1,11 +1,11 @@
 // @ts-nocheck
 
-// Register a listener for the 'update' event
+// Example 1: Register a listener for a custom UI event called 'update'
 reearth.ui.on("update", () => {
   console.log("UI was updated.");
 });
 
-// Register a one-time listener for the 'close' event
+// Example 2: Register a one-time listener for the 'close' event
 reearth.ui.on(
   "close",
   () => {
