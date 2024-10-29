@@ -9,7 +9,16 @@ reearth.ui.on("update", () => {
 reearth.ui.on(
   "close",
   () => {
-    console.log("UI was closed.");
+    console.log("UI was closed."); // This logs once when the UI closes
   },
-  { once: true }
+  { once: true } // The listener is removed after the first execution
 );
+
+// Example 3: Register a listener that increments the counter each time the UI updates
+let updateCount = 0; // Initialize a counter for UI updates
+
+// Register a listener that increments the counter each time the UI updates
+reearth.ui.on("update", () => {
+  updateCount++; // Increment the counter on each update
+  console.log(`UI updated ${updateCount} times`); // Log the current count
+});
