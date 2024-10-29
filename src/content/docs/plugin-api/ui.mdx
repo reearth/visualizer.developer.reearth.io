@@ -13,7 +13,7 @@ import { clearNoCheck } from "@code/utils";
 
 ### show
 
-**Description:** This method displays a custom HTML content in `reearth` as widget or block base on plugin config. It allows for dynamic control over the visibility and size of the iframe, including support for an operation where the iframe is not visually displayed. It accepts two parameters: The HTML content to be displayed, and the options object which is optional.
+**Description:** This method displays custom HTML content in `reearth` as widget or block based on plugin configuration. It allows for dynamic control over the visibility and size of the iframe, including support for an operation where the iframe is not visually displayed. It accepts two parameters: The HTML content to be displayed, and the options object which is optional.
 
 #### Syntax
 
@@ -47,10 +47,10 @@ type Options = {
 };
 ```
 
-- **`visible?: boolean`**: If true, display a iframe. Otherwise, hide the iframe and plugin works like headless mdoe. Default value is true.
+- **`visible?: boolean`**: If true, display an iframe. Otherwise, hide the iframe and plugin works like headless mode. Default value is true.
 - **`width?: number | string;`**: Initial iframe width of the widget. If not specified, the iframe will be automatically resized. If a number is specified, it will be treated as pixels. This option is only available for widgets that are not horizontally extended.
 - **`height?: number | string;`**: Initial iframe height of the widget. If not specified, the iframe will be automatically resized. If a number is specified, it will be treated as pixels. This option is only available for widgets that are not vertically extended.
-- **`extended?: boolean;`**: Indicates whether the iframe should occupy a larger. This option is only available for widgets on an extendable area on the widget align system.
+- **`extended?: boolean;`**: Indicates whether the iframe should occupy a larger area. When true, the iframe will expand to fill the available space in its container. This option is only available for widgets on an extendable area on the widget align system.
 
 :::note
 For more information on Widget Align System, please refer to [Widget Align System](/core-concepts/widget-align-system) page.

@@ -1,12 +1,23 @@
 // @ts-nocheck
 
 // Display the HTML UI only
-reearth.ui.show(`<h1 style="color:red;background:black">Hello world</h1>`);
+reearth.ui.show(`
+  <h1 style="color:red;background:black">
+  Hello world
+  </h1>
+  `);
 
 // Display an iframe with specified HTML content, making it visible and auto-sized
-reearth.ui.show(`<p style="color:red;background:white">Hello, Reearth!</p>`, {
-  visible: true,
-});
+reearth.ui.show(
+  `
+  <p style="color:red;background:white">
+  Hello, Reearth!
+  </p>
+  `,
+  {
+    visible: true,
+  }
+);
 
 // Display the HTML UI without making it visible
 reearth.ui.show(html, { visible: false });
