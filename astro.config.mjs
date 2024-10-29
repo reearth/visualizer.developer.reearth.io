@@ -1,6 +1,7 @@
 // @ts-check
 import starlight from "@astrojs/starlight";
 import { defineConfig } from "astro/config";
+import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
@@ -83,5 +84,6 @@ export default defineConfig({
       ],
       customCss: ["./src/styles/page.css", "./src/styles/custom.css"],
     }),
+    icon(),
   ],
 });
