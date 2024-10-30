@@ -167,63 +167,34 @@ reearth.ui.close();
 
 ## Events
 
-### on
+### update
+
+The update event is triggered whenever the state or content of the UI changes. This can be useful for tracking changes to the UI state or refreshing content based on the latest data.
 
 #### Syntax
 
 ```ts
-reearth.ui.on<T extends keyof UIEventType>(
-  type: T,
-  callback: (...args: UIEventType[T]) => void,
-  options?: { once?: boolean }
-) => void;
+reearth.ui.on("update", () => void): void;
 ```
-
-#### Parameters
-
-##### `type`
-
-**Type**: `T`
-
-A string representing the event type to listen for. Common event types include:
-
-- "update": Triggered when the UI is updated.
-- "close": Triggered when the UI is closed.
-
-##### `callback`
-
-**Type**: `(...args: UIEventType[T])`
-
-A function that will be invoked when the event occurs. Each event type can pass different arguments to the callback.
-
-**UIEventType** defines the available events and their argument types:
-
-- update: Triggered when the UI updates.
-- close: Triggered when the UI closes.
-
-```ts
-UIEventType = {
-  update: []; // Example event with no arguments
-  close: [];  // Example event with no arguments
-};
-```
-
-##### `options`
-
-**Type**: `{ once?: boolean }`
-
-**Optional**
-
-An optional object to control the listener’s behavior:
-
-- once: boolean: If `true`, the listener will automatically be removed after it is invoked once. If `false` or omitted, the listener remains active..
-
-#### Return Value:
-
-None `(void)`. The method performs its operation without returning a value.
 
 #### Example
 
-import UIOnEventCode from "@code/plugin-api/ui/on-event-ui?raw";
+import UIUpdateEventCode from "@code/plugin-api/ui/update-event-ui?raw";
 
-<Code code={clearNoCheck(UIOnEventCode)} lang="ts" />
+<Code code={clearNoCheck(UIUpdateEventCode)} lang="ts" />
+
+### close
+
+The close event is triggered when the UI is closed. This event can be used to perform clean-up actions, save data, or notify other components that the UI is no longer active.
+
+#### Syntax
+
+```ts
+reearth.ui.on("close", () => void): void;
+```
+
+#### Example
+
+import UICloseEventCode from "@code/plugin-api/ui/close-event-ui?raw";
+
+<Code code={clearNoCheck(UICloseEventCode)} lang="ts" />

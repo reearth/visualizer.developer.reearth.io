@@ -1,0 +1,15 @@
+// @ts-nocheck
+
+// Register a listener to log every time the UI updates
+reearth.ui.on("update", () => {
+  console.log("UI updated!");
+});
+
+// Register a one-time listener for the "update" event
+reearth.ui.on(
+  "update",
+  () => {
+    console.log("UI updated - one-time listener executed.");
+  },
+  { once: true }
+);
