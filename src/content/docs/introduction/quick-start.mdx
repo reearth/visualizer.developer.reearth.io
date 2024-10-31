@@ -2,3 +2,82 @@
 title: Quick Start
 description: Quick Start
 ---
+
+This guide provides a step-by-step tutorial on how to start Re:Earth Visualizer locally
+
+## Before You Begin
+
+Before starting the development process, ensure you have the following prerequisites:
+
+- **Go**: Download and install Go from the official site: <a href="https://golang.org/dl/" target="_blank"> Download Go</a>.
+
+- **Docker**: Install Docker by following these instructions: <a href="https://docs.docker.com/engine/install/" target="_blank"> Install Docker</a>.
+
+## Prepare the Code
+
+Open your terminal (or PowerShell if you're on Windows) and navigate to your desired working directory, for example, your desktop:
+
+```bash
+cd Desktop
+git clone https://github.com/reearth/reearth-visualizer
+```
+
+## Setup Server and Database
+
+Make sure Docker is properly installed and running on your machine.
+
+From your cloned directory, navigate to the server folder and set up the database:
+
+```bash
+cd server
+make run-db
+```
+
+Create and configure the `.env` file in the server directory to use mock authentication.
+
+```bash
+touch .env
+echo "REEARTH_MOCKAUTH=true" >> .env
+```
+
+Start the backend server.
+
+```bash
+make run-app
+```
+
+Register a new mockuser.
+
+```bash
+make mockuser
+```
+
+## Setup Web
+
+Navigate to the web directory of your visualizer project and set up local .env file.
+
+```bash
+cd web
+touch .env
+```
+
+Add the following environment variables to the `.env` file:
+
+```plaintext
+REEARTH_WEB_API=http://localhost:8080/api
+REEARTH_WEB_PLUGINS=http://localhost:8080/plugins
+REEARTH_WEB_CESIUM_ION_ACCESS_TOKEN=your_cesium_ion_access_token_here
+REEARTH_WEB_AUTH_PROVIDER=mock
+```
+
+:::note
+Please follow <a href="https://cesium.com/learn/ion/cesium-ion-access-tokens/" target="_blank">this document</a> to create your own Cesium Ion Access Token.
+:::
+
+Install dependencies and start the frontend server.
+
+```bash
+yarn && yarn start
+```
+
+You should now be able to access the Re:Earth Visualizer locally at `http://localhost:3000/`.
