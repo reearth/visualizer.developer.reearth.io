@@ -1,0 +1,202 @@
+---
+title: ui
+description: API reference for `reearth.ui`.
+---
+
+The **`reearth.ui`** namespace encompasses a broad set of functionalities to manage the user interface elements of the plugin extension (widget or block).
+
+import { Code } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { clearNoCheck } from "@code/utils";
+
+## Methods
+
+### show
+
+This method displays custom HTML content in `reearth` as a plugin extension (widget or block based on plugin configuration). It allows for dynamic control over the visibility and size of the iframe, including support for an operation where the iframe is not visually displayed. It accepts two parameters: The HTML content to be displayed, and the options object which is optional.
+
+#### Syntax
+
+```ts
+reearth.ui.show: (
+  html: string,
+  options?: Options
+) => void;
+```
+
+#### Parameters
+
+##### `html`
+
+**Type**: `string`
+
+A string of HTML content to be rendered.
+
+##### `options`
+
+**Optional**
+
+**Type**:
+
+```ts
+type Options = {
+  visible?: boolean;
+  width?: number | string;
+  height?: number | string;
+  extended?: boolean;
+};
+```
+
+- **`visible?: boolean`**: If true, display an iframe. Otherwise, hide the iframe and plugin works like headless mode. Default value is `true`.
+- **`width?: number | string;`**: Initial iframe width of the widget. If not specified, the iframe will be automatically resized. If a number is specified, it will be treated as pixels. This option is only available for widgets that are not horizontally extended.
+- **`height?: number | string;`**: Initial iframe height of the widget. If not specified, the iframe will be automatically resized. If a number is specified, it will be treated as pixels. This option is only available for widgets that are not vertically extended.
+- **`extended?: boolean;`**: Indicates whether the iframe should occupy a larger area. When true, the iframe will expand to fill the available space in its container. This option is only available for widgets on an extendable area on the widget align system.
+
+:::note
+For more information on Widget Align System, please refer to [Widget Align System](/core-concepts/widget-align-system) page.
+:::
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import ShowUICode from "@code/plugin-api/ui/show-ui?raw";
+
+<Code code={clearNoCheck(ShowUICode)} lang="ts" />
+
+### postMessage
+
+This method sends a message to the UI component (iframe) of the plugin.
+
+#### Syntax
+
+```ts
+reearth.ui.postMessage: (message: any) => void;
+```
+
+#### Parameters
+
+##### `message`
+
+**Type**: `any`
+
+message can be any structured-cloneable type.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import PostUICode from "@code/plugin-api/ui/post-message?raw";
+
+<Code code={clearNoCheck(PostUICode)} lang="ts" />
+
+### resize
+
+Adjusts the size of an iframe used by the plugin. If width or height is undefined, it will be auto-resized. If a number is specified, it will be treated as pixels. It takes three parameters: width, height and extended (which is optional).
+
+Please note that the UI iframe will automatically resize base on the content size. This method is useful when you want to manually set the size of the iframe.
+
+#### Syntax
+
+```ts
+reearth.ui.resize(
+  width: string | number | undefined,
+  height: string | number | undefined,
+  extended?: boolean | undefined
+) => void;
+```
+
+#### Parameters
+
+##### `width`
+
+**Type**: `string | number | undefined`
+
+Width of the iframe of the widget. This field is only available for widgets that are not horizontally extended.
+
+##### `height`
+
+**Type**: `string | number | undefined`
+
+Height of the iframe of the widget. This field is only available for widgets that are not vertically extended.
+
+##### `extended?`
+
+**Optional**
+
+**Type**: `boolean | undefined`
+
+Optional parameter. A boolean indicating whether to extend the iframe. This option is only available for widgets on an extendable area on the widget align system.
+
+- `true`: The UI element is extended.
+- `false`: The UI element is not extended.
+- `undefined`: Leaves the extended state unchanged.
+
+#### Example
+
+import ResizeUICode from "@code/plugin-api/ui/resize-ui?raw";
+
+<Code code={clearNoCheck(ResizeUICode)} lang="ts" />
+
+### close
+
+This method is used to close or dismiss the current UI widget. It provides a way to programmatically trigger the close operation. It takes no parameters.
+
+#### Syntax
+
+```ts
+reearth.ui.close: () => void
+```
+
+#### Parameters
+
+None
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+```ts
+// Close the currently ui widget
+reearth.ui.close();
+```
+
+## Events
+
+### update
+
+The update event is triggered whenever the state or content of the UI changes. This can be useful for tracking changes to the UI state or refreshing content based on the latest data.
+
+#### Syntax
+
+```ts
+reearth.ui.on("update", () => void): void;
+```
+
+#### Example
+
+import UIUpdateEventCode from "@code/plugin-api/ui/event-update?raw";
+
+<Code code={clearNoCheck(UIUpdateEventCode)} lang="ts" />
+
+### close
+
+The close event is triggered when the UI is closed. This event can be used to perform clean-up actions, save data, or notify other components that the UI is no longer active.
+
+#### Syntax
+
+```ts
+reearth.ui.on("close", () => void): void;
+```
+
+#### Example
+
+import UICloseEventCode from "@code/plugin-api/ui/event-close?raw";
+
+<Code code={clearNoCheck(UICloseEventCode)} lang="ts" />
