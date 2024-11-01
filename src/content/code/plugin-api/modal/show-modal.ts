@@ -1,17 +1,20 @@
 // @ts-nocheck
 
-// Example 1: Show a simple modal with HTML content
-reearth.modal.show("<h1>Hello, Reearth!</h1>", {
-  width: "400px",
-  height: "300px",
-  background: "#ffffff",
+// Example 1: Display a modal with custom HTML content
+reearth.modal.show("<p>Welcome to Reearth!</p>", {
+  width: 400,
+  height: 300,
+  background: "rgba(0, 0, 0, 0.5)",
   clickBgToClose: true,
 });
 
-// Example 2: Display a fullscreen modal with custom content
-reearth.modal.show("<p>This is a fullscreen modal.</p>", {
-  width: "100%",
-  height: "100%",
-  background: "rgba(0, 0, 0, 0.8)",
-  clickBgToClose: false,
-});
+// Example 2: Display a modal with a larger, fixed-size and solid background
+reearth.modal.show(
+  "<h1>Important Information</h1><p>Details about the project...</p>",
+  {
+    width: 600,
+    height: 400,
+    background: "#f8f8f8",
+    clickBgToClose: false,
+  }
+);

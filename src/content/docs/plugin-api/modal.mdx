@@ -13,7 +13,7 @@ import { clearNoCheck } from "@code/utils";
 
 ### show
 
-**Description:** This method displays a modal window with customizable HTML content in Reearth. Developers can define the modal’s size, background, and behavior when clicking outside the modal.
+**Description:** This method displays a modal window with customizable HTML content in **`reearth`**. Developers can define the modal’s size, background, and behavior when clicking outside the modal.
 
 #### Syntax
 
@@ -49,8 +49,8 @@ type Options = {
 };
 ```
 
-- **`width?: number | string;`**: Specifies the width of the modal. A numeric value is interpreted as pixels, while a string value should be a valid CSS size unit (e.g., "50%", "300px"). If not specified, a default width may be used.
-- **`height?: number | string;`**: Specifies the height of the modal. Similar to the width, a numeric value represents pixels, and a string value should be a valid CSS size unit. The absence of this parameter may result in a default height
+- **`width?: number | string;`**: Specifies the width of the modal. If not specified, a default width may be used.
+- **`height?: number | string;`**: Specifies the height of the modal. The absence of this parameter may result in a default height.
 - **`background?: string;`**: The background color or CSS value for the modal (e.g., "#fff", "rgba(0, 0, 0, 0.5)").
 - **`clickBgToClose?: boolean;`**: Determines whether clicking on the modal background will close the modal. Set to true to enable this feature, otherwise, it defaults to false.
 
@@ -66,19 +66,19 @@ import ShowModalCode from "@code/plugin-api/modal/show-modal?raw";
 
 ### postMessage
 
-**Description:** This enables communication between a modal window and other parts of reearth , or between components within the modal itself. It can be utilized for a variety of purposes, such as notifying reearth about user interactions within the modal or requesting data or actions from other components.
+**Description:** This enables communication between a modal window and other parts of **`reearth`** , or between components within the modal itself. It can be utilized for a variety of purposes, such as notifying reearth about user interactions within the modal or requesting data or actions from other components.
 
 #### Syntax
 
 ```ts
-reearth.modal.postMessage: (message: unknown) => void;
+reearth.modal.postMessage: (message: any) => void;
 ```
 
 #### Parameters
 
 ##### `message`
 
-**Type**: `unknown`
+**Type**: `any`
 
 The message to be sent to the modal. This can be of any type (string, object, or any other valid data type), depending on what the modal expects to receive and handle.
 
@@ -94,59 +94,54 @@ import PostModalCode from "@code/plugin-api/modal/post-modal?raw";
 
 ### update
 
-**Description**: This method modifies the appearance and behavior of the currently open modal in Reearth. It allows developers to dynamically adjust the modal’s size, background color, and behavior without closing and reopening it.
+**Description**: This method modifies the appearance and behavior of the currently open modal in **`reearth`**. It allows developers to dynamically adjust properties like the modal’s size, background color, and click-to-close behavior.
 
 #### Syntax
 
 ```ts
-reearth.ui.update(
-  width: string | number | undefined,
-  height: string | number | undefined,
-  background?: string;
-  clickBgToClose?: boolean;
-) => void;
+reearth.modal.update: (options: Options) => void;
 ```
 
 #### Parameters
 
-##### `width`
+##### `options`
 
-**Type**: `string | number | undefined`
+An object that contains properties to update the modal’s appearance and behavior.
 
-Width of the iframe of the widget. This field is only available for widgets that are not horizontally extended.
+**Type**:
 
-##### `height`
+```ts
+type Options = {
+  width?: number | string;
+  height?: number | string;
+  background?: string;
+  clickBgToClose?: boolean;
+};
+```
 
-**Type**: `string | number | undefined`
+- **`width?: number | string;`**: Sets the modal’s new width.
+- **`height?: number | string;`**: Sets the modal’s new height.
+- **`background?: string;`**: Sets a new background for the modal.
+- **`clickBgToClose?: boolean;`**: Determines whether clicking outside the modal will close it. `true` allows the modal to close when the user clicks the background. `false` prevents the modal from closing on background clicks.
 
-Height of the iframe of the widget. This field is only available for widgets that are not vertically extended.
+#### Return Value:
 
-##### `extended?`
-
-**Optional**
-
-**Type**: `boolean | undefined`
-
-Optional parameter. A boolean indicating whether to extend the iframe. This option is only available for widgets on an extendable area on the widget align system.
-
-- true: The UI element is extended.
-- false: The UI element is not extended.
-- undefined: Leaves the extended state unchanged.
+None `(void)`. The method performs its operation without returning a value.
 
 #### Example
 
-import ResizeUICode from "@code/plugin-api/ui/resize-ui?raw";
+import ResizeModalCode from "@code/plugin-api/modal/resize-modal?raw";
 
-<Code code={clearNoCheck(ResizeUICode)} lang="ts" />
+<Code code={clearNoCheck(ResizeModalCode)} lang="ts" />
 
 ### close
 
-**Description:** This method is used to close or dismiss the current widget, plugin, iframe, or UI component. It provides a way to programmatically trigger the close operation, akin to a user closing it manually. It takes no parameters.
+**Description:** This method is used to close an open modal. Users can dismiss the modal based on task completion, logical conditions or other user actions. It does not require any parameters.
 
 #### Syntax
 
 ```ts
-reearth.ui.close: () => void
+reearth.modal.close: () => void
 ```
 
 #### Parameters
@@ -160,71 +155,29 @@ None `(void)`. The method performs its operation without returning a value.
 #### Example
 
 ```ts
-// Close the currently component
-reearth.ui.close();
+// Close the currently open modal
+reearth.modal.close();
+
+// Automatically close the modal after a delay
+setTimeout(() => {
+  reearth.modal.close();
+}, 5000); // closes the modal after 5 seconds
 ```
 
 ## Events
 
-### on
+### close
 
-This allows plugins to listen for specific UI events such as updates or closures, executing the provided callback function whenever these events occur. It supports different types of events, and developers can specify whether the event listener should be triggered only once or multiple times until explicitly removed.
+The close event is triggered when the modal in **`reearth`** is closed. This event allows you to perform actions in response to the modal’s closure, such as cleaning up resources, saving data, or updating the UI. You can configure the listener to execute once or multiple times, based on the provided options.
 
 #### Syntax
 
 ```ts
-reearth.ui.on<T extends keyof UIEventType>(
-  type: T,
-  callback: (...args: UIEventType[T]) => void,
-  options?: { once?: boolean }
-) => void;
+reearth.modal.on("close", () => void): void;
 ```
-
-#### Parameters
-
-##### `type`
-
-**Type**: `T`
-
-A string representing the event type to listen for. Common event types include:
-
-- "update": Triggered when the UI is updated.
-- "close": Triggered when the UI is closed.
-
-##### `callback`
-
-**Type**: `(...args: UIEventType[T])`
-
-A function that will be invoked when the event occurs. Each event type can pass different arguments to the callback.
-
-**UIEventType** defines the available events and their argument types:
-
-- update: Triggered when the UI updates.
-- close: Triggered when the UI closes.
-
-```ts
-UIEventType = {
-  update: []; // Example event with no arguments
-  close: [];  // Example event with no arguments
-};
-```
-
-##### `options`
-
-**Type**: `{ once?: boolean }`
-
-**Optional**
-
-An optional object to control the listener’s behavior:
-
-- once: boolean: If `true`, the listener will automatically be removed after it is invoked once. If `false` or omitted, the listener remains active..
-
-#### Return Value:
-
-None `(void)`. The method performs its operation without returning a value.
 
 #### Example
 
-import UIOnEventCode from "@code/plugin-api/ui/on-event-ui?raw";
+import ModalCloseEventCode from "@code/plugin-api/modal/event-close?raw";
 
-<Code code={clearNoCheck(UIOnEventCode)} lang="ts" />
+<Code code={clearNoCheck(ModalCloseEventCode)} lang="ts" />
