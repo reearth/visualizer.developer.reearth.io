@@ -13,7 +13,7 @@ import { clearNoCheck } from "@code/utils";
 
 ### show
 
-**Description:** This method displays a modal window with customizable HTML content in **`reearth`**. Developers can define the modal’s size, background, and behavior when clicking outside the modal.
+This method displays a modal window with customizable HTML content in **`reearth`**. Developers can define the modal’s size, background, and behavior when clicking outside the modal.
 
 #### Syntax
 
@@ -66,7 +66,7 @@ import ShowModalCode from "@code/plugin-api/modal/show-modal?raw";
 
 ### postMessage
 
-**Description:** This enables communication between a modal window and other parts of **`reearth`** , or between components within the modal itself. It can be utilized for a variety of purposes, such as notifying reearth about user interactions within the modal or requesting data or actions from other components.
+This enables communication between a modal window and other parts of **`reearth`** , or between components within the modal itself. It can be utilized for a variety of purposes, such as notifying reearth about user interactions within the modal or requesting data or actions from other components.
 
 #### Syntax
 
@@ -80,7 +80,7 @@ reearth.modal.postMessage: (message: any) => void;
 
 **Type**: `any`
 
-The message to be sent to the modal. This can be of any type (string, object, or any other valid data type), depending on what the modal expects to receive and handle.
+The message to be sent to the modal.
 
 #### Return Value:
 
@@ -94,7 +94,7 @@ import PostModalCode from "@code/plugin-api/modal/post-modal?raw";
 
 ### update
 
-**Description**: This method modifies the appearance and behavior of the currently open modal in **`reearth`**. It allows developers to dynamically adjust properties like the modal’s size, background color, and click-to-close behavior.
+This method modifies the appearance and behavior of the currently open modal in **`reearth`**. It allows developers to dynamically adjust properties like the modal’s size, background color, and click-to-close behavior.
 
 #### Syntax
 
@@ -136,7 +136,7 @@ import ResizeModalCode from "@code/plugin-api/modal/resize-modal?raw";
 
 ### close
 
-**Description:** This method is used to close an open modal. Users can dismiss the modal based on task completion, logical conditions or other user actions. It does not require any parameters.
+This method is used to close an open modal. Users can dismiss the modal based on task completion, logical conditions or other user actions. It does not require any parameters.
 
 #### Syntax
 
@@ -157,11 +157,6 @@ None `(void)`. The method performs its operation without returning a value.
 ```ts
 // Close the currently open modal
 reearth.modal.close();
-
-// Automatically close the modal after a delay
-setTimeout(() => {
-  reearth.modal.close();
-}, 5000); // closes the modal after 5 seconds
 ```
 
 ## Events
