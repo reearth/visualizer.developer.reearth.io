@@ -596,32 +596,6 @@ import selectFeaturesLayerCode from "@code/plugin-api/layers/selectfeatures-laye
 
 <Code code={clearNoCheck(selectFeaturesLayerCode)} lang="ts" />
 
-## Events
-
-### select
-
-Select event is triggered when a layer is selected within the **`reearth`** scene. The event provides information about the selected layer, including its unique identifier `id`, allowing plugin developers to respond to user interactions or changes in the scene.
-
-#### Syntax
-
-```ts
-reearth.layers.on("select", (layerId: string | undefined, featureId: string | undefined) => void): void;
-```
-
-#### Parameters
-
-##### `layerId`
-
-**Type**: `string | undefined`
-
-The unique identifier of the selected layer. If no layer is selected, the value is `undefined`.
-
-##### `featureId`
-
-**Type**: `string | undefined`
-
-The unique identifier of the selected feature within the layer. If no feature is selected, the value is `undefined`. Usually there will always be a feature selected when a layer is selected.
-
 ## References
 
 ### Layer Type
