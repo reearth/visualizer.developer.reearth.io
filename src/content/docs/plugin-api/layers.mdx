@@ -32,6 +32,86 @@ Please note that the **`LazyLayer`** object is a lightweight representation of a
 For more information on LazyLayer Types, please refer to [LazyLayer Type](#lazylayer-type) section.
 :::
 
+### overridden
+
+This is an optional property that provides a layer in the `reearth` scene whose properties are overridden. This method allows users to confirm how the layer is overridden. The flexibility offered by this method is crucial for scenarios where layer properties need to be adjusted in response to user interactions, application state changes, or external data updates.
+
+#### Syntax
+
+```ts
+reearth.layers.overriden: OverriddenLayer[];
+```
+
+#### Parameters
+
+##### `OverriddenLayer`
+
+**Type** `Omit<Layer, "type" | "children">`
+
+A type that excludes 'type' and 'children' from the layer type definition
+
+#### Example
+
+import OverridenLayerCode from "@code/plugin-api/layers/overriden-layer?raw";
+
+<Code code={clearNoCheck(OverridenLayerCode)} lang="ts" />
+
+### selected
+
+This represents the currently selected layer within a `reearth` project. It is an optional property that holds a `Layer` object if a layer is selected, or it may be undefined if no layer is currently selected. This property provides an easy way to access details about the selected layer directly, facilitating operations or interactions that depend on the user's selection, such as querying specific layer data, modifying properties, or displaying additional information in UI components.
+
+#### Syntax
+
+```ts
+reearth.layers.selected?: Layer;
+```
+
+#### Parameters
+
+##### `layer`
+
+**Type** `ComputedLayer`
+
+An object that includes all the data and metadata necessary to create and manage a layer.
+
+:::note
+Please note that the **`ComputedLayer`** object is a lightweight representation of a layer, you need to expcitly visit its property based on your needs.
+For more information on ComputedLayer Types, please refer to [ComputedLayer Type](#computedlayer-type) section.
+:::
+
+#### Example
+
+import SelectedLayerCode from "@code/plugin-api/layers/selected-layer?raw";
+
+<Code code={clearNoCheck(SelectedLayerCode)} lang="ts" />
+
+### selectedFeature
+
+This represents the currently selected feature within a `reearth` project. It is an optional property that holds a `feature` object if a feature is selected, or it may be undefined if no feature is currently selected. This property provides an easy way to access details about the selected feature directly, facilitating operations or interactions that depend on the user's selection, such as querying specific feature data, modifying properties, or displaying additional information in UI components.
+
+#### Syntax
+
+```ts
+reearth.layers.selectedFeature?: feature;
+```
+
+##### `layer`
+
+**Type** `ComputedLayer`
+
+An object that includes all the data and metadata necessary to create and manage a layer.
+
+:::note
+Please note that the **`ComputedLayer`** object is a lightweight representation of a layer, you need to expcitly visit its property based on your needs.
+For more information on ComputedLayer Types, please refer to [ComputedLayer Type](#computedlayer-type) section.
+:::
+
+#### Example
+
+import SelectedFeatureLayerCode from "@code/plugin-api/layers/selectedfeature-layer?raw";
+
+<Code code={clearNoCheck(SelectedFeatureLayerCode)} lang="ts" />
+
 ## Methods
 
 ### add
@@ -518,86 +598,6 @@ import selectFeaturesLayerCode from "@code/plugin-api/layers/selectfeatures-laye
 <Code code={clearNoCheck(selectFeaturesLayerCode)} lang="ts" />
 
 ## Events
-
-### overridden
-
-This is an optional property that provides a layer in the `reearth` scene whose properties are overridden. This method allows users to confirm how the layer is overridden. The flexibility offered by this method is crucial for scenarios where layer properties need to be adjusted in response to user interactions, application state changes, or external data updates.
-
-#### Syntax
-
-```ts
-reearth.layers.overriden: OverriddenLayer[];
-```
-
-#### Parameters
-
-##### `OverriddenLayer`
-
-**Type** `Omit<Layer, "type" | "children">`
-
-A type that excludes 'type' and 'children' from the layer type definition
-
-#### Example
-
-import OverridenLayerCode from "@code/plugin-api/layers/overriden-layer?raw";
-
-<Code code={clearNoCheck(OverridenLayerCode)} lang="ts" />
-
-### selected
-
-This represents the currently selected layer within a `reearth` project. It is an optional property that holds a `Layer` object if a layer is selected, or it may be undefined if no layer is currently selected. This property provides an easy way to access details about the selected layer directly, facilitating operations or interactions that depend on the user's selection, such as querying specific layer data, modifying properties, or displaying additional information in UI components.
-
-#### Syntax
-
-```ts
-reearth.layers.selected?: Layer;
-```
-
-#### Parameters
-
-##### `layer`
-
-**Type** `ComputedLayer`
-
-An object that includes all the data and metadata necessary to create and manage a layer.
-
-:::note
-Please note that the **`ComputedLayer`** object is a lightweight representation of a layer, you need to expcitly visit its property based on your needs.
-For more information on ComputedLayer Types, please refer to [ComputedLayer Type](#computedlayer-type) section.
-:::
-
-#### Example
-
-import SelectedLayerCode from "@code/plugin-api/layers/selected-layer?raw";
-
-<Code code={clearNoCheck(SelectedLayerCode)} lang="ts" />
-
-### selectedFeature
-
-This represents the currently selected feature within a `reearth` project. It is an optional property that holds a `feature` object if a feature is selected, or it may be undefined if no feature is currently selected. This property provides an easy way to access details about the selected feature directly, facilitating operations or interactions that depend on the user's selection, such as querying specific feature data, modifying properties, or displaying additional information in UI components.
-
-#### Syntax
-
-```ts
-reearth.layers.selectedFeature?: feature;
-```
-
-##### `layer`
-
-**Type** `ComputedLayer`
-
-An object that includes all the data and metadata necessary to create and manage a layer.
-
-:::note
-Please note that the **`ComputedLayer`** object is a lightweight representation of a layer, you need to expcitly visit its property based on your needs.
-For more information on ComputedLayer Types, please refer to [ComputedLayer Type](#computedlayer-type) section.
-:::
-
-#### Example
-
-import SelectedFeatureLayerCode from "@code/plugin-api/layers/selectedfeature-layer?raw";
-
-<Code code={clearNoCheck(SelectedFeatureLayerCode)} lang="ts" />
 
 ### select
 
