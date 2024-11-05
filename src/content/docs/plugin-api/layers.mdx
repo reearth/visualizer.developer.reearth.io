@@ -97,13 +97,12 @@ reearth.layers.selectedFeature?: feature;
 
 ##### `layer`
 
-**Type** `ComputedLayer`
+**Type** `ComputedFeature`
 
 An object that includes all the data and metadata necessary to create and manage a layer.
 
 :::note
-Please note that the **`ComputedLayer`** object is a lightweight representation of a layer, you need to expcitly visit its property based on your needs.
-For more information on ComputedLayer Types, please refer to [ComputedLayer Type](#computedlayer-type) section.
+For more information on ComputedFeature Types, please refer to [ComputedFeature Type](#computedfeature-type) section.
 :::
 
 #### Example
@@ -627,7 +626,7 @@ The unique identifier of the selected feature within the layer. If no feature is
 
 ### Layer Type
 
-**TODO** Description of the Layer type.
+An object that includes all the data and metadata necessary to create and manage a layer.
 
 import TypeLayer from "@code/plugin-api/layers/type-layer?raw";
 
@@ -635,7 +634,7 @@ import TypeLayer from "@code/plugin-api/layers/type-layer?raw";
 
 ### LazyLayer Type
 
-**TODO** Description of the LazyLayer type.
+A lightweight representation of a layer.
 
 import TypeLazyLayer from "@code/plugin-api/layers/type-lazylayer?raw";
 
@@ -643,7 +642,7 @@ import TypeLazyLayer from "@code/plugin-api/layers/type-lazylayer?raw";
 
 ### ComputedLayer Type
 
-**TODO** Description of the ComputedLayer type.
+A lightweight representation of a layer.
 
 import TypeComputedLayer from "@code/plugin-api/layers/type-computedlayer?raw";
 
@@ -651,7 +650,7 @@ import TypeComputedLayer from "@code/plugin-api/layers/type-computedlayer?raw";
 
 ### Layer Appearance Types
 
-**TODO** Description of the Layer Appearance types.
+Properties for each layer type.
 
 import TypeAppearanceMarker from "@code/plugin-api/layers/type-appearance-marker?raw";
 import TypeAppearancePolyline from "@code/plugin-api/layers/type-appearance-polyline?raw";
@@ -679,7 +678,7 @@ import TypeAppearance3dtiles from "@code/plugin-api/layers/type-appearance-3dtil
 
 ### Feature Type
 
-**TODO** Description of the Layer type.
+An object that includes all the data and metadata necessary to create and manage a feature.
 
 import TypeFeature from "@code/plugin-api/layers/type-feature?raw";
 
@@ -687,7 +686,7 @@ import TypeFeature from "@code/plugin-api/layers/type-feature?raw";
 
 ### ComputedFeature Type
 
-**TODO** Description of the Layer type.
+An Object describing the type of layer property.
 
 import TypeComputedFeature from "@code/plugin-api/layers/type-computedfeature?raw";
 

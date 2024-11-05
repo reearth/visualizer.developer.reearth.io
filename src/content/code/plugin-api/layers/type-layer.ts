@@ -1,8 +1,6 @@
 // @ts-nocheck
 
-// An object that includes all the data and metadata necessary to create and manage a layer.
 type Layer = {
-  // The current layer being evaluated.
   id: string; // A unique identifier for the layer.
   title?: string;
   visible?: boolean; // Flag indicating whether the layer is visible by default. Default is true
