@@ -380,7 +380,7 @@ The method does not require any input parameters and performs its operation with
 
 #### Example
 
-import DeleteLayerCode from "@code/plugin-api/layers/findbyid-layer?raw";
+import DeleteLayerCode from "@code/plugin-api/layers/delete-layer?raw";
 
 <Code code={clearNoCheck(DeleteLayerCode)} lang="ts" />
 
@@ -391,7 +391,7 @@ This method dynamically overrides or sets a specific property for a designated l
 #### Syntax
 
 ```ts
-reearth.layers.override: (id: string, layer: Partial<Layer> & { property?: unknown } ) => void;
+reearth.layers.override: (layerId: string, layer: Partial<Layer> & { property?: unknown } ) => void;
 ```
 
 #### Parameters
@@ -502,8 +502,8 @@ reearth.layers.selectFeatures: (layers: { layerId?: string; featureId?: string[]
 
 **Type** `layers[] { layerId?: string; featureId?: string[] }`
 
-layerId: The unique identifier of the layer to be selected.
-featureId: An array of string parameters, where each string is the ID of a feature
+- **`layerId: string`**: The unique identifier of the layer to be selected.
+- **`featureId: string[]`**: An array of string parameters, where each string is the ID of a feature
 
 #### Return Value
 
@@ -557,20 +557,14 @@ reearth.layers.selected?: Layer;
 
 ##### `layer`
 
-**Type**
-
-```ts
-layer: ComputedLayer = {
-  id: string;
-  status: "fetching" | "ready";
-  layer: Layer;
-  originalFeatures: Feature[];
-  features: ComputedFeature[];
-  properties?: any;
-};
-```
+**Type** `ComputedLayer`
 
 An object that includes all the data and metadata necessary to create and manage a layer.
+
+:::note
+Please note that the **`ComputedLayer`** object is a lightweight representation of a layer, you need to expcitly visit its property based on your needs.
+For more information on ComputedLayer Types, please refer to [ComputedLayer Type](#computedlayer-type) section.
+:::
 
 #### Example
 
@@ -588,34 +582,16 @@ This represents the currently selected feature within a `reearth` project. It is
 reearth.layers.selectedFeature?: feature;
 ```
 
-#### Parameters
+##### `layer`
 
-##### `feature`
+**Type** `ComputedLayer`
 
-**Type**
+An object that includes all the data and metadata necessary to create and manage a layer.
 
-```ts
-feature?: ComputedFeature = {
-  type: "computedFeature";
-  id: string; // feature ID
-  geometry?: Geometry;
-  interval?: [start: Date, end?: Date];;
-  properties?: any;
-  // Map engine specific information.
-  metaData?: {
-    description?: string;
-  };
-  range?: DataRange;
-  // AppearanceTypes
-  marker?: MarkerAppearance;
-  polyline?: PolylineAppearance;
-  polygon?: PolygonAppearance;
-  model?: ModelAppearance;
-  "3dtiles"?: Cesium3DTilesAppearance;
-};
-```
-
-A feature object that includes all the data.
+:::note
+Please note that the **`ComputedLayer`** object is a lightweight representation of a layer, you need to expcitly visit its property based on your needs.
+For more information on ComputedLayer Types, please refer to [ComputedLayer Type](#computedlayer-type) section.
+:::
 
 #### Example
 
@@ -665,6 +641,14 @@ import TypeLazyLayer from "@code/plugin-api/layers/type-lazylayer?raw";
 
 <Code code={clearNoCheck(TypeLazyLayer)} lang="ts" />
 
+### ComputedLayer Type
+
+**TODO** Description of the ComputedLayer type.
+
+import TypeComputedLayer from "@code/plugin-api/layers/type-computedlayer?raw";
+
+<Code code={clearNoCheck(TypeComputedLayer)} lang="ts" />
+
 ### Layer Appearance Types
 
 **TODO** Description of the Layer Appearance types.
@@ -700,3 +684,11 @@ import TypeAppearance3dtiles from "@code/plugin-api/layers/type-appearance-3dtil
 import TypeFeature from "@code/plugin-api/layers/type-feature?raw";
 
 <Code code={clearNoCheck(TypeFeature)} lang="ts" />
+
+### ComputedFeature Type
+
+**TODO** Description of the Layer type.
+
+import TypeComputedFeature from "@code/plugin-api/layers/type-computedfeature?raw";
+
+<Code code={clearNoCheck(TypeComputedFeature)} lang="ts" />
