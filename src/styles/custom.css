@@ -1,3 +1,6 @@
+/* src/styles/custom.css */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@600&display=swap");
+
 /* Dark mode colors. */
 :root {
   --sl-color-accent-low: hsl(213, 92%, 15%);
@@ -45,4 +48,15 @@ h3::after {
   margin-top: 10px;
   width: 100%;
   border-bottom: 5px solid var(--h3-devider-color);
+}
+
+.site-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--sl-color-white);
+}
+
+:root[data-theme="light"] .site-title {
+  color: var(--sl-color-accent);
 }
