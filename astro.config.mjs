@@ -8,8 +8,8 @@ export default defineConfig({
   integrations: [
     starlight({
       logo: {
-        dark: "/src/assets/ReearthLogoWhite.svg",
-        light: "/src/assets/ReearthLogoColorful.svg",
+        dark: "/src/assets/ReearthLogo.svg",
+        light: "/src/assets/ReearthLogo.svg",
         alt: "Re:Earth Visualizer",
       },
       title: {
