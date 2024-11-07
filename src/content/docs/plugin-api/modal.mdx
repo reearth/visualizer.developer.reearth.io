@@ -1,0 +1,178 @@
+---
+title: modal
+description: API reference for `reearth.modal`.
+---
+
+The **`reearth.modal`** namespace defines the structure and capabilities of modal dialog components within `reearth`.
+
+import { Code } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { clearNoCheck } from "@code/utils";
+
+## Methods
+
+### show
+
+This method displays a modal window with customizable HTML content in **`reearth`**. Developers can define the modal’s size, background, and behavior when clicking outside the modal.
+
+#### Syntax
+
+```ts
+reearth.modal.show: (
+  html: string,
+  options?: Options
+) => void;
+```
+
+#### Parameters
+
+##### `html`
+
+**Type**: `string`
+
+A string of HTML content to be displayed in the modal.
+
+##### `options`
+
+**Optional**
+
+An object to customize the modal’s appearance and behavior:
+
+**Type**:
+
+```ts
+type Options = {
+  width?: number | string;
+  height?: number | string;
+  background?: string;
+  clickBgToClose?: boolean;
+};
+```
+
+- **`width?: number | string;`**: Specifies the width of the modal. If not specified, a default width may be used.
+- **`height?: number | string;`**: Specifies the height of the modal. The absence of this parameter may result in a default height.
+- **`background?: string;`**: The background color or CSS value for the modal (e.g., "#fff", "rgba(0, 0, 0, 0.5)").
+- **`clickBgToClose?: boolean;`**: Determines whether clicking on the modal background will close the modal. Set to true to enable this feature, otherwise, it defaults to false.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import ShowModalCode from "@code/plugin-api/modal/show-modal?raw";
+
+<Code code={clearNoCheck(ShowModalCode)} lang="ts" />
+
+### postMessage
+
+This enables communication between a modal window and other parts of **`reearth`** , or between components within the modal itself. It can be utilized for a variety of purposes, such as notifying reearth about user interactions within the modal or requesting data or actions from other components.
+
+#### Syntax
+
+```ts
+reearth.modal.postMessage: (message: any) => void;
+```
+
+#### Parameters
+
+##### `message`
+
+**Type**: `any`
+
+The message to be sent to the modal.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import PostModalCode from "@code/plugin-api/modal/post-modal?raw";
+
+<Code code={clearNoCheck(PostModalCode)} lang="ts" />
+
+### update
+
+This method modifies the appearance and behavior of the currently open modal in **`reearth`**. It allows developers to dynamically adjust properties like the modal’s size, background color, and click-to-close behavior.
+
+#### Syntax
+
+```ts
+reearth.modal.update: (options: Options) => void;
+```
+
+#### Parameters
+
+##### `options`
+
+An object that contains properties to update the modal’s appearance and behavior.
+
+**Type**:
+
+```ts
+type Options = {
+  width?: number | string;
+  height?: number | string;
+  background?: string;
+  clickBgToClose?: boolean;
+};
+```
+
+- **`width?: number | string;`**: Sets the modal’s new width.
+- **`height?: number | string;`**: Sets the modal’s new height.
+- **`background?: string;`**: Sets a new background for the modal.
+- **`clickBgToClose?: boolean;`**: Determines whether clicking outside the modal will close it. `true` allows the modal to close when the user clicks the background. `false` prevents the modal from closing on background clicks.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import ResizeModalCode from "@code/plugin-api/modal/resize-modal?raw";
+
+<Code code={clearNoCheck(ResizeModalCode)} lang="ts" />
+
+### close
+
+This method is used to close an open modal. Users can dismiss the modal based on task completion, logical conditions or other user actions. It does not require any parameters.
+
+#### Syntax
+
+```ts
+reearth.modal.close: () => void
+```
+
+#### Parameters
+
+None
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+```ts
+// Close the currently open modal
+reearth.modal.close();
+```
+
+## Events
+
+### close
+
+The close event is triggered when the modal in **`reearth`** is closed. This event allows you to perform actions in response to the modal’s closure, such as cleaning up resources, saving data, or updating the UI. You can configure the listener to execute once or multiple times, based on the provided options.
+
+#### Syntax
+
+```ts
+reearth.modal.on("close", () => void): void;
+```
+
+#### Example
+
+import ModalCloseEventCode from "@code/plugin-api/modal/event-close?raw";
+
+<Code code={clearNoCheck(ModalCloseEventCode)} lang="ts" />
