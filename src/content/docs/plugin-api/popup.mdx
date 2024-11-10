@@ -1,0 +1,255 @@
+---
+title: popup
+description: API reference for `reearth.popup`.
+---
+
+The **`reearth.popup`** namespace defines the structure and capabilities of popup dialog components within `reearth`.
+
+import { Code } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { clearNoCheck } from "@code/utils";
+
+## Methods
+
+### show
+
+The show method displays a popup with custom HTML content at a specified position in the **reearth** interface. The popup’s appearance, location, and offset can be configured, making it flexible for various UI needs.
+
+#### Syntax
+
+```ts
+reearth.popup.show: (
+  html: string,
+  options?: Options
+) => void;
+```
+
+#### Parameters
+
+##### `html`
+
+**Type**: `string`
+
+A string of HTML content to be displayed within the popup.
+
+##### `options`
+
+**Optional**
+
+An object with properties to customize the popup’s appearance and placement:
+
+**Type**:
+
+```ts
+type Options = {
+  width?: number | string;
+  height?: number | string;
+  position?: PopupPosition;
+  offset?: PopupOffset;
+};
+```
+
+- **`width?: number | string;`**: Specifies the width of the popup.
+- **`height?: number | string;`**: Specifies the height of the popup.
+- **`position?: PopupPosition;`**: Specifies the popup's position relative to a reference point or an element.
+
+:::note
+For more information on the options included in PopupPosition, please refer to [PopupPosition](#popupposition) section.
+:::
+
+- **`offset?: PopupOffset`**: Defines additional spacing or offset for the popup from its positioned location.
+
+:::note
+For more information on the options included in PopupOffset, please refer to [PopupOffset](#popupoffset) section.
+:::
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import ShowPopupCode from "@code/plugin-api/popup/show-popup?raw";
+
+<Code code={clearNoCheck(ShowPopupCode)} lang="ts" />
+
+### postMessage
+
+This enables sending messages between the popup window and other components within **`reearth`**. This function is useful for communication in scenarios where a popup needs to relay information back to the application, trigger actions in other components, or respond to user interactions within the popup content.
+
+#### Syntax
+
+```ts
+reearth.popup.postMessage: (message: any) => void;
+```
+
+#### Parameters
+
+##### `message`
+
+**Type**: `any`
+
+The message to be sent.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import PostPopupCode from "@code/plugin-api/popup/post-popup?raw";
+
+<Code code={clearNoCheck(PostPopupCode)} lang="ts" />
+
+### update
+
+This allows users to modify the appearance and position of an existing popup in **`reearth`**. Users can dynamically adjust properties such as the popup’s width, height, position, and offset without needing to recreate the popup.
+
+#### Syntax
+
+```ts
+reearth.popup.update: (options: Options) => void;
+```
+
+#### Parameters
+
+##### `options`
+
+An object that contains properties to update the popup’s size, position, and offset.
+
+**Type**:
+
+```ts
+type Options = {
+  width?: number | string;
+  height?: number | string;
+  position?: PopupPosition;
+  offset?: PopupOffset;
+};
+```
+
+- **`width?: number | string;`**: Sets the popup’s new width.
+- **`height?: number | string;`**: Sets the popup’s new height.
+- **`position?: PopupPosition;`**: Specifies the new popup's position relative to a reference point or an element.
+
+:::note
+For more information on the options included in PopupPosition, please refer to [PopupPosition](#popupposition) section.
+:::
+
+- **`offset?: PopupOffset;`**: Adjusts the spacing or offset of the popup from its positioned location.
+
+:::note
+For more information on the options included in PopupOffset, please refer to [PopupOffset](#popupoffset) section.
+:::
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import UpdatePopupCode from "@code/plugin-api/popup/update-popup?raw";
+
+<Code code={clearNoCheck(UpdatePopupCode)} lang="ts" />
+
+### close
+
+This method provides a simple way to programmatically close a currently active popup. Users can dismiss the popup based on task completion, logical conditions or other user actions.
+
+#### Syntax
+
+```ts
+reearth.popup.close: () => void
+```
+
+#### Parameters
+
+None
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+```ts
+// Close the currently open popup
+reearth.popup.close();
+```
+
+## Events
+
+### close
+
+The close event is triggered when the popup in **`reearth`** is closed. This event allows you to execute specific actions, such as cleaning up resources, updating the UI, or notifying other components when the popup is no longer visible.
+
+#### Syntax
+
+```ts
+reearth.popup.on("close", () => void): void;
+```
+
+#### Example
+
+import PopupCloseEventCode from "@code/plugin-api/popup/event-close?raw";
+
+<Code code={clearNoCheck(PopupCloseEventCode)} lang="ts" />
+
+## References
+
+### PopupPosition
+
+The PopupPosition type controls where the popup appears relative to the target element. It provides a range of options for positioning the popup above, below, or to the sides of the target, with additional options for alignment adjustments (start, center, or end).
+
+import PopupPosition from "@code/plugin-api/popup/type-popup-position?raw";
+
+<Code code={clearNoCheck(PopupPosition)} lang="ts" />
+
+**`top`**: Positions the popup directly above the target.
+
+**`top-start`**: Aligns the popup at the top left of the target.
+
+**`top-end`**: Aligns the popup above the target and positions it to the right side of the target.
+
+**`right`**: Aligns the popup directly to the right of the target.
+
+**`right-start`**: Aligns the popup to the right of the target and positions it at the top edge of the target.
+
+**`right-end`**: Aligns the popup to the bottom of the right side of the target.
+
+**`bottom`**: Positions the popup directly below the target.
+
+**`bottom-start`**: Aligns the popup below the target, positioned to the left.
+
+**`bottom-end`**: Aligns the popup below the target, positioned to the right.
+
+**`left`**: Positions the popup directly to the left of the target.
+
+**`left-start`**: Aligns the popup to the top of the left side of the target.
+
+**`left-end`**: Aligns the popup to the bottom of the left side of the target.
+
+### PopupOffset
+
+The PopupOffset type allows users to control the popup’s distance from the target. It provides two options: A number that adjusts the offset along the main axis, and an object for more detailed control over different axes, including main, cross, and alignment axes.
+
+import PopupOffset from "@code/plugin-api/popup/type-popup-offset?raw";
+
+<Code code={clearNoCheck(PopupOffset)} lang="ts" />
+
+#### Options
+
+###### Number
+
+- A single number shifts the popup along its main axis, either toward or away from the target.
+- Example: 10 shifts the popup 10 pixels along the main axis.
+
+###### Object
+
+An object providing fine control with the following properties:
+
+**`mainAxis?: number`**: Adjusts the popup’s distance from the target along the main axis. Positive values move the popup farther from the target, negative values bring it closer.
+
+**`crossAxis?: number`**: Adjusts the popup’s distance along the cross axis, perpendicular to the main axis.Positive values move the popup in one direction, negative values move it in the opposite direction, depending on the orientation.
+
+**`alignmentAxis?: number | null`**: Provides fine-tuned control over alignment along a secondary axis, useful for more complex placements. Setting alignmentAxis to null disables adjustments along this axis.
