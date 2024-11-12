@@ -32,6 +32,81 @@ Please note that the **`LazyLayer`** object is a lightweight representation of a
 For more information on LazyLayer Types, please refer to [LazyLayer Type](#lazylayer-type) section.
 :::
 
+### overridden
+
+This is an optional property that provides a layer in the `reearth` scene whose properties are overridden. This method allows users to confirm how the layer is overridden. The flexibility offered by this method is crucial for scenarios where layer properties need to be adjusted in response to user interactions, application state changes, or external data updates.
+
+#### Syntax
+
+```ts
+reearth.layers.overriden: OverriddenLayer[];
+```
+
+#### Return Value
+
+**Type** `Omit<Layer, "type" | "children">`
+
+A type that excludes `type` and `children` from the `Layer` type definition.
+
+#### Example
+
+import OverriddenLayerCode from "@code/plugin-api/layers/overridden-layer?raw";
+
+<Code code={clearNoCheck(OverriddenLayerCode)} lang="ts" />
+
+### selected
+
+This represents the currently selected layer within a `reearth` project. It is an optional property that holds a `ComputedLayer` object if a layer is selected, or it may be `undefined` if no layer is currently selected. This property provides an easy way to access details about the selected layer directly, facilitating operations or interactions that depend on the user's selection, such as querying specific layer data, modifying properties, or displaying additional information in UI components.
+
+#### Syntax
+
+```ts
+reearth.layers.selected?: computedLayer;
+```
+
+#### Return Value
+
+**Type** `ComputedLayer`
+
+A layer obtained after all processing is completed, containing both original and processed geographic data with applied & evaluated styles and states.
+
+:::note
+Please note that the **`ComputedLayer`** object is a lightweight representation of a layer, you need to expcitly visit its property based on your needs.
+For more information on ComputedLayer Types, please refer to [ComputedLayer Type](#computedlayer-type) section.
+:::
+
+#### Example
+
+import SelectedLayerCode from "@code/plugin-api/layers/selected-layer?raw";
+
+<Code code={clearNoCheck(SelectedLayerCode)} lang="ts" />
+
+### selectedFeature
+
+This represents the currently selected feature within a `reearth` project. It is an optional property that holds a `feature` object if a feature is selected, or it may be `undefined` if no feature is currently selected. This property provides an easy way to access details about the selected feature directly, facilitating operations or interactions that depend on the user's selection, such as querying specific feature data or displaying additional information in plugin extensions.
+
+#### Syntax
+
+```ts
+reearth.layers.selectedFeature?: computedFeature;
+```
+
+#### Return Value
+
+**Type** `ComputedFeature`
+
+A single geographic feature (point, line, polygon, etc.) with all its final evaluated properties and styles applied.
+
+:::note
+For more information on ComputedFeature Types, please refer to [ComputedFeature Type](#computedfeature-type) section.
+:::
+
+#### Example
+
+import SelectedFeatureLayerCode from "@code/plugin-api/layers/selectedfeature-layer?raw";
+
+<Code code={clearNoCheck(SelectedFeatureLayerCode)} lang="ts" />
+
 ## Methods
 
 ### add
@@ -64,13 +139,21 @@ The method returns the unique identifier `id` of the newly added layer if the op
 
 #### Example
 
+import AddMarker from "@code/plugin-api/layers/add-marker?raw";
+import AddPolyline from "@code/plugin-api/layers/add-polyline?raw";
+import AddPolygon from "@code/plugin-api/layers/add-polygon?raw";
 import Add3dModelCode from "@code/plugin-api/layers/add-3d-model?raw";
-import AddMarkerPolylinePolygonCode from "@code/plugin-api/layers/add-marker-polyline-polygon?raw";
 import Add3dtilesCode from "@code/plugin-api/layers/add-3dtiles?raw";
 
 <Tabs>
-  <TabItem label="Add Marker Polyline Polygon">
-    <Code code={clearNoCheck(AddMarkerPolylinePolygonCode)} lang="ts" />
+  <TabItem label="Add Marker">
+    <Code code={clearNoCheck(AddMarker)} lang="ts" />
+  </TabItem>
+  <TabItem label="Add Polyline">
+    <Code code={clearNoCheck(AddPolyline)} lang="ts" />
+  </TabItem>
+  <TabItem label="Add Polygon">
+    <Code code={clearNoCheck(AddPolygon)} lang="ts" />
   </TabItem>
   <TabItem label="Add 3D Model">
     <Code code={clearNoCheck(Add3dModelCode)} lang="ts" />
@@ -82,13 +165,13 @@ import Add3dtilesCode from "@code/plugin-api/layers/add-3dtiles?raw";
 
 ### find
 
-This method provides a way to search for a layer within the `reearth` scene based on a custom search function. This method is crucial for locating a specific layer that matches certain criteria, such as attributes, properties, or conditions defined dynamically. The method takes a callback function that evaluates each layer and returns `true` for a layer that meets the desired conditions, facilitating targeted operations or analyses on specific parts of the scene.
+This method enables efficient searching for layers within the Reearth scene by applying a custom search function. It is helpful for identifying specific layers that meet dynamically defined criteria, such as particular attributes, properties, or conditions. The method accepts a callback function that evaluates each layer, returning true for layers that satisfy the specified conditions. This approach allows for precise operations or analyses on targeted parts of the scene, enhancing flexibility and control in layer management.
 
 #### Syntax
 
 ```ts
 reearth.layers.find: (
-  fn: (layer: Layer, index: number, parents: Layer[]) => boolean,
+  fn: (layer: Layer, index: number) => boolean,
 ) => Layer | undefined
 ```
 
@@ -96,13 +179,12 @@ reearth.layers.find: (
 
 ##### `fn`
 
-**Type**: `(layer: Layer, index: number, parents: Layer[]) => boolean`
+**Type**: `(layer: Layer, index: number) => boolean`
 
 A callback function used to evaluate each layer within the scene. The function receives three arguments:
 
-- **`layer: Layer`**: An object that includes all the data and metadata necessary to create and manage a layer.
-- **`index: number`**: The index of the current layer within its level of the hierarchy.
-- **`parents: Layer[]`**: An array of parent layers, providing context about the layer's location within the hierarchy.
+- **`layer: Layer`**: An object that includes all the data of the layer.
+- **`index: number`**: The index of the current layer.
 
 #### Return Value
 
@@ -116,37 +198,408 @@ import FindLayerCode from "@code/plugin-api/layers/find-layer?raw";
 
 <Code code={clearNoCheck(FindLayerCode)} lang="ts" />
 
-## Events
+### findAll
 
-### select
-
-Select event is triggered when a layer is selected within the **`reearth`** scene. The event provides information about the selected layer, including its unique identifier `id`, allowing plugin developers to respond to user interactions or changes in the scene.
+This method performs a comprehensive search through all layers in a project to find and return an array of layers that match a specified condition. This method takes a callback function that is applied to each layer in the project.
 
 #### Syntax
 
 ```ts
-reearth.layers.on("select", (layerId: string | undefined, featureId: string | undefined) => void): void;
+reearth.layers.findAll: (layer: Layer, index: number) => boolean) => Layer[]
+```
+
+#### Parameters
+
+##### `layer`
+
+**Type** `Layer`
+
+An object that includes all the data and metadata necessary to create and manage a layer.
+
+##### `index`
+
+**Type** `number`
+
+The index of the current layer within its level of the hierarchy.
+
+#### Return Value
+
+**Type** `Layer[]`
+
+Returns an array of `Layer` objects that satisfy the conditions specified by the callback function. If no layers meet the criteria, it returns an empty array.
+
+#### Example
+
+import FindAllLayerCode from "@code/plugin-api/layers/findall-layer?raw";
+
+<Code code={clearNoCheck(FindAllLayerCode)} lang="ts" />
+
+### findById
+
+This method is designed to retrieve a specific layer object based on its unique identifier (ID). This method is essential for directly accessing a layer when its ID is known, allowing for efficient and precise operations such as editing properties, toggling visibility, or analyzing layer-specific data. It simplifies the process of interacting with individual layers by providing a direct path to them without the need to search or iterate through the entire layer hierarchy. This method takes a single string parameter, which is the ID of the layer you want to find.
+
+#### Syntax
+
+```ts
+reearth.layers.findById: (layerId: string) => Layer | undefined;
 ```
 
 #### Parameters
 
 ##### `layerId`
 
-**Type**: `string | undefined`
+**Type** `string`
 
-The unique identifier of the selected layer. If no layer is selected, the value is `undefined`.
+The unique identifier of the layer that is being searched for within the scene.
+
+#### Return Value
+
+**Type** `Layer | undefined`
+
+Returns the `Layer` object if a layer with the specified ID is found. If no layer matches the provided ID, it returns `undefined`.
+
+#### Example
+
+import FindByIdLayerCode from "@code/plugin-api/layers/findbyid-layer?raw";
+
+<Code code={clearNoCheck(FindByIdLayerCode)} lang="ts" />
+
+### findByIds
+
+This method allows for the retrieval of multiple layers from the `reearth` scene simultaneously based on an array of layer IDs. This method is particularly useful for applications that need to interact with or manipulate several specific layers at once, such as batch updating properties, applying effects, or managing group visibility. This method accepts a spread of string arguments, each representing the ID of a layer, and returns an array where each element corresponds to a `Layer` object or `undefined`.
+
+#### Syntax
+
+```ts
+reearth.layers.findByIds: (...layerIds: string[]) => (Layer | undefined)[];
+```
+
+#### Parameters
+
+##### `...layerIds`
+
+**Type** `...string[]`
+
+An array of layer ids, each representing the unique identifier of a layer to be retrieved. This allows for flexible input of one or multiple IDs.
+
+When use it we should spread the array as multiple arguments.
+
+#### Return Value
+
+**Type** `(Layer | undefined)[]`
+
+Returns an array containing `Layer` objects or `undefined` for each input ID, depending on whether the layer with that ID exists in the scene. Each position in the returned array corresponds directly to the position of the ID in the input list, maintaining order consistency. If a layer with a given ID does not exist, the method returns `undefined` at that position in the array.
+
+#### Example
+
+import FindByIdsLayerCode from "@code/plugin-api/layers/findbyids-layer?raw";
+
+<Code code={clearNoCheck(FindByIdsLayerCode)} lang="ts" />
+
+### findFeatureById
+
+This method provides a way to retrieve a feature associated with the feature ID. This function accepts the ID of a layer and the ID of a feature and returns a `Feature` objects that match the provided layer ID and Feature ID.
+
+#### Syntax
+
+```ts
+reearth.layers.findFeatureById: (layerId: string, featureId: string) => Feature | undefined;
+```
+
+#### Parameters
+
+##### `layerId`
+
+**Type** `string`
+
+The unique identifier of the layer that is being searched for within the scene.
 
 ##### `featureId`
 
-**Type**: `string | undefined`
+**Type** `string`
 
-The unique identifier of the selected feature within the layer. If no feature is selected, the value is `undefined`. Usually there will always be a feature selected when a layer is selected.
+The unique identifier of the feature in the layer
+
+#### Return Value
+
+**Type** `Feature | undefined`
+
+Returns a `Feature` object if a feature with the specified ID is found in the specified layer. If no feature matches the provided ID, it returns `undefined`.
+
+:::note
+For more information on Feature Types, please refer to [Feature Type](#feature-type) section.
+:::
+
+#### Example
+
+import FindFeatureByIdLayerCode from "@code/plugin-api/layers/findfeaturebyid-layer?raw";
+
+<Code code={clearNoCheck(FindFeatureByIdLayerCode)} lang="ts" />
+
+### findFeaturesByIds
+
+This is designed to retrieve all features that are labeled with one or more specified feature IDs. This function accepts one single layer ID and the IDs of features, and returns an array of `Feature` objects that match the provided layer ID and Feature ID.
+
+#### Syntax
+
+```ts
+reearth.layers.findFeaturesByIds: (layerId: string, featureId: string[]) => Feature[] | undefined;
+```
+
+#### Parameters
+
+##### `layerId`
+
+**Type** `string`
+
+The unique identifier of the layer that is being searched for within the scene.
+
+##### `featureId`
+
+**Type** `string[]`
+
+The unique identifier of features in the layer. This allows for flexible input of one or multiple IDs.
+
+#### Return Value
+
+**Type** `(Feature[] | underined)`
+
+Returns an array of `Feature` objects that have feature IDs found in the specified layer. If no features match the provided IDs, it returns `undefined`.
+
+#### Example
+
+import findFeaturesByIdsLayerCode from "@code/plugin-api/layers/findfeaturesbyids-layer?raw";
+
+<Code code={clearNoCheck(findFeaturesByIdsLayerCode)} lang="ts" />
+
+### hide
+
+This method is designed to hide one or more layers based on array of layer IDs provided. This function accepts a spread of string arguments, each representing the unique identifier (ID) of a layer. When invoked, this method sets the visibility of each specified layer to `false`, effectively hiding them from view in the project. This is particularly useful for managing the display of layers dynamically, allowing developers to control which elements are visible to the end user at any given time based on specific conditions or interactions.
+
+#### Syntax
+
+```ts
+reearth.layers.hide : (...layerIds: string[]) => void
+```
+
+#### Parameters
+
+##### `...layerIds`
+
+**Type** `...string[]`
+
+A spread of string parameters, where each string is the ID of a layer that needs to be hidden.
+
+#### Return Value
+
+**Type** `None (void)`
+
+The method does not require any input parameters and performs its operation without returning a value.
+
+#### Example
+
+import HideLayerCode from "@code/plugin-api/layers/hide-layer?raw";
+
+<Code code={clearNoCheck(HideLayerCode)} lang="ts" />
+
+### show
+
+This method is used to set the visibility of specified layers within the `reearth` scene to true. This function allows users to programmatically control which layers are visible to the user, making it a crucial tool for managing the display of various data sets, features, or graphical elements on the map or scene. It is particularly useful in scenarios where layers need to be dynamically shown or hidden based on user interactions, application states, or specific conditions.
+
+#### Syntax
+
+```ts
+reearth.layers.show: (...layerId: string[]) => void;
+```
+
+#### Parameters
+
+##### `...layerIds`
+
+**Type** `...string[]`
+
+A spread of string parameters, where each string is the ID of a layer that needs to be made visible.
+
+#### Return Value
+
+**Type** `None (void)`
+
+The method does not require any input parameters and performs its operation without returning a value.
+
+#### Example
+
+import ShowLayerCode from "@code/plugin-api/layers/show-layer?raw";
+
+<Code code={clearNoCheck(ShowLayerCode)} lang="ts" />
+
+### delete
+
+This method is used to delete specified layers within the `reearth` scene. This function removes only temporary layers added by the Plugin API. The method takes the ID of the layer as its primary argument.
+
+#### Syntax
+
+```ts
+reearth.layers.delete: (...layerId: string[]) => void;
+```
+
+#### Parameters
+
+##### `...layerIds`
+
+**Type** `...string[]`
+
+A spread of string parameters, where each string is the ID of a layer that needs to be made visible.
+
+#### Return Value
+
+**Type** `None (void)`
+
+The method does not require any input parameters and performs its operation without returning a value.
+
+#### Example
+
+import DeleteLayerCode from "@code/plugin-api/layers/delete-layer?raw";
+
+<Code code={clearNoCheck(DeleteLayerCode)} lang="ts" />
+
+### override
+
+This method dynamically overrides properties for a designated layer identified by its ID. This function can modify the layer properties. The method allows for modifying layer properties on-the-fly, such as visibility, color, or any custom attributes that might have been defined in the layer's structure. This dynamic manipulation is essential for responsive applications where layer attributes need to change in response to user interactions, data updates, or other application logic, without permanently altering the original layer configuration. This function takes two parameters: the ID of the layer and the partial layer object.
+
+#### Syntax
+
+```ts
+reearth.layers.override: (layerId: string, properties: Partial<Layer>) => void;
+```
+
+#### Parameters
+
+##### `layerId`
+
+**Type** `string`
+
+The unique identifier of the layer whose property is to be overridden.
+
+##### `properties`
+
+**Type** `Partial<Layer>`
+
+It represents an object that can optionally include any properties from the Layer type.
+
+#### Return Value
+
+**Type** `None (void)`
+
+The method does not require any input parameters and performs its operation without returning a value.
+
+#### Example
+
+import OverrideLayerCode from "@code/plugin-api/layers/override-layer?raw";
+
+<Code code={clearNoCheck(OverrideLayerCode)} lang="ts" />
+
+### select
+
+This method is used to programmatically select a specific layer within the `reearth` scene.
+
+#### Syntax
+
+```ts
+reearth.layers.select: (layerId?: string) => void;
+```
+
+#### Parameters
+
+##### `layerId`
+
+**Type** `string`
+
+The unique identifier of the layer to be selected.
+
+#### Return Value
+
+**Type** `None (void)`
+
+The method does not require any input parameters and performs its operation without returning a value.
+
+#### Example
+
+import SelectLayerCode from "@code/plugin-api/layers/select-layer?raw";
+
+<Code code={clearNoCheck(SelectLayerCode)} lang="ts" />
+
+### selectFeature
+
+This method is used to programmatically select a specific feature within the `reearth` scene. This function is essential for highlighting or focusing on a particular feature, potentially triggering additional UI elements or actions, such as displaying an infobox or other contextual information.
+
+#### Syntax
+
+```ts
+reearth.layers.selectFeature: (layerId?: string, featureId?: string) => void;
+```
+
+#### Parameters
+
+##### `layerId`
+
+**Type** `string`
+
+The unique identifier of the layer to be selected.
+
+##### `featureId`
+
+**Type** `string`
+
+The unique identifier of the feature in the layer
+
+#### Return Value
+
+**Type** `None (void)`
+
+The method does not require any input parameters and performs its operation without returning a value.
+
+#### Example
+
+import selectFeatureLayerCode from "@code/plugin-api/layers/selectfeature-layer?raw";
+
+<Code code={clearNoCheck(selectFeatureLayerCode)} lang="ts" />
+
+### selectFeatures
+
+This method is used to programmatically select specific features within the `reearth` scene. This function is essential for highlighting or focusing on a particular feature, potentially triggering additional UI elements or actions, such as displaying an infobox or other contextual information.
+
+#### Syntax
+
+```ts
+reearth.layers.selectFeatures: (targets: { layerId?: string; featureId?: string[] }[]) => void;
+```
+
+#### Parameters
+
+##### `targets`
+
+**Type** `{ layerId?: string; featureId?: string[] }[]`
+
+- **`layerId: string`**: The unique identifier of the layer to be selected.
+- **`featureId: string[]`**: An array of string parameters, where each string is the ID of a feature
+
+#### Return Value
+
+**Type** `None (void)`
+
+The method does not require any input parameters and performs its operation without returning a value.
+
+#### Example
+
+import selectFeaturesLayerCode from "@code/plugin-api/layers/selectfeatures-layer?raw";
+
+<Code code={clearNoCheck(selectFeaturesLayerCode)} lang="ts" />
 
 ## References
 
 ### Layer Type
 
-**TODO** Description of the Layer type.
+An object that includes all the data and metadata necessary to create and manage a layer.
 
 import TypeLayer from "@code/plugin-api/layers/type-layer?raw";
 
@@ -154,15 +607,23 @@ import TypeLayer from "@code/plugin-api/layers/type-layer?raw";
 
 ### LazyLayer Type
 
-**TODO** Description of the LazyLayer type.
+A lightweight representation of a layer.
 
 import TypeLazyLayer from "@code/plugin-api/layers/type-lazylayer?raw";
 
 <Code code={clearNoCheck(TypeLazyLayer)} lang="ts" />
 
+### ComputedLayer Type
+
+A layer obtained after all processing is completed, containing both original and processed geographic data with applied & evaluated styles and states.
+
+import TypeComputedLayer from "@code/plugin-api/layers/type-computedlayer?raw";
+
+<Code code={clearNoCheck(TypeComputedLayer)} lang="ts" />
+
 ### Layer Appearance Types
 
-**TODO** Description of the Layer Appearance types.
+Properties for each layer type.
 
 import TypeAppearanceMarker from "@code/plugin-api/layers/type-appearance-marker?raw";
 import TypeAppearancePolyline from "@code/plugin-api/layers/type-appearance-polyline?raw";
@@ -187,3 +648,19 @@ import TypeAppearance3dtiles from "@code/plugin-api/layers/type-appearance-3dtil
     <Code code={clearNoCheck(TypeAppearance3dtiles)} lang="ts" />
   </TabItem>
 </Tabs>
+
+### Feature Type
+
+An object that includes all the data and metadata necessary to create and manage a feature.
+
+import TypeFeature from "@code/plugin-api/layers/type-feature?raw";
+
+<Code code={clearNoCheck(TypeFeature)} lang="ts" />
+
+### ComputedFeature Type
+
+A single geographic feature (point, line, polygon, etc.) with all its final evaluated properties and styles applied.
+
+import TypeComputedFeature from "@code/plugin-api/layers/type-computedfeature?raw";
+
+<Code code={clearNoCheck(TypeComputedFeature)} lang="ts" />
