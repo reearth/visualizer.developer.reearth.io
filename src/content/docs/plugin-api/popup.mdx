@@ -13,7 +13,7 @@ import { clearNoCheck } from "@code/utils";
 
 ### show
 
-The show method displays a popup with custom HTML content at a specified position in the **reearth** interface. The popup’s appearance, location, and offset can be configured, making it flexible for various UI needs.
+The show method displays a popup with custom HTML content at a specified position relative to the extension widget or block. The popup's appearance, location, and offset can be configured, making it flexible for various UI needs.
 
 #### Syntax
 
@@ -36,7 +36,7 @@ A string of HTML content to be displayed within the popup.
 
 **Optional**
 
-An object with properties to customize the popup’s appearance and placement:
+An object with properties to customize the popup's appearance and placement:
 
 **Type**:
 
@@ -75,7 +75,7 @@ import ShowPopupCode from "@code/plugin-api/popup/show-popup?raw";
 
 ### postMessage
 
-This enables sending messages between the popup window and other components within **`reearth`**. This function is useful for communication in scenarios where a popup needs to relay information back to the application, trigger actions in other components, or respond to user interactions within the popup content.
+This enables sending messages to the popup iframe. This function is useful for communication in scenarios where a popup needs to get information from the extension script.
 
 #### Syntax
 
@@ -103,7 +103,7 @@ import PostPopupCode from "@code/plugin-api/popup/post-popup?raw";
 
 ### update
 
-This allows users to modify the appearance and position of an existing popup in **`reearth`**. Users can dynamically adjust properties such as the popup’s width, height, position, and offset without needing to recreate the popup.
+This allows users to modify the appearance and position of the popup iframe. Users can dynamically adjust properties such as the popup's width, height, position, and offset without needing to recreate the popup.
 
 #### Syntax
 
@@ -115,7 +115,7 @@ reearth.popup.update: (options: Options) => void;
 
 ##### `options`
 
-An object that contains properties to update the popup’s size, position, and offset.
+An object that contains properties to update the popup's size, position, and offset.
 
 **Type**:
 
@@ -128,8 +128,8 @@ type Options = {
 };
 ```
 
-- **`width?: number | string;`**: Sets the popup’s new width.
-- **`height?: number | string;`**: Sets the popup’s new height.
+- **`width?: number | string;`**: Sets the popup's new width.
+- **`height?: number | string;`**: Sets the popup's new height.
 - **`position?: PopupPosition;`**: Specifies the new popup's position relative to a reference point or an element.
 
 :::note
@@ -199,7 +199,7 @@ import PopupCloseEventCode from "@code/plugin-api/popup/event-close?raw";
 
 ### PopupPosition
 
-The PopupPosition type controls where the popup appears relative to the target element. It provides a range of options for positioning the popup above, below, or to the sides of the target, with additional options for alignment adjustments (start, center, or end).
+The `PopupPosition` type controls where the popup appears relative to the target element. It provides a range of options for positioning the popup above, below, or to the sides of the extension widget or block, with additional options for alignment adjustments (start, center, or end).
 
 import PopupPosition from "@code/plugin-api/popup/type-popup-position?raw";
 
@@ -231,7 +231,7 @@ import PopupPosition from "@code/plugin-api/popup/type-popup-position?raw";
 
 ### PopupOffset
 
-The PopupOffset type allows users to control the popup’s distance from the target. It provides two options: A number that adjusts the offset along the main axis, and an object for more detailed control over different axes, including main, cross, and alignment axes.
+The `PopupOffset` type allows users to control the popup's distance from the extension widget or block. It provides two options: A number that adjusts the offset along the main axis, and an object for more detailed control over different axes, including main, cross, and alignment axes.
 
 import PopupOffset from "@code/plugin-api/popup/type-popup-offset?raw";
 
@@ -248,8 +248,8 @@ import PopupOffset from "@code/plugin-api/popup/type-popup-offset?raw";
 
 An object providing fine control with the following properties:
 
-**`mainAxis?: number`**: Adjusts the popup’s distance from the target along the main axis. Positive values move the popup farther from the target, negative values bring it closer.
+**`mainAxis?: number`**: Adjusts the popup's distance from the target along the main axis. Positive values move the popup farther from the target, negative values bring it closer.
 
-**`crossAxis?: number`**: Adjusts the popup’s distance along the cross axis, perpendicular to the main axis.Positive values move the popup in one direction, negative values move it in the opposite direction, depending on the orientation.
+**`crossAxis?: number`**: Adjusts the popup's distance along the cross axis, perpendicular to the main axis.Positive values move the popup in one direction, negative values move it in the opposite direction, depending on the orientation.
 
-**`alignmentAxis?: number | null`**: Provides fine-tuned control over alignment along a secondary axis, useful for more complex placements. Setting alignmentAxis to null disables adjustments along this axis.
+**`alignmentAxis?: number | null`**: The same axis as `crossAxis` but applies only to aligned placements and inverts the `end` alignment. When set to a number, it overrides the `crossAxis` value. A positive number will move the floating element in the direction of the opposite edge to the one that is aligned, while a negative number the reverse.
