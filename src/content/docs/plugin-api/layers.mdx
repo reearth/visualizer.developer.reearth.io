@@ -42,37 +42,33 @@ This is an optional property that provides a layer in the `reearth` scene whose 
 reearth.layers.overriden: OverriddenLayer[];
 ```
 
-#### Parameters
-
-##### `OverriddenLayer`
+#### Return Value
 
 **Type** `Omit<Layer, "type" | "children">`
 
-A type that excludes 'type' and 'children' from the layer type definition
+A type that excludes 'type' and 'children' from the `Layer` type definition.
 
 #### Example
 
-import OverridenLayerCode from "@code/plugin-api/layers/overriden-layer?raw";
+import OverriddenLayerCode from "@code/plugin-api/layers/overridden-layer?raw";
 
-<Code code={clearNoCheck(OverridenLayerCode)} lang="ts" />
+<Code code={clearNoCheck(OverriddenLayerCode)} lang="ts" />
 
 ### selected
 
-This represents the currently selected layer within a `reearth` project. It is an optional property that holds a `Layer` object if a layer is selected, or it may be undefined if no layer is currently selected. This property provides an easy way to access details about the selected layer directly, facilitating operations or interactions that depend on the user's selection, such as querying specific layer data, modifying properties, or displaying additional information in UI components.
+This represents the currently selected layer within a `reearth` project. It is an optional property that holds a `Layer` object if a layer is selected, or it may be `undefined` if no layer is currently selected. This property provides an easy way to access details about the selected layer directly, facilitating operations or interactions that depend on the user's selection, such as querying specific layer data, modifying properties, or displaying additional information in UI components.
 
 #### Syntax
 
 ```ts
-reearth.layers.selected?: Layer;
+reearth.layers.selected?: computedLayer;
 ```
 
-#### Parameters
-
-##### `layer`
+#### Return Value
 
 **Type** `ComputedLayer`
 
-An object that includes all the data and metadata necessary to create and manage a layer.
+A layer obtained after all processing is completed, containing both original and processed geographic data with applied & evaluated styles and states.
 
 :::note
 Please note that the **`ComputedLayer`** object is a lightweight representation of a layer, you need to expcitly visit its property based on your needs.
@@ -87,19 +83,19 @@ import SelectedLayerCode from "@code/plugin-api/layers/selected-layer?raw";
 
 ### selectedFeature
 
-This represents the currently selected feature within a `reearth` project. It is an optional property that holds a `feature` object if a feature is selected, or it may be undefined if no feature is currently selected. This property provides an easy way to access details about the selected feature directly, facilitating operations or interactions that depend on the user's selection, such as querying specific feature data, modifying properties, or displaying additional information in UI components.
+This represents the currently selected feature within a `reearth` project. It is an optional property that holds a `feature` object if a feature is selected, or it may be `undefined` if no feature is currently selected. This property provides an easy way to access details about the selected feature directly, facilitating operations or interactions that depend on the user's selection, such as querying specific feature data or displaying additional information in plugin extensions.
 
 #### Syntax
 
 ```ts
-reearth.layers.selectedFeature?: feature;
+reearth.layers.selectedFeature?: computedFeature;
 ```
 
-##### `layer`
+#### Return Value
 
 **Type** `ComputedFeature`
 
-An object that includes all the data and metadata necessary to create and manage a layer.
+A single geographic feature (point, line, polygon, etc.) with all its final evaluated properties and styles applied.
 
 :::note
 For more information on ComputedFeature Types, please refer to [ComputedFeature Type](#computedfeature-type) section.
@@ -143,13 +139,21 @@ The method returns the unique identifier `id` of the newly added layer if the op
 
 #### Example
 
+import AddMarker from "@code/plugin-api/layers/add-marker?raw";
+import AddPolyline from "@code/plugin-api/layers/add-polyline?raw";
+import AddPolygon from "@code/plugin-api/layers/add-polygon?raw";
 import Add3dModelCode from "@code/plugin-api/layers/add-3d-model?raw";
-import AddMarkerPolylinePolygonCode from "@code/plugin-api/layers/add-marker-polyline-polygon?raw";
 import Add3dtilesCode from "@code/plugin-api/layers/add-3dtiles?raw";
 
 <Tabs>
-  <TabItem label="Add Marker Polyline Polygon">
-    <Code code={clearNoCheck(AddMarkerPolylinePolygonCode)} lang="ts" />
+  <TabItem label="Add Marker">
+    <Code code={clearNoCheck(AddMarker)} lang="ts" />
+  </TabItem>
+  <TabItem label="Add Polyline">
+    <Code code={clearNoCheck(AddPolyline)} lang="ts" />
+  </TabItem>
+  <TabItem label="Add Polygon">
+    <Code code={clearNoCheck(AddPolygon)} lang="ts" />
   </TabItem>
   <TabItem label="Add 3D Model">
     <Code code={clearNoCheck(Add3dModelCode)} lang="ts" />
@@ -167,7 +171,7 @@ This method provides a way to search for a layer within the `reearth` scene base
 
 ```ts
 reearth.layers.find: (
-  fn: (layer: Layer, index: number, parents: Layer[]) => boolean,
+  fn: (layer: Layer, index: number) => boolean,
 ) => Layer | undefined
 ```
 
@@ -175,13 +179,12 @@ reearth.layers.find: (
 
 ##### `fn`
 
-**Type**: `(layer: Layer, index: number, parents: Layer[]) => boolean`
+**Type**: `(layer: Layer, index: number) => boolean`
 
 A callback function used to evaluate each layer within the scene. The function receives three arguments:
 
 - **`layer: Layer`**: An object that includes all the data and metadata necessary to create and manage a layer.
 - **`index: number`**: The index of the current layer within its level of the hierarchy.
-- **`parents: Layer[]`**: An array of parent layers, providing context about the layer's location within the hierarchy.
 
 #### Return Value
 
