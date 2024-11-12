@@ -11,6 +11,7 @@ const chiyodaLayerId = reearth.layers.add({
     selectedFeatureColor: "red",
   },
 });
+
 const chuoLayerId = reearth.layers.add({
   type: "simple",
   data: {
@@ -22,8 +23,21 @@ const chuoLayerId = reearth.layers.add({
   },
 });
 
+// NOTE: After 3dtiles been loaded, we can use this to select features
 // Select features by layer IDs and feature IDs
 reearth.layers.selectFeatures([
-  { layerId: chiyodaLayerId, featureId: ["f9f2275bcf13a9674ba81473bc129ed6", "b9a4fd90ca6112eccd43bfffd4aeb2fe"] },
-  { layerId: chuoLayerId, featureId: ["acf77feceabce515700a47021bfe63dc", "4dcf088a80f1eaaf73b1f356f7446298"] },
+  {
+    layerId: chiyodaLayerId,
+    featureId: [
+      "f9f2275bcf13a9674ba81473bc129ed6",
+      "b9a4fd90ca6112eccd43bfffd4aeb2fe",
+    ],
+  },
+  {
+    layerId: chuoLayerId,
+    featureId: [
+      "acf77feceabce515700a47021bfe63dc",
+      "4dcf088a80f1eaaf73b1f356f7446298",
+    ],
+  },
 ]);

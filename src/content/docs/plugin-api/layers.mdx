@@ -46,7 +46,7 @@ reearth.layers.overriden: OverriddenLayer[];
 
 **Type** `Omit<Layer, "type" | "children">`
 
-A type that excludes 'type' and 'children' from the `Layer` type definition.
+A type that excludes `type` and `children` from the `Layer` type definition.
 
 #### Example
 
@@ -56,7 +56,7 @@ import OverriddenLayerCode from "@code/plugin-api/layers/overridden-layer?raw";
 
 ### selected
 
-This represents the currently selected layer within a `reearth` project. It is an optional property that holds a `Layer` object if a layer is selected, or it may be `undefined` if no layer is currently selected. This property provides an easy way to access details about the selected layer directly, facilitating operations or interactions that depend on the user's selection, such as querying specific layer data, modifying properties, or displaying additional information in UI components.
+This represents the currently selected layer within a `reearth` project. It is an optional property that holds a `ComputedLayer` object if a layer is selected, or it may be `undefined` if no layer is currently selected. This property provides an easy way to access details about the selected layer directly, facilitating operations or interactions that depend on the user's selection, such as querying specific layer data, modifying properties, or displaying additional information in UI components.
 
 #### Syntax
 
@@ -165,7 +165,7 @@ import Add3dtilesCode from "@code/plugin-api/layers/add-3dtiles?raw";
 
 ### find
 
-This method provides a way to search for a layer within the `reearth` scene based on a custom search function. This method is crucial for locating a specific layer that matches certain criteria, such as attributes, properties, or conditions defined dynamically. The method takes a callback function that evaluates each layer and returns `true` for a layer that meets the desired conditions, facilitating targeted operations or analyses on specific parts of the scene.
+This method enables efficient searching for layers within the Reearth scene by applying a custom search function. It is helpful for identifying specific layers that meet dynamically defined criteria, such as particular attributes, properties, or conditions. The method accepts a callback function that evaluates each layer, returning true for layers that satisfy the specified conditions. This approach allows for precise operations or analyses on targeted parts of the scene, enhancing flexibility and control in layer management.
 
 #### Syntax
 
@@ -183,8 +183,8 @@ reearth.layers.find: (
 
 A callback function used to evaluate each layer within the scene. The function receives three arguments:
 
-- **`layer: Layer`**: An object that includes all the data and metadata necessary to create and manage a layer.
-- **`index: number`**: The index of the current layer within its level of the hierarchy.
+- **`layer: Layer`**: An object that includes all the data of the layer.
+- **`index: number`**: The index of the current layer.
 
 #### Return Value
 
@@ -205,7 +205,7 @@ This method performs a comprehensive search through all layers in a project to f
 #### Syntax
 
 ```ts
-reearth.layers.findAll: (layer: Layer, index: number, parents: Layer>[]) => boolean) => Layer[]
+reearth.layers.findAll: (layer: Layer, index: number) => boolean) => Layer[]
 ```
 
 #### Parameters
@@ -221,12 +221,6 @@ An object that includes all the data and metadata necessary to create and manage
 **Type** `number`
 
 The index of the current layer within its level of the hierarchy.
-
-##### `parents`
-
-**Type** `Layer[]`
-
-An array of parent layers, providing context about the layer's location within the hierarchy.
 
 #### Return Value
 
@@ -247,7 +241,7 @@ This method is designed to retrieve a specific layer object based on its unique 
 #### Syntax
 
 ```ts
-reearth.layers.findById: (id: string) => Layer | undefined;
+reearth.layers.findById: (layerId: string) => Layer | undefined;
 ```
 
 #### Parameters
@@ -277,16 +271,18 @@ This method allows for the retrieval of multiple layers from the `reearth` scene
 #### Syntax
 
 ```ts
-reearth.layers.findByIds: (...layerId: string[]) => (Layer | undefined)[];
+reearth.layers.findByIds: (...layerIds: string[]) => (Layer | undefined)[];
 ```
 
 #### Parameters
 
-##### `...layerId`
+##### `...layerIds`
 
-**Type** `string[]`
+**Type** `...string[]`
 
-A spread of string arguments, each representing the unique identifier of a layer to be retrieved. This allows for flexible input of one or multiple IDs.
+An array of layer ids, each representing the unique identifier of a layer to be retrieved. This allows for flexible input of one or multiple IDs.
+
+When use it we should spread the array as multiple arguments.
 
 #### Return Value
 
@@ -302,7 +298,7 @@ import FindByIdsLayerCode from "@code/plugin-api/layers/findbyids-layer?raw";
 
 ### findFeatureById
 
-This method provides a way to retrieve a feature associated with the feature ID. This function accepts a spread of string arguments, each representing the ID of a layer and the ID of a feature and returns a `Feature` objects that match the provided layer ID and Feature ID.
+This method provides a way to retrieve a feature associated with the feature ID. This function accepts the ID of a layer and the ID of a feature and returns a `Feature` objects that match the provided layer ID and Feature ID.
 
 #### Syntax
 
@@ -342,7 +338,7 @@ import FindFeatureByIdLayerCode from "@code/plugin-api/layers/findfeaturebyid-la
 
 ### findFeaturesByIds
 
-This is designed to retrieve all features that are labeled with one or more specified feature IDs. This function accepts a spread of string arguments, each representing the ID of a layer and the ID of features, and returns an array of `Feature` objects that match the provided layer ID and Feature ID.
+This is designed to retrieve all features that are labeled with one or more specified feature IDs. This function accepts one single layer ID and the IDs of features, and returns an array of `Feature` objects that match the provided layer ID and Feature ID.
 
 #### Syntax
 
@@ -378,7 +374,7 @@ import findFeaturesByIdsLayerCode from "@code/plugin-api/layers/findfeaturesbyid
 
 ### hide
 
-This method is designed to hide a layer or group of layers based on array of layer IDs provided. This function accepts a spread of string arguments, each representing the unique identifier (ID) of a layer. When invoked, this method sets the visibility of each specified layer to `false`, effectively hiding them from view in the project. This is particularly useful for managing the display of layers dynamically, allowing developers to control which elements are visible to the end user at any given time based on specific conditions or interactions.
+This method is designed to hide one or more layers based on array of layer IDs provided. This function accepts a spread of string arguments, each representing the unique identifier (ID) of a layer. When invoked, this method sets the visibility of each specified layer to `false`, effectively hiding them from view in the project. This is particularly useful for managing the display of layers dynamically, allowing developers to control which elements are visible to the end user at any given time based on specific conditions or interactions.
 
 #### Syntax
 
@@ -390,7 +386,7 @@ reearth.layers.hide : (...layerIds: string[]) => void
 
 ##### `...layerIds`
 
-**Type** `string[]`
+**Type** `...string[]`
 
 A spread of string parameters, where each string is the ID of a layer that needs to be hidden.
 
@@ -420,7 +416,7 @@ reearth.layers.show: (...layerId: string[]) => void;
 
 ##### `...layerIds`
 
-**Type** `string[]`
+**Type** `...string[]`
 
 A spread of string parameters, where each string is the ID of a layer that needs to be made visible.
 
@@ -438,7 +434,7 @@ import ShowLayerCode from "@code/plugin-api/layers/show-layer?raw";
 
 ### delete
 
-This method is used to delete specified layers within the `reearth` scene. This function removes only temporary layers added by the Plugin API. This function allows users to programmatically control which layers are deleted, making it a crucial for managing the layers. The method takes the ID of the layer as its primary argument.
+This method is used to delete specified layers within the `reearth` scene. This function removes only temporary layers added by the Plugin API. The method takes the ID of the layer as its primary argument.
 
 #### Syntax
 
@@ -450,7 +446,7 @@ reearth.layers.delete: (...layerId: string[]) => void;
 
 ##### `...layerIds`
 
-**Type** `string[]`
+**Type** `...string[]`
 
 A spread of string parameters, where each string is the ID of a layer that needs to be made visible.
 
@@ -468,12 +464,12 @@ import DeleteLayerCode from "@code/plugin-api/layers/delete-layer?raw";
 
 ### override
 
-This method dynamically overrides or sets a specific property for a designated layer identified by its ID. This function can modify the layer properties. The method allows for modifying layer properties on-the-fly, such as visibility, color, or any custom attributes that might have been defined in the layer's structure. This dynamic manipulation is essential for responsive applications where layer attributes need to change in response to user interactions, data updates, or other application logic, without permanently altering the original layer configuration. This function takes two parameters: the ID of the layer and the partial layer object.
+This method dynamically overrides properties for a designated layer identified by its ID. This function can modify the layer properties. The method allows for modifying layer properties on-the-fly, such as visibility, color, or any custom attributes that might have been defined in the layer's structure. This dynamic manipulation is essential for responsive applications where layer attributes need to change in response to user interactions, data updates, or other application logic, without permanently altering the original layer configuration. This function takes two parameters: the ID of the layer and the partial layer object.
 
 #### Syntax
 
 ```ts
-reearth.layers.override: (layerId: string, layer: Partial<Layer> & { property?: unknown } ) => void;
+reearth.layers.override: (layerId: string, properties: Partial<Layer>) => void;
 ```
 
 #### Parameters
@@ -484,11 +480,11 @@ reearth.layers.override: (layerId: string, layer: Partial<Layer> & { property?: 
 
 The unique identifier of the layer whose property is to be overridden.
 
-##### `layer`
+##### `properties`
 
-**Type** `Partial<Layer> & { property?: unknown }`
+**Type** `Partial<Layer>`
 
-It represents an object that can optionally include any properties from the Layer type, and may also have an optional property field of any type.
+It represents an object that can optionally include any properties from the Layer type.
 
 #### Return Value
 
@@ -504,7 +500,7 @@ import OverrideLayerCode from "@code/plugin-api/layers/override-layer?raw";
 
 ### select
 
-This method is used to programmatically select a specific layer within the `reearth` scene. This function is essential for highlighting or focusing on a particular layer, potentially triggering additional UI elements or actions, such as displaying an infobox or other contextual information.
+This method is used to programmatically select a specific layer within the `reearth` scene.
 
 #### Syntax
 
@@ -575,14 +571,14 @@ This method is used to programmatically select specific features within the `ree
 #### Syntax
 
 ```ts
-reearth.layers.selectFeatures: (layers: { layerId?: string; featureId?: string[] }[]) => void;
+reearth.layers.selectFeatures: (targets: { layerId?: string; featureId?: string[] }[]) => void;
 ```
 
 #### Parameters
 
-##### `layers`
+##### `targets`
 
-**Type** `layers[] { layerId?: string; featureId?: string[] }`
+**Type** `{ layerId?: string; featureId?: string[] }[]`
 
 - **`layerId: string`**: The unique identifier of the layer to be selected.
 - **`featureId: string[]`**: An array of string parameters, where each string is the ID of a feature
@@ -619,7 +615,7 @@ import TypeLazyLayer from "@code/plugin-api/layers/type-lazylayer?raw";
 
 ### ComputedLayer Type
 
-A lightweight representation of a layer.
+A layer obtained after all processing is completed, containing both original and processed geographic data with applied & evaluated styles and states.
 
 import TypeComputedLayer from "@code/plugin-api/layers/type-computedlayer?raw";
 
@@ -663,7 +659,7 @@ import TypeFeature from "@code/plugin-api/layers/type-feature?raw";
 
 ### ComputedFeature Type
 
-An Object describing the type of layer property.
+A single geographic feature (point, line, polygon, etc.) with all its final evaluated properties and styles applied.
 
 import TypeComputedFeature from "@code/plugin-api/layers/type-computedfeature?raw";
 

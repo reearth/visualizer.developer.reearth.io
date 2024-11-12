@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 //1. Define a search function to find the first visible layer
-const searchFunction = (layer, index, parents) => {
+const searchFunction = (layer, index) => {
   return layer.isVisible === true;
 };
 
