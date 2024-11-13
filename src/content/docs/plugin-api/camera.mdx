@@ -1,0 +1,196 @@
+---
+title: camera
+description: API reference for `reearth.camera`.
+---
+
+The **`reearth.camera`** namespace provides a comprehensive set of functionalities for managing and interacting with the camera within the `reearth` environment.
+
+import { Code } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { clearNoCheck } from "@code/utils";
+
+## Properties
+
+### position
+
+This property provides the current position and orientation of the camera within reearth. It gives a comprehensive information about the camera’s geographical location, altitude, and angular orientation. This information is important for understanding or logging the camera's viewpoint.
+
+#### Syntax
+
+```ts
+reearth.camera.position: CameraPosition | undefined;
+```
+
+#### Return Value
+
+**Type** `CameraPosition`
+
+An object with detailed position and orientation data if the camera position is defined.
+
+:::note
+For more information on CameraPosition Types, please refer to [CameraPosition](#cameraposition) section.
+:::
+
+**Type** `undefined`
+
+Indicates that the camera position is not currently available.
+
+#### Example
+
+import CameraPositionCode from "@code/plugin-api/camera/camera-position?raw";
+
+<Code code={clearNoCheck(CameraPositionCode)} lang="ts" />
+
+### fov
+
+This represents the camera’s field of view (FOV) in `reearth`, and defines the extent of the observable world seen at any given moment. This parameter is crucial for adjusting how broad or narrow the camera's perspective is.
+
+#### Syntax
+
+```ts
+reearth.camera.fov: number | undefined
+```
+
+#### Return Value
+
+**Type** `number`
+
+A numeric value representing the field of view of the camera in radians. The field of view can significantly affect how content is perceived in a 3D space, with higher values providing a wider perspective, and lower values providing a more focused, zoomed-in view.
+
+**Type** `undefined`
+
+If the field of view is undefined, it indicates that the camera’s FOV is either not set or unavailable under current conditions.
+
+#### Example
+
+import CameraFovCode from "@code/plugin-api/camera/camera-fov?raw";
+
+<Code code={clearNoCheck(CameraFovCode)} lang="ts" />
+
+### aspectRatio
+
+This property represents the width-to-height ratio of the camera’s viewport in the `reearth` environment. This ratio affects how content is displayed within the camera's view, ensuring that objects are rendered without distortion based on the dimensions of the viewport.
+
+#### Syntax
+
+```ts
+reearth.camera.aspectRatio: number | undefined
+```
+
+#### Return Value
+
+**Type** `number`
+
+A numeric value representing the aspect ratio of the camera’s viewport, defined as the width divided by the height. For example, a typical widescreen monitor might have an aspect ratio of 16:9, represented as approximately 1.78, while a square aspect ratio would be 1:1 (1.0). The aspect ratio influences how objects appear in the view, with wider aspect ratios providing more horizontal view and taller aspect ratios offering more vertical view.
+
+**Type** `undefined`
+
+If the aspectRatio is undefined, it may indicate that the camera's viewport dimensions are not yet set, or the camera has not fully initialized.
+
+#### Example
+
+import CameraAspectRatioCode from "@code/plugin-api/camera/camera-aspect-ratio?raw";
+
+<Code code={clearNoCheck(CameraAspectRatioCode)} lang="ts" />
+
+### viewport
+
+This property represents the geographic boundaries currently visible in the camera's view. It returns a GeoRect object defining the western, southern, eastern, and northern extents of the camera’s visible area, which can be useful for understanding the camera's field of view in geographic coordinates.
+
+#### Syntax
+
+```ts
+reearth.camera.viewport: GeoRect | undefined
+```
+
+#### Return Value
+
+**Type** `GeoRect`
+
+An object describing the geographic boundaries of the current viewport.
+
+:::note
+For more information on the options included in GeoRect, please refer to [GeoRect](#georect) section.
+:::
+
+**Type** `undefined`
+
+If the viewport is undefined, it indicates that the camera's current geographic boundaries are not set or cannot be retrieved, which might occur in scenarios where the camera is not focused on a geographic region.
+
+#### Example
+
+import CameraViewportCode from "@code/plugin-api/camera/camera-viewport?raw";
+
+<Code code={clearNoCheck(CameraViewportCode)} lang="ts" />
+
+### flyTo
+
+### flyToBoundingBox
+
+### zoomIn
+
+### zoomOut
+
+### lookAt
+
+### getGlobeIntersection
+
+### rotateAround
+
+### rotateRight
+
+### orbit
+
+### enableScreenSpaceCameraController
+
+### overrideScreenSpaceCameraController
+
+### move
+
+### moveOverTerrain
+
+### setView
+
+### enableForceHorizontalRoll
+
+## Events
+
+### on
+
+## References
+
+### CameraPosition
+
+An object that contains detailed position and orientation data.
+
+import CameraPosition from "@code/plugin-api/camera/type-camera-position?raw";
+
+<Code code={clearNoCheck(CameraPosition)} lang="ts" />
+
+**`lat?: number;`**: The latitide where the camera is positioned (in decimal degrees).
+
+**`lng?: number;`**: The longitude where the camera is positioned (in decimal degrees).
+
+**`height?: number`**: The altitude of the camera above the Earth's surface, determining how high or low the camera is positioned (in meters).
+
+**`heading?: number;`**: The direction the camera is facing. A heading of 0 points north, with the value increasing clockwise (in radians).
+
+**`pitch?: number;`**: Pitch angle, the vertical tilt of the camera. Positive values tilt the view upwards, while negative values tilt it downwards (in radians).
+
+**`roll?: number;`**: Roll angle, the rotation of the camera around its view direction (in radians).
+
+### GeoRect
+
+import GeoRect from "@code/plugin-api/camera/type-georect?raw";
+
+<Code code={clearNoCheck(GeoRect)} lang="ts" />
+
+An object describing the geographic boundaries of the current viewport:
+
+**`west: number`**: The western boundary of the viewport, in decimal degrees of longitude.
+
+**`south: number`**: The southern boundary of the viewport, in decimal degrees of latitude.
+
+**`east: number`**: The eastern boundary of the viewport, in decimal degrees of longitude.
+
+**`north: number`**: The northern boundary of the viewport, in decimal degrees of latitude.
