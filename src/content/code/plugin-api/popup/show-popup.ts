@@ -1,7 +1,14 @@
 // @ts-nocheck
 
+const html = `
+
+`;
+
 // Example 1. Display a simple notification popup
-reearth.popup.show("You have successfully updated your profile.", {
+reearth.popup.show(`
+  <h1 style='color:blue;background:white'>
+    You have successfully updated your profile.
+  </h1>`, {
   // Set the popup width to 300 pixels
   width: 300,
   // Set the popup height to 100 pixels
@@ -13,7 +20,10 @@ reearth.popup.show("You have successfully updated your profile.", {
 });
 
 // Example 2. Show a popup with custom HTML, width, and offset adjustments on both axes
-reearth.popup.show("<p>Custom Popup Content</p>", {
+reearth.popup.show(`
+  <p style='color:blue;background:white'>
+    Custom Popup Content
+  </p>`, {
   width: "300px",
   height: "150px",
   position: "top-start", // Position popup at the top-left of the target
