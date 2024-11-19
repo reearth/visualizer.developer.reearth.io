@@ -1,9 +1,5 @@
 // @ts-nocheck
 
-const html = `
-
-`;
-
 // Example 1. Display a simple notification popup
 reearth.popup.show(`
   <h1 style='color:blue;background:white'>
