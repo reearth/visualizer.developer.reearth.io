@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 const html = `
-  <h1 style="color:red;background:black">
+  <h1 style="color:red;background:white">
     Hello world
   </h1>
 `;
