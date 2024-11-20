@@ -1,0 +1,66 @@
+---
+title: Overview
+description: About Plugin
+sidebar:
+  order: 1
+---
+
+Welcome, plugin developers! In this section, we'll guide you through the plugin development process.
+
+## Before start
+
+Before diving into plugin development, it's essential to have a basic understanding of the following:
+
+- [Re:Earth Visualizer Plugin System](/core-concepts/plugin-system)
+- [General Web Development](https://developer.mozilla.org/en-US/docs/Learn)
+
+Plugin development is fundamentally a web development process. You can use any web development framework or library of your choice and work with your preferred IDE.
+
+## Structure of a plugin
+
+A built Re:Earth Visualizer plugin should be a compressed **.zip** file containing the following:
+
+- `reearth.yml`: A configuration file specifying the plugin's metadata.
+- `${extension_name}.js`: One or more JavaScript files for the extensions.
+
+### reearth.yml
+
+The `reearth.yml` file is a YAML file that contains metadata about the plugin. It specifies the plugin's name, version, description, extensions, and other information. Here is an example of a `reearth.yml` file:
+
+```yaml
+// reearth.yml
+id: demo-plugin
+name: Demo Plugin
+version: 1.0.0
+extensions:
+  - id: demo-widget
+    type: widget
+    name: Demo Widget
+```
+
+:::caution
+id: Supports using `a-zA-Z0-9_-`, max 100 chars, `reearth` is not allowed.
+:::
+
+:::note
+For detailed schema of `reearth.yml`, please refer to <a href="https://github.com/reearth/reearth-visualizer/blob/main/server/schemas/plugin_manifest.json" target="_blank">Re:Earth Visualizer Plugin Manifest</a>.
+:::
+
+### Extension JavaScript
+
+Each extension defined in `reearth.yml` should have a corresponding JavaScript file, the name of which should match the `id` of the extension.
+
+:::caution
+The extension id and the JavaScript file name should match exactly. Please avoid using spaces or any special characters.
+:::
+
+Here is an example of a simple extension JavaScript file:
+
+```javascript
+// demo-widget.js
+reearth.ui.show(`<h1>Hello, World!</h1>`);
+```
+
+## Compose and install
+
+Once you have prepared these two files (or additional extension JavaScript files, if needed), you can build the plugin by compressing them into a .zip file. After that, you can install it into the Re:Earth Visualizer.

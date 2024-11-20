@@ -1,0 +1,53 @@
+---
+title: Overview
+description: Overview of plugin API
+sidebar:
+  order: 1
+---
+
+import { LinkCard } from "@astrojs/starlight/components";
+
+The Re:Earth Visualizer Plugin API is a collection of APIs designed for plugin extensions to interact seamlessly with the Re:Earth Visualizer. It provides access to Visualizer data and offers methods to manage various components such as the layers, viewer, camera, timeline, ui, and extensions etc..
+
+## Plugin API
+
+Re:Earth Visualizer Plugin API is wrapped in `reearth` object, which is available globally in the plugin [WebAssembly side](/core-concepts/plugin-system/#webassembly-side). The API is divided into several modules, each of which provides a set of properties and methods to interact with the Visualizer.
+
+### System related
+
+**reearth.version: `string`:** The version of the Re:Earth Visualizer.
+
+**reearth.apiVersion: `string`:** The version of the Re:Earth Visualizer Plugin API.
+
+**reearth.engine: `string`:** Current in-use engine of the Re:Earth Visualizer.
+
+### Scene related
+
+<LinkCard title="reearth.viewer" href="/plugin-api/viewer" />
+<LinkCard title="reearth.camera" href="/plugin-api/camera" />
+<LinkCard title="reearth.timeline" href="/plugin-api/timeline" />
+
+### Layer related
+
+<LinkCard title="reearth.layers" href="/plugin-api/layers" />
+<LinkCard title="reearth.sketch" href="/plugin-api/sketch" />
+
+### Extension related
+
+<LinkCard title="reearth.extension" href="/plugin-api/extension" />
+<LinkCard title="reearth.ui" href="/plugin-api/ui" />
+<LinkCard title="reearth.modal" href="/plugin-api/modal" />
+<LinkCard title="reearth.popup" href="/plugin-api/popup" />
+
+### Data related
+
+<LinkCard title="reearth.data" href="/plugin-api/data" />
+
+## Want to have a try?
+
+Explore the Re:Earth Visualizer Plugin Playground to access numerous examples demonstrating the use of these plugin APIs.
+
+<LinkCard
+  title="Plugin Playground"
+  href="/plugin-development/plugin-playground/"
+/>
