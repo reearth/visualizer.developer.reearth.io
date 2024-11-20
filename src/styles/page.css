@@ -16,6 +16,8 @@
       calc(100% + 20rem) / 60rem 30rem;
   background-size: cover;
   background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .page .card {
@@ -38,4 +40,24 @@
 :root[data-theme="light"] .page .sidebar-pane {
   background-color: transparent;
   border-inline-end: 1px solid var(--sl-color-gray-6);
+}
+
+.page strong {
+  color: var(--sl-color-text-strong);
+}
+
+.page code[dir="auto"] {
+  color: var(--sl-color-text-strong);
+}
+
+.page .sidebar-pane span.sl-badge.default {
+  background-color: transparent;
+  border-color: var(--sl-color-gray-6);
+  color: var(--sl-color-gray-4);
+}
+
+:root[data-theme="light"] .page .sidebar-pane span.sl-badge.default {
+  background-color: var(--sl-color-gray-6);
+  border-color: var(--sl-color-gray-4);
+  color: var(--sl-color-gray-4);
 }

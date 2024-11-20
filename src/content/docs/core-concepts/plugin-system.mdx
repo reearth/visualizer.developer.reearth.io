@@ -4,3 +4,105 @@ description: Plugin System
 sidebar:
   order: 3
 ---
+
+Re:Earth Visualizer features a robust plugin system, enabling users to develop custom UI components and logics.
+
+A plugin can include one or more `Extension`, which are collections of UI components and logic. Extensions come in three types:
+
+- **Widget:** This type of extension can be placed in the main view of the Visualizer. Users can arrange its position using the Widget Align System.
+
+- **InfoboxBlock:** This extension can be added to the infobox of a layer and is displayed when a feature of that layer is selected. It is typically used to enhance the presentation of additional information about the feature.
+
+- **StoryBlock:** This extension can be added to a story page to enrich the content, such as by including custom charts or other visual elements to provide more detailed information about the story.
+
+## How plugins work
+
+It is never easy to make plug-ins work on a web browser, and there are various technical issues that need to be resolved before they can be developed. Therefore, plug-in developers need to accept the unique constraints that are different from the usual HTML and JavaScript implementations before developing plug-ins.
+
+The plugin can be implemented in JavaScript, but it is divided into two parts: the part that works on WebAssembly and the part that works on iframe.
+
+Both of them can safely execute third-party JavaScript code, but they have their advantages and disadvantages, so Re:Earth Visualizer uses a hybrid method.
+
+WebAssembly can run code synchronously and fast, and can access Re:Earth Visualizer data, but it cannot use the APIs and UIs supported by web browsers. iframe can use all the APIs supported by web browsers, and can display UIs in HTML. But it cannot access Re:Earth Visualizer data directly and runs asynchronously.
+
+The WebAssembly part and the iframe can exchange messages through [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage). This allows you to send only the necessary data from Re:Earth Visualizer to the iframe, rewrite HTML in the iframe, and retrieve server information. You can also pass the retrieved information to the WebAssembly part.
+
+### WebAssembly side
+
+This is the entry point that is executed when the plugin is first loaded, and runs synchronously in the same thread as Re:Earth Visualizer.
+
+#### Capabilities:
+
+- **Execute JavaScript code:** JavaScript execution is powered by QuickJS, ensuring compatibility with `ECMAScript 2020`, independent of browser support.
+- **Call Re:Earth Visualizer plugin API:**
+  - Access the current scene data.
+  - Partially modify the Re:Earth Visualizer scene.
+  - Subscribe to events.
+  - Facilitate data exchange between the plugin and the IFrame.
+
+#### Limitations:
+
+- **UI Rendering:** Directly rendering HTML or other UI elements is not supported and must be handled on the IFrame side.
+- **Browser APIs:** Most browser-provided APIs are unavailable, except for a few, such as `console.log`.
+- **External Communication:** HTTP communication with external servers is not permitted.
+
+### IFrame side
+
+#### Capabilities
+
+- **HTML Rendering:** Render HTML as you would on a standard web page.
+- **Browser APIs:** Utilize any API provided by web browsers, including window and DOM APIs.
+- **External Server Communication:** Send HTTP requests via fetch or XHRRequest to external servers, provided the server's response includes a properly configured CORS header (Access-Control-Allow-Origin: \*).
+- **Interprocess Communication:** Exchange messages with the WebAssembly side using `parent.postMessage` and `window.addEventListener("message", () => {})`.
+
+#### Limitations
+
+The following actions are restricted:
+
+- **Restricted Server Communication:** Communication with external servers that do not include the Access-Control-Allow-Origin: \* header is prohibited due to the sandboxed nature of the iframe (its origin is set to null).
+- **Direct Back-End Communication:** Direct interaction with the Re:Earth Visualizer back-end is not allowed.
+- **Re:Earth Visualizer Data Access:** You cannot directly access or modify Re:Earth Visualizer data. This requires communication via postMessage with the WebAssembly side.
+- **Local Storage:** Access to local storage is unavailable because the iframe is sandboxed with a null origin. (However, Re:Earth Plugin API provides a storage API to store data)
+
+## You mean?
+
+|                                                                  |                  |             |
+| ---------------------------------------------------------------- | ---------------- | ----------- |
+| Name                                                             | WebAssembly side | IFrame side |
+| Sandboxed                                                        | ✅               | ✅          |
+| Entrypoint (first executed)                                      | ✅               | ❌          |
+| Access to Re:Earth Visualizer plugin API                         | ✅               | ❌          |
+| Render HTML                                                      | ❌               | ✅          |
+| Use web API (DOM API, Canvas API, AJAX... without local storage) | ❌               | ✅          |
+| Communicate with the other side via "postMessage"                | ✅               | ✅          |
+
+## Limitations
+
+**postMessage Limitations:** Objects that cannot be serialized as JSON, such as ArrayBuffer and Blob, cannot be sent. To send binaries, encode them with base64 or similar methods. Expanding supported object types is under consideration for future updates.
+
+**Plugin Size Restriction:** Installable plugins are limited to zip files of 10MB or less.
+
+**Static Asset Handling:** Non-JavaScript files (e.g., images) cannot be packaged as plugins. Static assets like HTML, images, or CSS must either be embedded in JavaScript as strings or hosted on a publicly accessible server and referenced via URLs.
+
+## What's next?
+
+import { LinkCard } from "@astrojs/starlight/components";
+
+Explore the Re:Earth Visualizer Plugin Playground to gain hands-on experience in developing plugins.
+
+<LinkCard
+  title="Plugin Playground"
+  href="/plugin-development/plugin-playground/"
+/>
+
+Learn more about plugin development with our detailed guides and comprehensive API references.
+
+<LinkCard
+  title="Plugin Development Guide"
+  href="/plugin-development/about-plugin/"
+/>
+<LinkCard title="Plugin API Reference" href="/plugin-api/overview" />
+
+Learn more about the Re:Earth Visualizer Marketplace.
+
+<LinkCard title="Marketplace" href="/plugin-development/marketplace/" />
