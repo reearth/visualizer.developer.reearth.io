@@ -1,0 +1,39 @@
+---
+title: Project Architecture
+description: Project Architecture
+sidebar:
+  order: 2
+---
+
+The Re:Earth Visualizer repository contains both frontend and backend codebases. Here we will focus on the frontend codebase, which is `/web` directory in the repository.
+
+Main architecture of the frontend codebase are:
+
+```plaintext
+└── web
+    ├── .storybook                  // Storybook files
+    ├── docker                      // Docker files
+    ├── e2e                         // End-to-end test files
+    ├── src
+    │   ├── beta                    // Visualizer components (will introduce in component architecture)
+    │   ├── services                // Visualizer services (will introduce in component architecture)
+    │   ├── test                    // Test setup
+    │   ├── app.tsx                 // Main app component
+    │   ├── main.tsx                // Main entry point
+    │   ├── publishedapp.tsx        // Published app component
+    │   └── published.tsx           // Published entry point
+    ├── .env.example                // Example .env file
+    ├── index.html                  // Main HTML file
+    ├── published.html              // Published HTML file
+    └── vite.config.ts              // Vite configuration
+```
+
+### Entry Points
+
+We utilize `Vite` as the build tool for the front-end codebase, ensuring fast and efficient development. The front-end consists of two main pages: Main and Published.
+
+- Main: This represents the core Re:Earth Visualizer application, encompassing features such as the Dashboard, Editor, and Settings.
+
+- Published: This refers to the published page, designed for viewing and interacting with the finalized scene.
+
+This structure ensures a clear separation of development environments for editing and viewing content.

@@ -2,7 +2,41 @@
 title: Getting Started
 description: Getting Started
 sidebar:
-  badge:
-    text: WIP
-    variant: default
+  order: 1
 ---
+
+import { LinkCard } from "@astrojs/starlight/components";
+
+Welcome to the Re:Earth Visualizer Front-End Development Guide!
+
+This guide is designed to help you navigate the development process for the Re:Earth Visualizer's front-end. Whether you're a seasoned developer or new to the platform, you'll find detailed information on its architecture, key features, and tools to streamline your work. Dive in to learn how to customize, enhance, and contribute to this powerful open-source geospatial visualization platform!
+
+## Technical Insights
+
+**Vite** is a fast, modern build tool that serves as the foundation for the Re:Earth Visualizer front-end development. Vite's lightning-fast bundling and hot module replacement capabilities enable rapid development and efficient code iteration. By leveraging Vite, developers can build and optimize front-end applications with ease, enhancing productivity and performance.
+
+**React** is the primary front-end framework used in Re:Earth Visualizer. It provides a robust foundation for building dynamic user interfaces and interactive components. By leveraging React's component-based architecture, developers can create reusable UI elements and efficiently manage state changes, resulting in a more scalable and maintainable codebase.
+
+**TypeScript** is a statically typed superset of JavaScript that enhances code quality and developer productivity. TypeScript's type system helps catch errors at compile time, reducing bugs and improving code readability. By using TypeScript in Re:Earth Visualizer, developers can write safer and more maintainable code, leading to a more robust application.
+
+**Jotai** is a state management library that complements React by offering a simple and flexible approach to managing application state. Jotai's atom-based model allows developers to define and update state in a declarative manner, enhancing the predictability and performance of React applications.
+
+**GraphQL** is a query language for APIs that enables efficient data fetching and manipulation. In Re:Earth Visualizer, GraphQL serves as the communication layer between the client and server, facilitating seamless data exchange and reducing network overhead. By using GraphQL, developers can optimize data retrieval and enhance the responsiveness of the application.
+
+## Let's begin
+
+Start Re:Earth Visualizer Locally:
+
+<LinkCard title="Getting Started" href="/introduction/getting-started" />
+
+## Dive into topics
+
+<LinkCard
+  title="Project Architecture"
+  href="/frontend-development/project-architecture"
+/>
+
+<LinkCard
+  title="Component Architecture"
+  href="/frontend-development/component-architecture"
+/>
