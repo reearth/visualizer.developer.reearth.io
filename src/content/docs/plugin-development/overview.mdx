@@ -5,6 +5,8 @@ sidebar:
   order: 1
 ---
 
+import { LinkCard } from "@astrojs/starlight/components";
+
 Welcome, plugin developers! In this section, we'll guide you through the plugin development process.
 
 ## Before start
@@ -48,11 +50,15 @@ For detailed schema of `reearth.yml`, please refer to <a href="https://github.co
 
 ### Extension JavaScript
 
-Each extension defined in `reearth.yml` should have a corresponding JavaScript file, the name of which should match the `id` of the extension.
+Each extension defined in `reearth.yml` should have a corresponding JavaScript file. The JavaScript file contains the logic for the extension.
 
 :::caution
 The extension id and the JavaScript file name should match exactly. Please avoid using spaces or any special characters.
 :::
+
+This JavaScript will be executed by QuickJS, so please ensure your code adheres to the [QuickJS](https://bellard.org/quickjs/) syntax.
+
+The [Re:Earth Visualizer Plugin API](/plugin-api/overview) is exposed globally, allowing you to fully utilize its capabilities to interact with the Re:Earth Visualizer, render custom UI, and more.
 
 Here is an example of a simple extension JavaScript file:
 
@@ -63,4 +69,24 @@ reearth.ui.show(`<h1>Hello, World!</h1>`);
 
 ## Compose and install
 
-Once you have prepared these two files (or additional extension JavaScript files, if needed), you can build the plugin by compressing them into a .zip file. After that, you can install it into the Re:Earth Visualizer.
+Once you have prepared these two files (or additional extension JavaScript files, if needed), you can build the plugin by compressing them into a .zip file. After that, you can install it into any Re:Earth Visualizer Project.
+
+## What's Next?
+
+The plugin development process is designed to be straightforward. Regardless of the framework or library you choose, the final output is simply a .zip file containing the plugin’s metadata and the extension JavaScript files.
+
+However, you may have noticed a challenge: once the plugin is prepared, you need to install it into a Re:Earth Visualizer project, add the extension to the scene (or story page, or infobox), and then observe how it works. This workflow can make testing and debugging extensions more cumbersome, ultimately impacting the development experience.
+
+We have two measures to solve the problem:
+
+- **DEV_PLUGIN Feature:** Re:Earth Visualizer includes a feature called DEV_PLUGIN, which allows you to load plugins directly from a local development server.
+- **Plugin Template:** We provide a plugin template pre-configured with React, ShadCN, Tailwind CSS, and the necessary scripts for building and serving plugins efficiently.
+
+By combining these tools, you can streamline the plugin development process, enabling easy UI development and instant updates in Re:Earth Visualizer without the need to repeatedly build and install the plugin.
+
+Read this for more details:
+
+<LinkCard
+  title="Recommended Workflow"
+  href="/plugin-development/recommended-workflow"
+/>
