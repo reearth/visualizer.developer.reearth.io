@@ -2,7 +2,71 @@
 title: Re:Earth Visualizer
 description: Re:Earth Visualizer is a 3D geospatial data visualization tool that allows you to create and share interactive 3D maps.
 sidebar:
-  badge:
-    text: WIP
-    variant: default
+  order: 1
 ---
+
+import { LinkCard } from "@astrojs/starlight/components";
+
+## What is Re:Earth Visualizer?
+
+**Re:Earth Visualizer** is a powerful tool for visualizing GIS data, offering a range of features to enhance your mapping experience.
+
+### Features
+
+**Comprehensive WebGIS Support**: Visualizer supports various common WebGIS data types, displaying them seamlessly on a digital map using Cesium as the rendering engine.
+
+**Interactive Geometry Drawing**: Draw geometric shapes directly on the map for custom annotations and spatial analysis.
+
+**Conditional Layer Styling**: Modify display styles for individual layers based on conditions, allowing for personalized data visualization.
+
+**Engaging Storytelling Feature**: Create interactive, page-by-page narratives with your GIS data using the built-in storytelling feature.
+
+**Customizable Interface with Plugins**: Use the plugin system to create custom solutions and tailor the interface of public projects to suit your needs.
+
+**Easy Project Publishing and Sharing**: Publish your projects and share them effortlessly through distribution, embedding, or custom URLs.
+
+**Community Plugin Marketplace**: Add your custom plugins to the [marketplace](https://marketplace.reearth.io/) and allow other users to integrate them into their projects.
+
+### Technical Insights
+
+**Open Source:** Re:Earth Visualizer is an open-source project. The source code is available on [GitHub](https://github.com/reearth/reearth-visualizer).
+
+**Client-Server Architecture:** Re:Earth Visualizer follows the client-server (BS) architecture, consisting of a backend server and a frontend web application.
+
+**Technology Stack:** Re:Earth Visualizer is built using modern web technologies. The frontend leverages `React` for building dynamic user interfaces, while the backend is powered by `Go` for efficient and scalable server-side logic. Data management is handled with `GraphQL`, ensuring seamless communication between the client and server. Additionally, `MongoDB` is used as the database solution, providing a flexible, schema-less structure for storing and managing geospatial and application data efficiently.
+
+**Role and Purpose:** Re:Earth Visualizer serves as a user-friendly platform designed to streamline the visualization and publishing of GIS data. Its primary task is to provide an intuitive interface for users to create, customize, and share visualized geospatial information. The visualization and rendering capabilities are powered by [Re:Earth Core](https://github.com/reearth/core), ensuring high-performance and accurate representation of GIS data.
+
+## What's Next?
+
+Explore the development of Re:Earth Visualizer through the following topics:
+
+<LinkCard
+  title="Start Re:Earth Visualizer Locally"
+  href="/introduction/getting-started"
+/>
+
+<LinkCard
+  title="Read More about Re:Earth Visualizer Core Concepts"
+  href="/core-concepts/layer-system"
+/>
+
+<LinkCard
+  title="Read More about Contributing to Re:Earth Visualizer"
+  href="/contribution-guide/contribution-guide"
+/>
+
+<LinkCard
+  title="Developing Front-end for Re:Earth Visualizer"
+  href="/frontend-development/getting-started"
+/>
+
+<LinkCard
+  title="Developing Back-end for Re:Earth Visualizer"
+  href="/backend-development/getting-started"
+/>
+
+<LinkCard
+  title="Developing plugins for Re:Earth Visualizer"
+  href="/plugin-development/overview"
+/>

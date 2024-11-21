@@ -1,0 +1,109 @@
+---
+title: Component Architecture
+description: Component Architecture
+sidebar:
+  order: 3
+---
+
+The Re:Earth Visualizer frontend codebase is structured around a component-based architecture, which is designed to enhance modularity, reusability, and maintainability. This approach enables developers to create complex applications by breaking them down into smaller, self-contained components, each responsible for a specific feature or functionality. By encapsulating logic, styling, and markup within individual components, developers can easily manage and scale their applications, fostering a more efficient and collaborative development process.
+
+In this section we will explore the key components of the Re:Earth Visualizer frontend codebase, including: `src/beta` and `src/services`.
+
+```plaintext
+├── src
+│   ├── beta
+│   │   ├── pages               // Pages, match router
+│   │   ├── features            // Features, self-contained
+│   │   ├── ui                  // Reusable UI modules
+│   │   ├── hooks               // Common hooks
+│   │   ├── utils               // Utility functions
+│   │   ├── types               // Type definitions
+│   │   └── lib
+│   │       └── reearth-ui      // Basic UI components
+│   └── services
+│       ├── api                 // API services
+│       ├── gql                 // GraphQL services
+│       ├── auth                // Authentication services
+│       ├── config              // Global configuration
+│       ├── i18n                // Internationalization
+│       ├── routing             // Routing services
+│       ├── state               // Global state management
+│       └── theme               // Theme management
+└── etc.
+```
+
+### Components
+
+Components are the building blocks of the Re:Earth Visualizer frontend codebase, representing individual elements of the user interface. These components are designed to be reusable and composable, enabling developers to create complex interfaces by combining multiple components. By encapsulating logic, styling, and markup within components, developers can create modular and maintainable code, reducing dependencies and improving code quality.
+
+#### Pages
+
+Pages represent the top-level components of the Re:Earth Visualizer application, each corresponding to a specific route or view. These components serve as entry points for rendering content and managing state, orchestrating the interaction between features, UI modules, and services. By encapsulating logic and layout within pages, developers can create a clear and structured navigation flow, enhancing the user experience and facilitating code organization.
+
+Page is responsible for:
+
+- Organize page content using features and UI modules.
+
+#### Features
+
+Features are self-contained components that encapsulate specific functionalities or behaviors within the application. These components are designed to be reusable and composable, enabling developers to build complex interfaces by combining multiple features. By isolating logic and presentation within features, developers can create modular and maintainable code, reducing dependencies and improving code quality.
+
+Feature is responsible for:
+
+- Implement specific functionality or behavior.
+- Manage local state and side effects.
+- Communicate with services and UI modules.
+
+#### UI
+
+UI modules are reusable components that provide common user interface elements and patterns. These components are designed to be flexible and customizable, enabling developers to create consistent and visually appealing interfaces. By abstracting UI logic and styling within reusable modules, developers can streamline the design and development process, ensuring a cohesive and intuitive user experience.
+
+UI module is responsible for:
+
+- Provide common user interface elements and patterns.
+
+#### lib/reearth-ui
+
+`reearth-ui` is a library of basic UI components that provide foundational building blocks for the Re:Earth Visualizer application. These components are designed to be simple and versatile, offering essential functionality for creating interactive and responsive interfaces. By leveraging `reearth-ui`, developers can quickly prototype and build user interfaces, accelerating the development process and enhancing the overall user experience.
+
+`reearth-ui` is responsible for:
+
+- Provide basic UI components for the application.
+
+### Services
+
+We abstract certain functionalities into services to ensure a clear separation of concerns and facilitate code reuse. Services encapsulate common logic and functionality, such as API communication, state management, and theme configuration, enabling developers to create modular and maintainable applications. By centralizing services within a dedicated directory, developers can easily manage and scale their applications, fostering a more efficient and collaborative development process.
+
+#### gql
+
+`gql` is a service that handles GraphQL queries and mutations, facilitating data fetching and manipulation within the Re:Earth Visualizer application. This service abstracts the complexity of GraphQL operations, enabling developers to interact with the server-side API seamlessly.
+
+After update any GraphQL query or mutation, you need to run `yarn gql` to generate types.
+
+#### api
+
+`api` is actually a set of react hooks that abstract the communication with the server-side API. It provides a simple and consistent interface for fetching and updating data, enabling developers to interact with the backend services efficiently.
+
+#### auth
+
+`auth` is a service that provides different authentication providers and methods for user authentication. This service abstracts the complexity of authentication mechanisms, enabling developers to implement secure and reliable authentication workflows. Currently we have Auth0 and Mock Auth.
+
+#### config
+
+`config` is a service that manages global configuration settings for the Re:Earth Visualizer application. This service provides a centralized location for storing and accessing configuration values, enabling developers to customize and optimize the application behavior.
+
+#### i18n
+
+`i18n` is a service that handles internationalization and localization within the Re:Earth Visualizer application. This service abstracts the complexity of language translation and formatting, enabling developers to create multilingual and culturally sensitive interfaces. We use i18next for this service.
+
+#### routing
+
+`routing` is a service that manages client-side routing within the Re:Earth Visualizer application. This service abstracts the complexity of navigation and URL handling, enabling developers to create dynamic and interactive user experiences. We use react-router for this service.
+
+#### state
+
+`state` is a service that provides global state management for the Re:Earth Visualizer application. This service abstracts the complexity of state handling and synchronization, enabling developers to manage application-wide data and state changes efficiently. We use Jotai for this service.
+
+#### theme
+
+`theme` is a service that manages theme configuration and styling within the Re:Earth Visualizer application. This service abstracts the complexity of theming and styling, enabling developers to create visually appealing and consistent interfaces. We use styled-components for this service.
