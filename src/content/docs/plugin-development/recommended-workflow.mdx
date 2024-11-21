@@ -5,6 +5,8 @@ sidebar:
   order: 2
 ---
 
+import { Steps } from "@astrojs/starlight/components";
+
 For an optimized and efficient development experience, we recommend adopting the following workflow for creating plugins for the Re:Earth Visualizer. This approach utilizes a plugin template designed with:
 
 - **React** as the front-end framework.
@@ -16,45 +18,49 @@ This workflow, rather than following the standard plugin installation process, e
 
 For now we recommend using this <a href="https://github.com/reearth-plugins/reearth-visualizer-plugin-shadcn-template" target="_blank">Re:Earth Visualizer Plugin ShadCN Template</a>, we'll have more templates available in the future.
 
-Create your new plugin repository using the template.
+You could create your own plugin project following these steps:
 
-Navigate to the plugin directory and explore the structure of the template repository.
+<Steps>
 
-```bash
-cd your-new-plugin
-```
+1. Navigate to the plugin directory and explore the structure of the template repository.
 
-Install dependencies:
+   ```bash
+   cd your-new-plugin
+   ```
 
-```bash
-yarn install
-```
+2. Install dependencies:
 
-Build plugin once for initialize the reqired files:
+   ```bash
+   yarn install
+   ```
 
-```bash
-yarn build
-```
+3. Build plugin once for initialize the reqired files:
 
-Start devlepment & preview server:
+   ```bash
+   yarn build
+   ```
 
-```bash
-yarn dev-build
-```
+4. Start devlepment & preview server:
 
-:::note
-Now your plugin will be auto-build and serve on `http://localhost:5005`.
-:::
+   ```bash
+   yarn dev-build
+   ```
 
-:::tip
-For more information about the template please read its <a href="https://github.com/reearth-plugins/reearth-visualizer-plugin-shadcn-template" target="_blank">README.md</a>.
-:::
+   :::note
+   Now your plugin will be auto-build and serve on `http://localhost:5005`.
+   :::
+
+   :::tip
+   For more information about the template please read its <a href="https://github.com/reearth-plugins/reearth-visualizer-plugin-shadcn-template" target="_blank">README.md</a>.
+   :::
+
+</Steps>
 
 ## Develop plugin together with Visualizer
 
 import { LinkCard } from "@astrojs/starlight/components";
 
-Please follow this page to set up your visualizer application in local environment.
+Before start please follow this guide to set up your visualizer application in local environment.
 
 <LinkCard title="Quick Start" href="/introduction/quick-start/" />
 
@@ -64,26 +70,29 @@ Make sure you can visit Re:Earth Visualizer at `http://localhost:3000`.
 
 ### Setup Re:Earth Visualizer to enable dev plugin
 
-Navigate to the `web` directory of your local `Re:Earth Visualizer` project.
+<Steps>
 
-```bash
-cd web
-touch .env
-```
+1. Navigate to the `web` directory of your local `Re:Earth Visualizer` project.
 
-Add the following environment variables to the `.env` file:
+   ```bash
+   cd web
+   touch .env
+   ```
 
-```plaintext
-REEARTH_WEB_DEV_PLUGIN_URLS='["http://localhost:5005"]'
-```
+2. Add the following environment variables to the `.env` file:
 
-Note: Web server will auto restart after .env file changes.
+   ```plaintext
+   // .env
+   REEARTH_WEB_DEV_PLUGIN_URLS='["http://localhost:5005"]'
+   ```
+
+   Web server will auto restart after .env file changes.
+
+</Steps>
 
 ### Create Re:Earth Visualizer Project
 
 In order to develop a plugin, you need to create a new project on the Re:Earth Visualizer so that you can add your plugin widget to the scene and see the changes.
-
-import { Steps } from "@astrojs/starlight/components";
 
 <Steps>
 
@@ -97,28 +106,7 @@ import { Steps } from "@astrojs/starlight/components";
 
 5. Go to `Widgets` tab and add your plugin widget into the scene.
 
-6. Do development on your plugin code.
-
-7. Click the `Reload Dev Plugin Extensions` button to see the changes in the Re:Earth Visualizer.
-
 </Steps>
-
-:::note
-**Install Dev Plugins** Button
-
-- This tool fetches plugin files directly from the preview server, automatically zips them, and facilitates their installation.
-- **When to Use**: Click this button when initially setting up your development environment or after any modifications to `reearth.yml`.
-
-**Reload Dev Plugin Extensions** Button
-
-- This tool rapidly reloads all plugin extensions from the preview server.
-- **Advantage**: Reloading only the plugin itself, not the entire page, significantly accelerates the development cycle.
-
-import plugin_install_icon from "@assets/plugin-development/PluginInstall.svg?raw";
-import plugin_update_icon from "@assets/plugin-development/PluginUpdate.svg?raw";
-import { Icon } from "astro-icon/components";
-
-:::
 
 ### Develop Plugin
 
@@ -127,6 +115,10 @@ Now you can develop your plugin together with the Re:Earth Visualizer.
 The plugin will be auto-built when you save the code, and the changes will be reflected in the Re:Earth Visualizer after you click the `Reload Dev Plugin Extensions` button.
 
 #### Dev Plugin Buttons
+
+import plugin_install_icon from "@assets/plugin-development/PluginInstall.svg?raw";
+import plugin_update_icon from "@assets/plugin-development/PluginUpdate.svg?raw";
+import { Icon } from "astro-icon/components";
 
 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
   <Icon name="PluginInstall" size={30} display={"inline"} />

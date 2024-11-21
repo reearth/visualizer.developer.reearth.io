@@ -15,13 +15,17 @@ reviews:
   sequence_diagrams: true
   changed_files_summary: true
   labeling_instructions: []
-  path_filters: ["!src/content/code"]
+  path_filters:
+    - "!src/content/code/**/*.ts"
   path_instructions: []
   abort_on_close: true
   auto_review:
     enabled: true
     auto_incremental_review: true
-    ignore_title_keywords: []
+    ignore_title_keywords:
+      - "wip"
+      - "draft"
+      - "work in progress"
     labels: []
     drafts: false
     base_branches: []
