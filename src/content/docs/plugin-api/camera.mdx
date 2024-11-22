@@ -1,0 +1,695 @@
+---
+title: reearth.camera
+description: API reference for `reearth.camera`.
+---
+
+The **`reearth.camera`** namespace provides a comprehensive set of functionalities for managing and interacting with the camera within the `reearth` environment.
+
+import { Code } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { clearNoCheck } from "@code/utils";
+
+## Properties
+
+### position
+
+This property provides the current position and orientation of the camera within `reearth`. It gives a comprehensive information about the camera's geographical location, altitude, and angular orientation. This information is important for understanding or logging the camera's viewpoint.
+
+#### Syntax
+
+```ts
+reearth.camera.position: CameraPosition | undefined;
+```
+
+#### Return Value
+
+**Type** `CameraPosition`
+
+An object with detailed position and orientation data if the camera position is defined.
+
+:::note
+For more information on CameraPosition Types, please refer to [CameraPosition](#cameraposition) section.
+:::
+
+**Type** `undefined`
+
+Indicates that the camera position is not currently available.
+
+#### Example
+
+import CameraPositionCode from "@code/plugin-api/camera/camera-position?raw";
+
+<Code code={clearNoCheck(CameraPositionCode)} lang="ts" />
+
+### fov
+
+This represents the camera's field of view (FOV) in `reearth`, and defines the extent of the observable world seen at any given moment. This parameter is crucial for adjusting how broad or narrow the camera's perspective is.
+
+Please note that FOV is only available when the camera is in perspective mode.
+
+#### Syntax
+
+```ts
+reearth.camera.fov: number | undefined
+```
+
+#### Return Value
+
+**Type** `number | undefined`
+
+A numeric value representing the field of view of the camera in radians. The field of view can significantly affect how content is perceived in a 3D space, with higher values providing a wider perspective, and lower values providing a more focused, zoomed-in view.
+
+If the field of view is undefined, it indicates that the camera's FOV is either not set or unavailable under current conditions.
+
+#### Example
+
+import CameraFovCode from "@code/plugin-api/camera/camera-fov?raw";
+
+<Code code={clearNoCheck(CameraFovCode)} lang="ts" />
+
+### aspectRatio
+
+This property represents the width-to-height ratio of the camera's viewport in the `reearth` environment. This ratio affects how content is displayed within the camera's view, ensuring that objects are rendered without distortion based on the dimensions of the viewport.
+
+#### Syntax
+
+```ts
+reearth.camera.aspectRatio: number | undefined
+```
+
+#### Return Value
+
+**Type** `number | undefined`
+
+A numeric value representing the aspect ratio of the camera's viewport, defined as the width divided by the height. For example, a typical widescreen monitor might have an aspect ratio of 16:9, represented as approximately 1.78, while a square aspect ratio would be 1:1 (1.0). The aspect ratio influences how objects appear in the view, with wider aspect ratios providing more horizontal view and taller aspect ratios offering more vertical view.
+
+#### Example
+
+import CameraAspectRatioCode from "@code/plugin-api/camera/camera-aspect-ratio?raw";
+
+<Code code={clearNoCheck(CameraAspectRatioCode)} lang="ts" />
+
+### viewport
+
+This property represents the geographic boundaries currently visible in the camera's view. It returns a GeoRect object defining the western, southern, eastern, and northern extents of the camera's visible area, which can be useful for understanding the camera's field of view in geographic coordinates.
+
+#### Syntax
+
+```ts
+reearth.camera.viewport: GeoRect | undefined
+```
+
+#### Return Value
+
+**Type** `GeoRect | undefined`
+
+An object describing the geographic boundaries of the current viewport.
+
+:::note
+For more information on the options included in GeoRect, please refer to [GeoRect](#georect) section.
+:::
+
+If the viewport is undefined, it indicates that the camera's current geographic boundaries are not set or cannot be retrieved, which might occur in scenarios where the camera is not focused on a geographic region.
+
+#### Example
+
+import CameraViewportCode from "@code/plugin-api/camera/camera-viewport?raw";
+
+<Code code={clearNoCheck(CameraViewportCode)} lang="ts" />
+
+## Methods
+
+### flyTo
+
+This method smoothly moves the camera to a specified destination with optional controls for animation duration, easing, and field of view (FOV). This function is useful for guiding the camera to specific locations or layers in the scene, allowing for smooth transitions and custom animations.
+
+#### Syntax
+
+```ts
+reearth.camera.flyTo(
+  destination: LayerId | CameraPosition,
+  options?: CameraMoveOptions & { fov?: number }
+) => void;
+```
+
+#### Parameters
+
+##### `destination`
+
+Specifies the target destination for the camera. It can be a LayerId (string) to focus on a specific layer or a CameraPosition object specifying the precise geographic and orientation parameters.
+
+**Type**: `LayerId | CameraPosition`
+
+**`LayerId`**: A string that represents the ID of a specific layer that the camera should move to.
+
+**`CameraPosition`**: An object defining the camera's latitude, longitude, height, and orientation.
+
+:::note
+For more information on on the options included in CameraPosition, please refer to [CameraPosition](#cameraposition) section.
+:::
+
+##### `options`
+
+**Optional**
+
+An optional object that provides control over the movement animation and field of view.
+
+**Type**: `CameraMoveOptions & { fov?: number }`
+
+**`CameraMoveOptions:`** An object that provides control over the movement animation
+
+:::note
+For more information on the options included in CameraMoveOptions, please refer to [CameraMoveOptions](#cameramoveoptions) section.
+:::
+
+**`fov?: number:`** Specifies the field of view (in radians) for the destination. Adjusts the camera's FOV as part of the transition.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import CameraFlyToCode from "@code/plugin-api/camera/camera-flyto?raw";
+
+<Code code={clearNoCheck(CameraFlyToCode)} lang="ts" />
+
+### flyToBoundingBox
+
+This smoothly moves the camera to focus on a specified geographic bounding box, with optional parameters for animation, orientation, and distance. This method is useful for zooming out to show a region or zooming in to highlight specific areas within the viewport.
+
+#### Syntax
+
+```ts
+reearth.camera.flyToBoundingBox(
+  boundingBox: GeoRect,
+  options?: CameraMoveOptions & {
+    heading?: number;
+    pitch?: number;
+    range?: number;
+  }
+) => void;
+```
+
+#### Parameters
+
+##### `boundingBox`
+
+**Type**: `GeoRect`
+
+An object that defines the geographic boundaries of the target area
+
+:::note
+For more information on the options included in GeoRect, please refer to [GeoRect](#georect) section.
+:::
+
+##### `options`
+
+**Optional**
+
+An object to control animation, orientation, and zoom level.
+
+**Type**:
+
+```ts
+CameraMoveOptions & {
+  heading?: number;
+  pitch?: number;
+  range?: number;
+}
+```
+
+:::note
+For more information on the options included in CameraMoveOptions, please refer to [CameraMoveOptions](#cameramoveoptions) section.
+:::
+
+**`heading?: number;`** The direction the camera faces in radians, where 0 points north. Positive values rotate clockwise.
+
+**`pitch?: number;`** The vertical angle of the camera, in radians. Negative values tilt downward.
+
+**`range?: number;`** The distance from the center of the bounding box to the camera, in meters. This controls the zoom level.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import CameraFlyToBoundingBoxCode from "@code/plugin-api/camera/camera-flyto-boundingbox?raw";
+
+<Code code={clearNoCheck(CameraFlyToBoundingBoxCode)} lang="ts" />
+
+### zoomIn
+
+This method moves the camera closer to the scene by reducing the camera's altitude. The zoom effect can be customized with optional animation settings such as duration and easing. This method is useful for providing a more detailed view of objects or areas in the scene.
+
+#### Syntax
+
+```ts
+reearth.camera.zoomIn: (amount: number, options?: CameraMoveOptions) => void;
+```
+
+#### Parameters
+
+##### `amount`
+
+**Type**: `number`
+
+Specifies the zoom level. A positive value moves the camera closer to the scene by reducing the altitude, larger values result in greater zoom level. Negative values would theoretically move the camra further away.
+
+##### `options`
+
+**Optional**
+
+An object to control the animation of the zoom operation.
+
+**Type**:`CameraMoveOptions`
+
+:::note
+For more information on the options included in CameraMoveOptions, please refer to [CameraMoveOptions](#cameramoveoptions) section.
+:::
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import CameraZoomInCode from "@code/plugin-api/camera/camera-zoom-in?raw";
+
+<Code code={clearNoCheck(CameraZoomInCode)} lang="ts" />
+
+### zoomOut
+
+This is used for decreasing the camera's zoom level relative to its current position by a specified amount, enabling a wider view of the scene.. The zoom effect can be customized with optional animation settings such as duration and easing. This method is useful for providing a broader view of the environment or for transitioning to a wide perspective.
+
+#### Syntax
+
+```ts
+reearth.camera.zoomOut(amount: number, options?: CameraMoveOptions) => void;
+```
+
+#### Parameters
+
+##### `amount`
+
+**Type**: `number`
+
+Specifies the zoom level. A positive value moves the camera farther from the scene by increasing the altitude. Larger values result in a more significant zoom-out effect.
+
+##### `options`
+
+**Optional**
+
+An object to control the animation of the zoom operation.
+
+**Type**:`CameraMoveOptions`
+
+:::note
+For more information on the options included in CameraMoveOptions, please refer to [CameraMoveOptions](#cameramoveoptions) section.
+:::
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import CameraZoomOutCode from "@code/plugin-api/camera/camera-zoom-out?raw";
+
+<Code code={clearNoCheck(CameraZoomOutCode)} lang="ts" />
+
+### lookAt
+
+This adjusts the camera to focus on a specified destination, allowing control over the camera's orientation, distance, and field of view (FOV). This method is ideal for directing the user's attention to specific locations or objects within the scene.
+
+#### Syntax
+
+```ts
+reearth.camera.lookAt(
+  destination: LookAtDestination,
+  options?: CameraMoveOptions & { fov?: number }
+) => void;
+```
+
+#### Parameters
+
+##### `destination`
+
+**Type**: `LookAtDestination`
+
+An object that pecifies the target location for the camera.
+
+:::note
+For more information on on the options included in the LookAtDestination object, please refer to [LookAtDestination](#lookatdestination) section.
+:::
+
+##### `options`
+
+**Optional**
+
+An optional object that provides control over the movement animation and field of view.
+
+**Type**: `CameraMoveOptions & { fov?: number }`
+
+**`CameraMoveOptions:`** An object that provides control over the movement animation.
+
+:::note
+For more information on the options included in CameraMoveOptions, please refer to [CameraMoveOptions](#cameramoveoptions) section.
+:::
+
+**`fov?: number:`** Specifies the field of view (in radians) for the destination. Adjusts the camera's FOV as part of the transition.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import CameraLookAtCode from "@code/plugin-api/camera/camera-look-at?raw";
+
+<Code code={clearNoCheck(CameraLookAtCode)} lang="ts" />
+
+### getGlobeIntersection
+
+This calculates the intersection of the camera's view with the globe's surface or terrain. It returns the geographic coordinates (latitude, longitude, and height) of the intersection point and optionally calculates the visible area of the viewport. This method is particularly useful for applications that require interaction with the ground or terrain, such as measuring distances or determining visibility.
+
+#### Syntax
+
+```ts
+reearth.camera.getGlobeIntersection: (options: Options) =>
+  | {
+      center?: LatLngHeight;
+      viewSize?: number;
+    }
+  | undefined;
+```
+
+#### Parameters
+
+##### `options`
+
+An optional object to control the intersection calculation.
+
+**Type**:
+
+```ts
+type Options = {
+  withTerrain?: boolean;
+  calcViewSize?: boolean;
+};
+```
+
+**`withTerrain?: boolean;`**: If true, the function accounts for terrain height when calculating the intersection point. Default is false (flat terrain). If false or omitted, the calculation assumes a flat globe surface.
+
+**`calcViewSize?: boolean;`**: If true, the function calculates the size of the visible area on the ground (view size) from the camera's perspective in meters. Default is false.
+
+#### Return Value:
+
+**`{center?: LatLngHeight; viewSize?: number;} | undefined`**
+
+The function returns an object if an intersection is found, or undefined if there is no intersection.
+
+**`center?: LatLngHeight`**: The geographic coordinates of the intersection point.
+
+```ts
+type LatLngHeight = {
+  lat: number; // Latitude of the intersection point in decimal degrees.
+  lng: number; // Longitude of the intersection point in decimal degrees.
+  height: number; // Height of the intersection point above the ground in meters.
+};
+```
+
+**`viewSize?: number`**: The size of the visible area (in meters) on the ground from the camera's perspective.
+
+#### Example
+
+import CameraGetGlobeIntersection from "@code/plugin-api/camera/camera-get-globe-intersection?raw";
+
+<Code code={clearNoCheck(CameraGetGlobeIntersection)} lang="ts" />
+
+### rotateAround
+
+This method enables the camera to rotate around its current focus point by a specified angle in radians. This functionality is useful for exploring a scene while keeping the focus point stationary.
+
+#### Syntax
+
+```ts
+reearth.camera.rotateAround(radian: number) => void;
+```
+
+#### Parameters
+
+##### `radian`
+
+**Type**: `number`
+
+The angle by which to rotate the camera, measured in radians. Positive values rotate the camera clockwise, and negative values rotate it counterclockwise.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import CameraRotateAround from "@code/plugin-api/camera/camera-rotate-around?raw";
+
+<Code code={clearNoCheck(CameraRotateAround)} lang="ts" />
+
+### rotateRight
+
+This method enables the camera to rotate to the right around its current position by a specified angle in radians, without focusing on any specific external point.
+
+#### Syntax
+
+```ts
+reearth.camera.rotateRight(radian: number) => void;
+```
+
+#### Parameters
+
+##### `radian`
+
+**Type**: `number`
+
+The angle by which to rotate the camera, measured in radians. Positive values rotate the camera to the right, and negative values rotate it to the left.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import CameraRotateRight from "@code/plugin-api/camera/camera-rotate-right?raw";
+
+<Code code={clearNoCheck(CameraRotateRight)} lang="ts" />
+
+### orbit
+
+This enables the camera to rotate around the center of the Earth by a specified angle in radians, providing a global perspective. This functionality is particularly useful for quickly exploring the globe from different angles.
+
+#### Syntax
+
+```ts
+reearth.camera.orbit(radian: number) => void;
+```
+
+#### Parameters
+
+##### `radian`
+
+**Type**: `number`
+
+The angle by which to orbit the camera, measured in radians. Positive values orbit the camera clockwise, and negative values orbit it counterclockwise.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import CameraOrbit from "@code/plugin-api/camera/camera-orbit?raw";
+
+<Code code={clearNoCheck(CameraOrbit)} lang="ts" />
+
+### move
+
+This method allows the camera to move in a specified direction relative to its current position. This method is useful for navigating the scene dynamically, providing precise control over the camera's movement along different axes.
+
+#### Syntax
+
+```ts
+reearth.camera.move(
+  direction: "forward" | "backward" | "up" | "down" | "left" | "right",
+  amount: number
+) => void;
+```
+
+#### Parameters
+
+##### `direction`
+
+**Type**: `"forward" | "backward" | "up" | "down" | "left" | "right"`
+
+**`forward`**: Moves the camera forward (closer to the direction it is facing).
+**`backward`**: Moves the camera backward (away from the direction it is facing).
+**`up`**: Moves the camera upward along the vertical axis.
+**`down`**: Moves the camera downward along the vertical axis.
+**`left`**: Moves the camera left along the horizontal axis.
+**`right`**: Moves the camera right along the horizontal axis
+
+##### `amount`
+
+**Type**: `number`
+
+Specifies the distance (in meters) that the camera moves in the chosen direction. A larger value results in a more significant movement.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import CameraMove from "@code/plugin-api/camera/camera-move?raw";
+
+<Code code={clearNoCheck(CameraMove)} lang="ts" />
+
+### setView
+
+This method instantly sets the camera to a specified position and orientation, without animations. This method is ideal for quickly positioning the camera to a specific view with precise control over location, orientation, and field of view (FOV).
+
+#### Syntax
+
+```ts
+reearth.camera.setView(
+  view: CameraPosition & { fov?: number }
+) => void;
+```
+
+#### Parameters
+
+##### `view`
+
+**Type**: `CameraPosition & { fov?: number }`
+
+An object defining the camera's position, orientation, and optional field of view.
+
+:::note
+For more information on the options included in CameraPosition, please refer to [CameraPosition](#cameraposition) section.
+:::
+
+**`fov?: number:`** Optional field of view for the camera, measured in radians, controlling the camera's viewing angle.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import CameraSetView from "@code/plugin-api/camera/camera-set-view?raw";
+
+<Code code={clearNoCheck(CameraSetView)} lang="ts" />
+
+## Events
+
+### move
+
+This event is triggered whenever the camera's position or orientation changes within the `reearth` environment. This event allows users to listen for and respond to camera movements, providing the updated camera position and orientation.
+
+#### Syntax
+
+```ts
+reearth.camera.on("move", (camera: CameraPosition) => void): void;
+```
+
+#### Parameters
+
+##### `camera`
+
+**Type**: `CameraPosition`
+
+A function that is called whenever the move event occurs. The callback receives the updated camera position as an argument.
+
+:::note
+For more information on the options included in CameraPosition, please refer to [CameraPosition](#cameraposition) section.
+:::
+
+#### Example
+
+import CameraMoveEventCode from "@code/plugin-api/camera/event-move?raw";
+
+<Code code={clearNoCheck(CameraMoveEventCode)} lang="ts" />
+
+## References
+
+### CameraPosition
+
+An object that contains detailed position and orientation data.
+
+import CameraPosition from "@code/plugin-api/camera/type-camera-position?raw";
+
+<Code code={clearNoCheck(CameraPosition)} lang="ts" />
+
+**`lat?: number;`**: The latitide where the camera is positioned (in decimal degrees).
+
+**`lng?: number;`**: The longitude where the camera is positioned (in decimal degrees).
+
+**`height?: number`**: The altitude of the camera above the Earth's surface, determining how high or low the camera is positioned (in meters).
+
+**`heading?: number;`**: The direction the camera is facing. A heading of 0 points north, with the value increasing clockwise (in radians).
+
+**`pitch?: number;`**: Pitch angle, the vertical tilt of the camera. Positive values tilt the view upwards, while negative values tilt it downwards (in radians).
+
+**`roll?: number;`**: Roll angle, the rotation of the camera around its view direction (in radians).
+
+### GeoRect
+
+An object describing the geographic boundaries of the current viewport:
+
+import GeoRect from "@code/plugin-api/camera/type-georect?raw";
+
+<Code code={clearNoCheck(GeoRect)} lang="ts" />
+
+**`west: number`**: The western boundary of the viewport, in decimal degrees of longitude.
+
+**`south: number`**: The southern boundary of the viewport, in decimal degrees of latitude.
+
+**`east: number`**: The eastern boundary of the viewport, in decimal degrees of longitude.
+
+**`north: number`**: The northern boundary of the viewport, in decimal degrees of latitude.
+
+### CameraMoveOptions
+
+An object that provides control over the movement animation.
+
+import CameraMoveOptions from "@code/plugin-api/camera/type-camera-move-options?raw";
+
+<Code code={clearNoCheck(CameraMoveOptions)} lang="ts" />
+
+**`duration?: number;`** Specifies the duration of the camera movement in seconds. If omitted, a default duration is used.
+
+**`withoutAnimation?: boolean;`** If set to true, the camera moves instantly to the destination without animation. Default is false (animated).
+
+**`easing?: (time: number) => number;`** A custom easing function for controlling the animation pace, where time is a normalized value between 0 and 1.
+
+### LookAtDestination
+
+An object that specifies the target location for the camera.
+
+import LookAtDestination from "@code/plugin-api/camera/type-lookat-destination?raw";
+
+<Code code={clearNoCheck(LookAtDestination)} lang="ts" />
+
+**`lat?: number`** Latitude of the target location in decimal degrees.
+
+**`lng?: number;`** Longitude of the target location in decimal degrees.
+
+**`height?: number;`** Altitude of the target location above sea level in meters.
+
+**`heading?: number;`** Orientation of the camera in radians. (0 = north, positive values rotate clockwise).
+
+**`pitch?: number;`** Vertical tilt of the camera in radians. Negative values tilt downward.
+
+**`range?: number;`** Distance from the camera to the target location in meters.
+
+**`radius?: number;`** Specifies the radius around the target, controlling how far the camera is from the target while looking at it.
