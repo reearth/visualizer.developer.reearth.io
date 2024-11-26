@@ -1,0 +1,315 @@
+---
+title: reearth.extension
+description: API reference for `reearth.extension`.
+---
+
+The **`reearth.extension`** namespace provides access to the functionalities and properties of an active plugin extension. It includes methods for communication between different components, such as widgets, blocks, or other extension instances within the `reearth` environment.
+
+import { Code } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { clearNoCheck } from "@code/utils";
+
+## Properties
+
+### block
+
+The block property provides access to a plugin's story block or infobox block. A block can include metadata, plugin details, properties, and, in the case of an infobox block, an associated layer. This property is useful for interacting with content blocks in the `reearth` environment.
+
+#### Syntax
+
+```ts
+reearth.extension.block?: PluginStoryBlock | (PluginInfoboxBlock & { layer?: Layer });
+```
+
+#### Return Value
+
+**Type** `PluginStoryBlock | (PluginInfoboxBlock & { layer?: Layer });`
+
+A plugin block object that includes metadata, plugin details, properties, and, in the case of an infobox block, an associated layer.
+
+**`PluginStoryBlock`**: Represents a story block, which is a content block specifically designed for creating narratives or sequences within the plugin.
+
+:::note
+For more information on the options included in PluginStoryBlock, please refer to [PluginStoryBlock](#pluginstoryblock) section.
+:::
+
+**`PluginInfoboxBlock`**: Represents an infobox block, which may include an associated layer.
+
+:::note
+For more information on the options included in PluginInfoboxBlock, please refer to [PluginInfoboxBlock](#plugininfoboxblock) section.
+:::
+
+**`layer?: Layer`**: Represents a layer associated with the infobox block, including metadata, data source details, and display settings.
+
+:::note
+For more information on the options included in Layer, please refer to [Layer](#layer) section.
+:::
+
+#### Example
+
+import BlockCode from "@code/plugin-api/extension/block?raw";
+
+<Code code={clearNoCheck(BlockCode)} lang="ts" />
+
+### widget
+
+The widget property provides access to information about a plugin's widget, including its ID, layout, and display settings. Widgets are UI components that can be positioned and styled dynamically within the `reearth` environment.
+
+#### Syntax
+
+```ts
+reearth.extension.widget?: Widget;
+```
+
+#### Return Value
+
+**Type** `Widget`
+
+#### Example
+
+import WidgetCode from "@code/plugin-api/extension/widget?raw";
+
+<Code code={clearNoCheck(WidgetCode)} lang="ts" />
+
+### list
+
+This property provides access to an array of all plugin extension instances, including widgets, blocks, and other supported types. Each instance contains metadata about its plugin and extension, along with usage statistics.
+
+#### Syntax
+
+```ts
+reearth.extension.list: PluginExtensionInstance[];
+```
+
+#### Return Value
+
+**Type** `PluginExtensionInstance[];`
+
+Each entry in the list array represents an instance of a plugin extension.
+:::note
+For more information on the options included in PluginExtensionInstance, please refer to [PluginExtensionInstance](#pluginextensioninstance) section.
+:::
+
+#### Example
+
+import ListCode from "@code/plugin-api/extension/list?raw";
+
+<Code code={clearNoCheck(ListCode)} lang="ts" />
+
+## Methods
+
+### postMessage
+
+This method allows the plugin extension to send a message to a specific widget, block, or other extension instance by specifying its unique ID. This functionality is useful for enabling inter-component communication within the plugin.
+
+#### Syntax
+
+```ts
+reearth.extension.postMessage(id: string, message: unknown) => void;
+```
+
+#### Parameters
+
+##### `id`
+
+**Type**: `string`
+
+##### `message`
+
+**Type**: `any`
+
+The message to be sent.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import PostExtensionCode from "@code/plugin-api/extension/post-extension?raw";
+
+<Code code={clearNoCheck(PostExtensionCode)} lang="ts" />
+
+## Events
+
+### message
+
+The message event triggers whenever a generic message is sent to the extension. This event is used to listen for messages from other components, such as widgets or blocks, within the plugin.
+
+#### Syntax
+
+```ts
+reearth.extension.on("message", (message: unknown)  => void): void;
+```
+
+#### Example
+
+import MessageEventCode from "@code/plugin-api/extension/event-message?raw";
+
+<Code code={clearNoCheck(MessageEventCode)} lang="ts" />
+
+### extensionMessage
+
+The extensionMessage event triggers when a message is sent specifically from another extension instance. It provides additional context, including the data payload and the sender's ID.
+
+#### Syntax
+
+```ts
+reearth.extension.on("extensionMessage", (props: ExtensionMessage)  => void): void;
+```
+
+#### Example
+
+import ExtensionMessageEventCode from "@code/plugin-api/extension/event-extension-message?raw";
+
+<Code code={clearNoCheck(ExtensionMessageEventCode)} lang="ts" />
+
+## References
+
+### PluginStoryBlock
+
+import PluginStoryBlock from "@code/plugin-api/extension/type-plugin-story-block?raw";
+
+<Code code={clearNoCheck(PluginStoryBlock)} lang="ts" />
+
+**`id: string;`**: A unique identifier for the story block. This is essential for distinguishing one block from another, especially when working with multiple blocks.
+
+**`name?: string | null;`**: The name of the story block. This is optional and can be null if not provided.
+
+**`pluginId: string;`**: The unique ID of the plugin to which the story block belongs. This helps associate the block with its parent plugin.
+
+**`extensionId: string;`**: The unique ID of the plugin extension that created this block. Useful for tracing the source of the block within the plugin.
+
+**`extensionType?: "storyBlock";`**: Specifies the type of extension as "storyBlock". This property helps differentiate it from other block types, like infoboxBlock.
+
+**`propertyId?: string;`**: An optional property ID that links to the block's configuration or metadata stored elsewhere.
+
+**`property?: any;`**: Custom properties associated with the block.
+
+### PluginInfoboxBlock
+
+import PluginInfoboxBlock from "@code/plugin-api/extension/type-plugin-infobox-block?raw";
+
+<Code code={clearNoCheck(PluginInfoboxBlock)} lang="ts" />
+
+**`id: string;`**: A unique identifier for the infobox block. This ensures each block is easily identifiable.
+
+**`name?: string;`**: An optional name for the infobox block. This might represent a label or title for the infobox.
+
+**`pluginId?: string;`**: The unique ID of the plugin to which this infobox block belongs. This is optional and may not always be present.
+
+**`extensionId: string;`**: The unique ID of the plugin extension that created this infobox block. This helps identify its origin.
+
+**`extensionType?: "infoboxBlock";`**: Specifies the type of extension as "infoboxBlock". This property is crucial for determining the type of block being handled.
+
+**`propertyId?: string;`**: An optional property ID linked to the block's configuration or metadata. Similar to PluginStoryBlock, this allows dynamic property management.
+
+**`property?: P;`**: The property field represents custom properties associated with the block. Its type is determined by the generic parameter P, allowing it to adapt dynamically to the plugin's specific needs.
+
+### Layer
+
+import Layer from "@code/plugin-api/layers/type-layer?raw";
+
+<Code code={clearNoCheck(Layer)} lang="ts" />
+
+### Widget
+
+import Widget from "@code/plugin-api/extension/type-widget?raw";
+
+<Code code={clearNoCheck(Widget)} lang="ts" />
+
+**`id: string;`**: A unique identifier for the widget.
+
+**`pluginId?: string;`**: (Optional) The ID of the plugin that owns this widget. Useful for identifying which plugin the widget belongs to.
+
+**`extensionId?: string;`**: (Optional) The ID of the plugin extension that created the widget. This can help distinguish widgets created by different extensions of the same plugin.
+
+**`property?: unknown;`**: (Optional) Custom properties associated with the widget. The exact structure of these properties depends on the specific plugin's implementation.
+
+**`propertyId?: string;`**: (Optional) The unique identifier for the widget’s configuration or metadata. It allows linking to external settings or stored properties.
+
+**`extended?: { horizontally: boolean; vertically: boolean };`**: (Optional) Indicates whether the widget is extended in specific directions. This property is useful for determining the widget's layout and behavior.
+
+- `horizontally: boolean`: `true` if the widget is extended horizontally, otherwise `false`.
+- `vertically: boolean`: `true` if the widget is extended vertically, otherwise `false`.
+
+This property is optional and may not always be present. If omitted, the widget is not extended in either direction.
+
+**`layout?: WidgetLayout;`**: (Optional) Specifies the widget’s position and alignment within the Reearth UI. See the definition of [WidgetLayout](#widgetlayout) below.
+
+### WidgetLayout
+
+import WidgetLayout from "@code/plugin-api/extension/type-widget-layout?raw";
+
+<Code code={clearNoCheck(WidgetLayout)} lang="ts" />
+
+The WidgetLayout type defines how a widget is positioned within the Reearth interface.
+
+**`location: WidgetLocation;`**: Specifies the exact location of the widget within the interface. See [WidgetLocation](#widgetlocation) for more details.
+
+**`align?: WidgetAlignment;`**: (Optional) Determines how the widget is aligned within its area. Defaults to no alignment if not provided. See [WidgetAlignment](#widgetalignment) for details.
+
+### WidgetLocation
+
+import WidgetLocation from "@code/plugin-api/extension/type-widget-location?raw";
+
+<Code code={clearNoCheck(WidgetLocation)} lang="ts" />
+
+The WidgetLocation type defines the hierarchical position of the widget in the `reearth` interface. It describes where the widget is placed relative to the user interface zones.
+
+**`zone: "inner" | "outer";`**: Specifies the UI zone where the widget is located:
+
+- `"inner"`: Indicates the widget is inside the main content area.
+- `"outer"`: Indicates the widget is in the peripheral UI (e.g., sidebars, headers).
+
+**`section: "left" | "center" | "right";`**: Describes the section within the zone:
+
+- `"left"`: The left section.
+- `"center"`: The central section.
+- `"right"`: The right section.
+
+**`area: "top" | "middle" | "bottom";`**: Defines the vertical area within the section:
+
+- `"top"`: The top of the section.
+- `"middle"`: The middle of the section.
+- `"bottom"`: The bottom of the section.
+
+### WidgetAlignment
+
+import WidgetAlignment from "@code/plugin-api/extension/type-widget-alignment?raw";
+
+<Code code={clearNoCheck(WidgetAlignment)} lang="ts" />
+
+The WidgetAlignment type specifies how a widget is aligned within its area.
+
+**`"start";`**: Aligns the widget to the start of its area (e.g., top-left corner).
+
+**`"centered";`**: Centers the widget within its area.
+
+**`"end";`**: Aligns the widget to the end of its area (e.g., bottom-right corner).
+
+### PluginExtensionInstance
+
+import PluginExtensionInstance from "@code/plugin-api/extension/type-plugin-extension-instance?raw";
+
+<Code code={clearNoCheck(PluginExtensionInstance)} lang="ts" />
+
+**`id: string;`**: A unique identifier for the extension instance. This ID is used to reference the instance within the `reearth` environment.
+
+**`pluginId: string;`**: The unique ID of the plugin to which the extension instance belongs. This links the instance to its parent plugin.
+
+**`name: string;`**: The name of the extension instance. This is typically a human-readable name to identify the instance.
+
+**`extensionId: string;`**: The unique ID of the plugin extension that created the instance. This helps distinguish between extensions within the same plugin.
+
+**`extensionType: "widget" | "block" | "infoboxBlock" | "storyBlock";`**: The type of extension represented by the instance. Possible values include:
+
+- `"widget"`: A widget extension.
+- `"block"`: A generic block extension.
+- `"infoboxBlock"`: An infobox block extension.
+- `"storyBlock"`: A story block extension.
+
+**`runTimes: number | undefined`**: The number of times this extension instance has been executed.
+
+- `number`: Indicates how many times the instance has been run.
+- `undefined`: This value is unavailable or not applicable.
