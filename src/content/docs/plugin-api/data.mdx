@@ -13,7 +13,7 @@ import { clearNoCheck } from "@code/utils";
 
 ### clientStorage
 
-The ClientStorage property offers an interface for managing a lightweight, asynchronous key-value storage system. It provides several methods for interacting with the plugin’s client-side storage, including reading, writing, and deleting data.
+The clientStorage property offers an interface for managing a lightweight, asynchronous key-value storage system. It provides several methods for interacting with the plugin’s client-side storage, including reading, writing, and deleting data.
 
 #### Syntax
 
@@ -41,35 +41,35 @@ type ClientStorage = {
 
 Retrieves the value associated with a specific key.
 
-- **key: string**: The key of the value to retrieve.
-- **Return Value**: A promise that resolves with the value associated with the key, or undefined if the key doesn’t exist.
+- **`key: string`**: The key of the value to retrieve.
+- **`Return Value`**: A promise that resolves with the value associated with the key, or undefined if the key doesn’t exist.
 
 ###### `setAsync(key: string, value: any): Promise<void>`:
 
 Stores a key-value pair in the storage.
 
-- **key: string**: The key to associate with the value.
-- **value: any**: The value to store.
-- **Return Value**: A promise that resolves when the key-value pair is saved.
+- **`key: string`**: The key to associate with the value.
+- **`value: any`**: The value to store.
+- **`Return Value`**: A promise that resolves when the key-value pair is saved.
 
 ###### `deleteAsync(key: string): Promise<void>`:
 
 Removes a key-value pair from the storage.
 
-- **key: string**: The key of the value to delete.
-- **Return Value**: A promise that resolves when the key-value pair is deleted.
+- **`key: string`**: The key of the value to delete.
+- **`Return Value`**: A promise that resolves when the key-value pair is deleted.
 
 ###### `keysAsync(): Promise<string[]>`:
 
 Retrieves all keys stored in the client storage.
 
-- **Return Value**: A promise that resolves with an array of strings, each representing a key.
+- **`Return Value`**: A promise that resolves with an array of strings, each representing a key.
 
 ###### `dropStoreAsync(): Promise<void>`:
 
 Clears all data from the client storage.
 
-- **Return Value**: A promise that resolves when the storage is cleared.
+- **`Return Value`**: A promise that resolves when the storage is cleared.
 
 #### Example
 
