@@ -1,0 +1,583 @@
+---
+title: reearth.viewer
+description: reearth.viewer
+sidebar:
+  order: 2
+---
+
+import { Code } from "@astrojs/starlight/components";
+import { clearNoCheck } from "@code/utils";
+
+The `reearth.viewer` namespace provides a set of functions to interact with the viewer.
+
+## Properties
+
+### property
+
+`property` provides a set of properties about the viewer, including globe, terrain, scene, tiles, sky, and more.
+
+#### Syntax
+
+```ts
+reearth.viewer.property: ViewerProperty;
+```
+
+#### Return Value
+
+**Type** `ViewerProperty`
+
+Currently, property returns only the properties that have been explicitly set; default values are not included.
+
+:::note
+ViewerProperty is imported from Re:Earth Core, for more information, see [ViewerProperty](https://github.com/reearth/core/blob/alpha/src/Map/types/viewerProperty.ts).
+:::
+
+### viewport
+
+The viewport is designed to provide properties related to the map area and includes the URL query parameters for the current viewport (page).
+
+#### Syntax
+
+```ts
+reearth.viewer.viewport: Viewport;
+```
+
+#### Return Value
+
+**Type**
+
+```ts
+type Viewport = {
+  width: number;
+  height: number;
+  isMobile: boolean;
+  query: Record<string, string>;
+};
+```
+
+- **width:** The width of the viewport.
+- **height:** The height of the viewport.
+- **isMobile:** A boolean value that indicates whether the viewport is a mobile device. Currently width \<= `768` is considered a mobile device.
+- **query:** The URL query parameters for the current page.
+
+### env
+
+`env` provides the env info of current running Re:Earth Visualizer.
+
+#### Syntax
+
+```ts
+reearth.viewport.env: Env;
+```
+
+#### Return Value
+
+**Type**
+
+```ts
+type Env = {
+  inEditor: boolean;
+  isBuilt: boolean;
+};
+```
+
+`inEditor` and `isBuilt` has different values when running in different page or tab, plugin could provide different behavior based on these values.
+
+| Property | Editor - Map/Story/Widgets Tab | Editor - Publish Tab | Published Page |
+| -------- | ------------------------------ | -------------------- | -------------- |
+| inEditor | true                           | false                | false          |
+| isBuilt  | false                          | false                | true           |
+
+### interactionMode
+
+`interactionMode` provides a set of properties and methods to manage the interaction mode of the viewer in Re:Earth Visualizer.
+
+#### interactionMode.mode
+
+Current interaction mode of the viewer.
+
+#### Syntax
+
+```ts
+reearth.viewer.interactionMode.mode: InteractionModeType
+```
+
+#### Return Value
+
+**Type** `InteractionModeType = "default" | "move" | "selection" | "sketch"`
+
+- **`default`**: Default interaction mode.
+- **`move`**: Move interaction mode. Selection is disabled in this mode.
+- **`selection`**: Selection interaction mode. Move is disabled in this mode.
+- **`sketch`**: Sketch interaction mode. Sketch could be enabled in this mode only.
+
+#### interactionMode.override
+
+Overrides the interaction mode of the viewer.
+
+#### Syntax
+
+```ts
+reearth.viewer.interactionMode.override: (
+  mode: InteractionModeType
+) => void;
+```
+
+#### Parameters
+
+##### `mode`
+
+**Type**: `InteractionModeType`
+
+The interaction mode to be set.
+
+#### Return Value
+
+None `(void)`. The method performs its operation without returning a value.
+
+## Methods
+
+### overrideProperty
+
+`overrideProperty` is used to override the viewer property.
+
+#### Syntax
+
+```ts
+reearth.viewer.overrideProperty: (property: ViewerProperty) => void;
+```
+
+#### Parameters
+
+##### property
+
+**Type** `ViewerProperty`
+
+:::note
+ViewerProperty is imported from Re:Earth Core, for more information, see [ViewerProperty](https://github.com/reearth/core/blob/alpha/src/Map/types/viewerProperty.ts).
+:::
+
+#### Return Value
+
+**Type** `void`
+
+This Method has no return value.
+
+#### Example
+
+import OverridePropertyCode from "@code/plugin-api/viewer/override-property?raw";
+
+<Code code={clearNoCheck(OverridePropertyCode)} lang="ts" />
+
+### capture
+
+`capture` function could generate an image for current viewer.
+
+#### Syntax
+
+```ts
+reearth.viewer.capture: (
+  type?: string,
+  encoderOptions?: number
+) => string | undefined;
+```
+
+#### Parameters
+
+##### type
+
+**Type** `string` (optional)
+
+A string indicating the image format. The default type is image/png; this image format will be also used if the specified type is not supported.
+
+##### encoderOptions
+
+**Type** `number` (optional)
+
+A Number between 0 and 1 indicating the image quality to be used when creating images using file formats that support lossy compression (such as image/jpeg or image/webp). A user agent will use its default quality value if this option is not specified, or if the number is outside the allowed range.
+
+:::note
+This method is calling `canvas.toDataURL` internally, please read [HTMLCanvasElement: toDataURL() method](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL) for more information.
+:::
+
+#### Return Value
+
+**Type** `string | undefined`
+
+A string containing the requested data URL.
+
+#### Example
+
+import CaptureCode from "@code/plugin-api/viewer/capture?raw";
+
+<Code code={clearNoCheck(CaptureCode)} lang="ts" />
+
+### tools
+
+The tools module provides a collection of helper functions for performing various calculations around globe and scene.
+
+### > getLocationFromScreenCoordinate
+
+Return the location on the earth from the screen coordinate.
+
+#### Syntax
+
+```ts
+reearth.viewer.tools.getLocationFromScreenCoordinate: (
+  x: number,
+  y: number,
+  withTerrain?: boolean
+) => { lat: number; lng: number; height: number } | undefined;
+```
+
+#### Parameters
+
+##### x
+
+**Type** `number`
+
+The x pixel coordinate on the viewer.
+
+##### y
+
+**Type** `number`
+
+The y pixel coordinate on the viewer.
+
+##### withTerrain
+
+**Type** `boolean` (optional)
+
+A boolean value that indicates whether the terrain height should be considered. The default value is `false`.
+
+#### Return Value
+
+**Type** `{ lat: number; lng: number; height: number } | undefined`
+
+The location on the earth.
+
+### > getScreenCoordinateFromPosition
+
+Return the screen coordinate from the position on the earth.
+
+#### Syntax
+
+```ts
+reearth.viewer.tools.getScreenCoordinateFromPosition: (
+  position: [x: number, y: number, z: number]
+) => [x: number, y: number] | undefined;
+```
+
+#### Parameters
+
+##### position
+
+**Type** `[x: number, y: number, z: number]`
+
+The position on the earth, in Cartesian.
+
+#### Return Value
+
+**Type** `[x: number, y: number] | undefined`
+
+The pixel coordinate on viewer.
+
+### > getTerrainHeightAsync
+
+Return the terrain height at the given location. This is an asynchronous function.
+
+#### Syntax
+
+```ts
+reearth.viewer.tools.getTerrainHeightAsync: (
+  lat: number,
+  lng: number
+) => Promise<number | undefined>;
+```
+
+#### Parameters
+
+##### lat
+
+**Type** `number`
+
+The latitude of the location.
+
+##### lng
+
+**Type** `number`
+
+The longitude of the location.
+
+#### Return Value
+
+**Type** `Promise<number | undefined>`
+
+The height of the terrain at the given location.
+
+### > getGlobeHeight
+
+Return the height of the surface at the given location.
+
+#### Syntax
+
+```ts
+reearth.viewer.tools.getGlobeHeight: (
+  lat: number,
+  lng: number
+) => number | undefined;
+```
+
+#### Parameters
+
+##### lat
+
+**Type** `number`
+
+The latitude of the location.
+
+##### lng
+
+**Type** `number`
+
+The longitude of the location.
+
+#### Return Value
+
+**Type** `number | undefined`
+
+The height of the surface at the given location.
+
+### > cartographicToCartesian
+
+Converts a cartographic position to a Cartesian position.
+
+#### Syntax
+
+```ts
+reearth.viewer.tools.cartographicToCartesian: (
+  lng: number,
+  lat: number,
+  height: number,
+  options?: { useGlobeEllipsoid?: boolean }
+) => [x: number, y: number, z: number] | undefined;
+```
+
+#### Parameters
+
+##### lng
+
+**Type** `number`
+
+The longitude of the location.
+
+##### lat
+
+**Type** `number`
+
+The latitude of the location.
+
+##### height
+
+**Type** `number`
+
+The height of the location.
+
+##### options
+
+**Type** `{ useGlobeEllipsoid?: boolean }` (optional)
+
+- **useGlobeEllipsoid:** A boolean value that indicates whether the globe ellipsoid should be used. The default value is `false`.
+
+#### Return Value
+
+**Type** `[x: number, y: number, z: number] | undefined`
+
+The Cartesian position.
+
+### > cartesianToCartographic
+
+Converts a Cartesian position to a cartographic position.
+
+#### Syntax
+
+```ts
+reearth.viewer.tools.cartesianToCartographic: (
+  x: number,
+  y: number,
+  z: number,
+  options?: { useGlobeEllipsoid?: boolean }
+) => [lng: number, lat: number, height: number] | undefined;
+```
+
+#### Parameters
+
+##### x
+
+**Type** `number`
+
+The x coordinate of the location.
+
+##### y
+
+**Type** `number`
+
+The y coordinate of the location.
+
+##### z
+
+**Type** `number`
+
+The z coordinate of the location.
+
+##### options
+
+**Type** `{ useGlobeEllipsoid?: boolean }` (optional)
+
+- **useGlobeEllipsoid:** A boolean value that indicates whether the globe ellipsoid should be used. The default value is `false`.
+
+#### Return Value
+
+**Type** `[lng: number, lat: number, height: number] | undefined`
+
+The cartographic position.
+
+### > transformByOffsetOnScreen
+
+Transforms the position by the offset on the screen.
+
+#### Syntax
+
+```ts
+reearth.viewer.tools.transformByOffsetOnScreen: (
+  rawPosition: [x: number, y: number, z: number],
+  screenOffset: [x: number, y: number]
+) => [x: number, y: number, z: number] | undefined;
+```
+
+#### Parameters
+
+##### rawPosition
+
+**Type** `[x: number, y: number, z: number]`
+
+The raw position on the earth.
+
+##### screenOffset
+
+**Type** `[x: number, y: number]`
+
+The offset on the screen.
+
+#### Return Value
+
+**Type** `[x: number, y: number, z: number] | undefined`
+
+The transformed position.
+
+### > isPositionVisibleOnGlobe
+
+Check if the position is visible on the globe.
+
+#### Syntax
+
+```ts
+reearth.viewer.tools.isPositionVisibleOnGlobe: (
+  position: [x: number, y: number, z: number]
+) => boolean;
+```
+
+#### Parameters
+
+##### position
+
+**Type** `[x: number, y: number, z: number]`
+
+The position on the earth.
+
+#### Return Value
+
+**Type** `boolean`
+
+A boolean value that indicates whether the position is visible on the globe.
+
+## Events
+
+### resize
+
+`resize` event will be triggered when the viewer is resized.
+
+#### Syntax
+
+```ts
+reearth.viewer.on("resize", ({width: number, height: number, isMobile:boolean}) => void);
+```
+
+#### Parameters
+
+- **width:** The width of the viewport.
+- **height:** The height of the viewport.
+- **isMobile:** A boolean value that indicates whether the viewport is a mobile device. Currently width \<= `768` is considered a mobile device.
+
+#### Example
+
+import ResizeEventCode from "@code/plugin-api/viewer/resize-event?raw";
+
+<Code code={clearNoCheck(ResizeEventCode)} lang="ts" />
+
+### mouse events
+
+Viewer has a set of mouse events that can be listened to. They have the same parameters.
+
+Supported events are:
+
+- click
+- doubleClick
+- mouseDown
+- mouseUp
+- rightClick
+- rightDown
+- rightUp
+- middleClick
+- middleDown
+- middleUp
+- mouseMove
+- mouseEnter
+- mouseLeave
+- wheel
+
+#### Syntax
+
+```ts
+reearth.viewer.on("click", (event: MouseEvent)=> void);
+```
+
+#### Parameters
+
+**event:** MouseEvent
+
+```ts
+type MouseEvent = {
+  x?: number;
+  y?: number;
+  lat?: number;
+  lng?: number;
+  height?: number;
+  layerId?: string;
+  delta?: number;
+};
+```
+
+- **x:** the x corrdinate of cursor relative to the viewer.
+- **y:** the y corrdinate of cursor relative to the viewer.
+- **lat:** the latitude of cursor on earth.
+- **lng:** the longitude of cursor on earth.
+- **height:** the height of cursor on earth.
+- **layerId:** the layerId of the object that cursor is on.
+- **delta:** the delta value of wheel event.
+
+#### Example
+
+import MouseEventCode from "@code/plugin-api/viewer/mouse-event?raw";
+
+<Code code={clearNoCheck(MouseEventCode)} lang="ts" />
