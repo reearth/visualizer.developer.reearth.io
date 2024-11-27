@@ -1,16 +1,15 @@
 // @ts-nocheck
 
-// Example 1: Send a message to a widget with ID "widget123"
-reearth.extension.postMessage("widget123", {
-  action: "update",
-  data: { key: "value" },
-});
+// Send a message to a widget with name "my-widget-name"
+const extensionInstances = reearth.extension.list;
 
-// Example 2: Send a message to a block with ID "block456"
-reearth.extension.postMessage("block456", { message: "greeting" });
+const targetWidgetId = extensionInstances.find(
+  (extension) => extension.name === "my-widget-name"
+)?.id;
 
-// Example 3: Pass data to another extension with ID "extension789"
-reearth.extension.postMessage("extension789", {
-  type: "command",
-  payload: { zoomLevel: 5 },
-});
+if (targetWidgetId) {
+  reearth.extension.postMessage(targetWidgetId, {
+    action: "update",
+    data: { key: "value" },
+  });
+}

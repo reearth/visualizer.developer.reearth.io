@@ -15,6 +15,10 @@ import { clearNoCheck } from "@code/utils";
 
 The block property provides access to a plugin's story block or infobox block. A block can include metadata, plugin details, properties, and, in the case of an infobox block, an associated layer. This property is useful for interacting with content blocks in the `reearth` environment.
 
+:::caution
+This is available only when executed in a extension in type of storyBlock or infoboxBlock.
+:::
+
 #### Syntax
 
 ```ts
@@ -55,6 +59,10 @@ import BlockCode from "@code/plugin-api/extension/block?raw";
 
 The widget property provides access to information about a plugin's widget, including its ID, layout, and display settings. Widgets are UI components that can be positioned and styled dynamically within the `reearth` environment.
 
+:::caution
+This is available only when executed in a extension in type of widget.
+:::
+
 #### Syntax
 
 ```ts
@@ -64,6 +72,10 @@ reearth.extension.widget?: Widget;
 #### Return Value
 
 **Type** `Widget`
+
+:::note
+For more information about Widget, please refer to [Widget](#widget-1) section.
+:::
 
 #### Example
 
@@ -114,6 +126,8 @@ reearth.extension.postMessage(id: string, message: any) => void;
 
 **Type**: `string`
 
+The extension ID of the target instance to which the message will be sent.
+
 ##### `message`
 
 **Type**: `any`
@@ -134,7 +148,7 @@ import PostExtensionCode from "@code/plugin-api/extension/post-extension?raw";
 
 ### message
 
-The message event triggers whenever a generic message is sent to the extension. This event is used to listen for messages from other components, such as widgets or blocks, within the plugin.
+The message event triggers whenever a generic message is sent to the extension. This event is used to listen for messages from **current extension's UI (or modal, or popup)**.
 
 #### Syntax
 
@@ -150,7 +164,7 @@ import MessageEventCode from "@code/plugin-api/extension/event-message?raw";
 
 ### extensionMessage
 
-The extensionMessage event triggers when a message is sent specifically from another extension instance. It provides additional context, including the data payload and the sender's ID.
+The extensionMessage event triggers when a message is sent specifically from **another extension instance**. It provides additional context, including the data payload and the sender's ID.
 
 #### Syntax
 
@@ -305,11 +319,5 @@ import PluginExtensionInstance from "@code/plugin-api/extension/type-plugin-exte
 **`extensionType: "widget" | "block" | "infoboxBlock" | "storyBlock";`**: The type of extension represented by the instance. Possible values include:
 
 - `"widget"`: A widget extension.
-- `"block"`: A generic block extension.
 - `"infoboxBlock"`: An infobox block extension.
 - `"storyBlock"`: A story block extension.
-
-**`runTimes: number | undefined`**: The number of times this extension instance has been executed.
-
-- `number`: Indicates how many times the instance has been run.
-- `undefined`: This value is unavailable or not applicable.
