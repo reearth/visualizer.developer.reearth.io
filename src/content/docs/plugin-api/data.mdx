@@ -1,0 +1,78 @@
+---
+title: reearth.data
+description: API reference for `reearth.data`.
+---
+
+The **`reearth.data`** namespace provides methods to manage client-side storage in `reearth` plugins. It allows asynchronous retrieval, updating, and deletion of data, as well as managing storage keys and clearing the entire store. This namespace is useful for persisting user preferences, session data, or temporary settings.
+
+import { Code } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { clearNoCheck } from "@code/utils";
+
+## Properties
+
+### clientStorage
+
+The ClientStorage property offers an interface for managing a lightweight, asynchronous key-value storage system. It provides several methods for interacting with the plugin’s client-side storage, including reading, writing, and deleting data.
+
+#### Syntax
+
+```ts
+reearth.data.clientStorage: ClientStorage;
+```
+
+#### Return Value
+
+**Type** `ClientStorage`
+
+The ClientStorage type defines the methods available for managing data storage.
+
+```ts
+type ClientStorage = {
+  getAsync: (key: string) => Promise<any>; // Retrieve data by key
+  setAsync: (key: string, value: any) => Promise<void>; // Store data by key
+  deleteAsync: (key: string) => Promise<void>; // Delete data by key
+  keysAsync: () => Promise<string[]>; // Get all storage keys
+  dropStoreAsync: () => Promise<void>; // Clear all stored data
+};
+```
+
+###### `getAsync(key: string): Promise<any>`:
+
+Retrieves the value associated with a specific key.
+
+- **key: string**: The key of the value to retrieve.
+- **Return Value**: A promise that resolves with the value associated with the key, or undefined if the key doesn’t exist.
+
+###### `setAsync(key: string, value: any): Promise<void>`:
+
+Stores a key-value pair in the storage.
+
+- **key: string**: The key to associate with the value.
+- **value: any**: The value to store.
+- **Return Value**: A promise that resolves when the key-value pair is saved.
+
+###### `deleteAsync(key: string): Promise<void>`:
+
+Removes a key-value pair from the storage.
+
+- **key: string**: The key of the value to delete.
+- **Return Value**: A promise that resolves when the key-value pair is deleted.
+
+###### `keysAsync(): Promise<string[]>`:
+
+Retrieves all keys stored in the client storage.
+
+- **Return Value**: A promise that resolves with an array of strings, each representing a key.
+
+###### `dropStoreAsync(): Promise<void>`:
+
+Clears all data from the client storage.
+
+- **Return Value**: A promise that resolves when the storage is cleared.
+
+#### Example
+
+import ClientStorageCode from "@code/plugin-api/data/client-storage?raw";
+
+<Code code={clearNoCheck(ClientStorageCode)} lang="ts" />
