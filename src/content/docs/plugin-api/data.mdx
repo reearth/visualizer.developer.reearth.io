@@ -1,0 +1,164 @@
+---
+title: reearth.data
+description: API reference for `reearth.data`.
+---
+
+The **`reearth.data`** namespace provides methods to manage client-side storage in `reearth` plugins. It allows asynchronous retrieval, updating, and deletion of data, as well as managing storage keys and clearing the entire store. This namespace is useful for persisting user preferences, session data, or temporary settings.
+
+import { Code } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { clearNoCheck } from "@code/utils";
+
+## reearth.data.clientStorage
+
+The clientStorage offers an interface for managing a lightweight, asynchronous key-value storage system. It provides several methods for interacting with the plugin’s client-side storage, including reading, writing, and deleting data.
+
+### setAsync
+
+Stores a key-value pair in the storage.
+
+#### Syntax
+
+```ts
+reearth.data.clientStorage.setAsync(key: string, value: any): Promise<void>
+```
+
+#### Parameters
+
+##### key
+
+**Type** `string`
+
+The key to associate with the value.
+
+##### value
+
+**Type** `any`
+
+The value to store.
+
+#### Return Value
+
+**Type** `Promise<void>`
+
+A promise that resolves when the key-value pair is saved.
+
+#### Example
+
+```ts
+// Store the value
+await clientStorage.setAsync("username", "Alice");
+console.log("Username stored successfully");
+```
+
+### getAsync
+
+Retrieves the value associated with a specific key.
+
+#### Syntax
+
+```ts
+reearth.data.clientStorage.getAsync(key: string): Promise<any>
+```
+
+#### Parameters
+
+##### key
+
+**Type** `string`
+
+The key of the value to retrieve.
+
+#### Return Value
+
+**Type** `Promise<any>`
+
+A promise that resolves with the value associated with the key, or undefined if the key doesn't exist.
+
+#### Example
+
+```ts
+// Retrieve the value
+const username = await clientStorage.getAsync("username");
+console.log("Retrieved Username:", username);
+```
+
+### keysAsync
+
+Retrieves all keys stored in the client storage.
+
+#### Syntax
+
+```ts
+reearth.data.clientStorage.keysAsync(): Promise<string[]>
+```
+
+#### Return Value
+
+**Type** `Promise<string[]>`
+
+A promise that resolves with an array of strings, each representing a key.
+
+#### Example
+
+```ts
+// Retrieve all keys
+const keys = await clientStorage.keysAsync();
+console.log("Keys:", keys);
+```
+
+### deleteAsync
+
+Removes a key-value pair from the storage.
+
+#### Syntax
+
+```ts
+reearth.data.clientStorage.deleteAsync(key: string): Promise<void>
+```
+
+#### Parameters
+
+##### key
+
+**Type** `string`
+
+The key of the value to delete.
+
+#### Return Value
+
+**Type** `Promise<void>`
+
+A promise that resolves when the key-value pair is deleted.
+
+#### Example
+
+```ts
+// Delete the value
+await clientStorage.deleteAsync("username");
+console.log("Username deleted successfully");
+```
+
+### dropStoreAsync
+
+Clears all data from the client storage.
+
+#### Syntax
+
+```ts
+reearth.data.clientStorage.dropStoreAsync(): Promise<void>
+```
+
+#### Return Value
+
+**Type** `Promise<void>`
+
+A promise that resolves when the storage is cleared.
+
+#### Example
+
+```ts
+// Clear all stored data
+await clientStorage.dropStoreAsync();
+console.log("Storage cleared successfully");
+```
