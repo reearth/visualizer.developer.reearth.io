@@ -1,0 +1,181 @@
+---
+title: reearth.sketch
+description: reearth.sketch
+sidebar:
+  order: 6
+---
+
+import { Code } from "@astrojs/starlight/components";
+import { clearNoCheck } from "@code/utils";
+
+The Re:Earth Visualizer includes a powerful sketch feature that enables users to dynamically draw custom markers, polylines, polygons, and more directly on the map. This functionality is accessible through the plugin API via `reearth.sketch`.
+
+## Properties
+
+### tool
+
+Get current sketch tool.
+
+#### Syntax
+
+```ts
+reearth.sketch.tool: SketchType;
+```
+
+#### Return Value
+
+**Type** `SketchType = 
+  | "marker"
+  | "polyline"
+  | "circle"
+  | "rectangle"
+  | "polygon"
+  | "extrudedCircle"
+  | "extrudedRectangle"
+  | "extrudedPolygon"`
+
+### options
+
+Get current sketch options.
+
+#### Syntax
+
+```ts
+reearth.sketch.options: SketchOptions;
+```
+
+#### Return Value
+
+**Type**
+
+```ts
+type SketchOptions = {
+  color?: string;
+  appearance?: SketchAppearance;
+  dataOnly?: boolean;
+  disableShadow?: boolean;
+  rightClickToAbort?: boolean;
+  autoResetInteractionMode?: boolean;
+};
+```
+
+- **color:** Specifies the primary color for the sketch geometry.
+- **appearance:** Defines the styles applied to the sketch geometry once the drawing is completed.
+- **dataOnly:** When set to true, the sketch will not append a new layer to the map after drawing. Default: `false` (Note: this option will be set to `true` in Re:Earth Visualizer Editor).
+- **disableShadow:** Determines whether shadows are displayed for the drawn geometry. Default: `false`.
+- **rightClickToAbort:** Enables the ability to abort the current drawing by right-clicking the mouse. Default: `true`. (Note: this option will be set to `false` in Re:Earth Visualizer Editor).
+- **autoResetInteractionMode:** Automatically resets the viewer's interaction mode to the default after completing a drawing. Default: `true`.
+
+:::note
+SketchAppearance is a partial implementation of LayerAppearance. For more information, please refer to [Layer Appearance Types](/plugin-api/layers/#layer-appearance-types).
+:::
+
+## Methods
+
+### setTool
+
+Configure the sketch tool to a specific type, or set it to undefined to exit sketch mode.
+
+#### Syntax
+
+```ts
+reearth.sketch.setTool: (type: SketchType | undefined) => void;
+```
+
+#### Parameters
+
+##### type
+
+**Type** `SketchType | undefined`
+
+#### Return Value
+
+None `(void)`. The method performs its operation without returning a value.
+
+### overrideOptions
+
+This method is used to override the current sketch options.
+
+#### Syntax
+
+```ts
+reearth.sketch.overrideOptions: (options: SketchOptions) => void;
+```
+
+#### Parameters
+
+##### options
+
+**Type** `SketchOptions`
+
+#### Return Value
+
+None `(void)`. The method performs its operation without returning a value.
+
+## Events
+
+### create
+
+This event is triggered when a sketch drawing is successfully completed.
+
+#### Syntax
+
+```ts
+reearth.sketch.on("create", (prop: SketchEventProps) => void);
+```
+
+#### Parameters
+
+##### prop
+
+**Type**
+
+```ts
+type SketchEventProps = {
+  layerId?: string;
+  featureId?: string;
+  feature?: SketchFeature;
+};
+```
+
+- **layerId:** The ID of the sketch layer. This property will not be available if the `dataOnly` option is enabled.
+- **featureId:** The ID of the sketch feature. This property will also be unavailable if the `dataOnly` option is enabled.
+- **feature:** A `GeoJSON` object, with `id` `type` `positions` `extrudedHeight` in `properties`.
+
+#### Example
+
+```ts
+reearth.sketch.setTool("polygon");
+
+reearth.sketch.on("create", (props) => {
+  console.log(`New sketch feature created:`, props);
+});
+```
+
+### toolChange
+
+This event will be triggered when sketch tool changes.
+
+#### Syntax
+
+```ts
+reearth.sketch.on("toolChange", (type: SketchType | undefined) => void);
+```
+
+#### Parameters
+
+##### type
+
+**Type** `SketchType | undefined`
+
+#### Example
+
+```ts
+reearth.sketch.on("toolChange", (tool) => {
+  console.log(`Sketch tool changed:`, tool);
+});
+
+// run below in async to check the event:
+reearth.sketch.setTool("polygon");
+reearth.sketch.setTool(undefined);
+```
