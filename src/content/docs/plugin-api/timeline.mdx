@@ -83,8 +83,8 @@ reearth.timeline.isPlaying?: boolean;
 
 **Type** `boolean`
 
-- `"true"`: The timeline is currently playing.
-- `"false"`: The timeline is paused.
+- `true`: The timeline is currently playing.
+- `false`: The timeline is paused.
 
 If `isPlaying` is not defined, it may indicate that the timeline has not been initialized.
 
@@ -182,7 +182,7 @@ The tick method retrieves the current timeline tick value as a Date object. This
 reearth.timeline.tick?: () => Date | undefined;
 ```
 
-#### Return Value
+#### Return Value:
 
 **Type** `Date | undefined`
 
@@ -249,7 +249,7 @@ reearth.timeline.setTime?: (time: Options) => void;
 
 ##### `time`
 
-The time object in the setTime method allows osers to define three key points in the timeline.
+The time object in the setTime method allows users to define three key points in the timeline.
 
 **Type**:
 
@@ -305,7 +305,7 @@ import SetSpeedCode from "@code/plugin-api/timeline/set-speed?raw";
 
 ### setStepType
 
-The setStepType method allows users to dynamically adjust the stepping behavior of the timeline. This controls whether the timeline progresses at a variable rate (rate) or in fixed intervals (fixed). It is useful for customizing how the timeline handles tim
+The setStepType method allows users to dynamically adjust the stepping behavior of the timeline. This controls whether the timeline progresses at a variable rate (rate) or in fixed intervals (fixed). It is useful for customizing how the timeline handles time progression, such as for animations or data updates.
 
 #### Syntax
 
@@ -411,12 +411,12 @@ An object describing the source of the timeline modification and additional meta
 ```ts
 type TimelineCommitter = {
   source:
-    | "widgetContext"
-    | "pluginAPI"
-    | "featureResource"
-    | "storyTimelineBlock"
-    | "storyPage"
-    | "initialize";
+    | "widgetContext" // Timeline modifications from widget interactions
+    | "pluginAPI" // Changes made through the plugin API
+    | "featureResource" // Updates from feature-specific resources
+    | "storyTimelineBlock" // Modifications from timeline blocks in stories
+    | "storyPage" // Changes triggered by story page navigation
+    | "initialize"; // Initial timeline setup
   id?: string;
 };
 ```
