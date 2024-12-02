@@ -1,0 +1,431 @@
+---
+title: reearth.timeline
+description: API reference for `reearth.timeline`.
+---
+
+The **`reearth.timeline`** namespace provides a set of methods and properties to manage and interact with the timeline functionality in the `reearth` environment. It is designed for scenarios where time-based data or animations need to be controlled, monitored, or synchronized.
+
+import { Code } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { clearNoCheck } from "@code/utils";
+
+## Properties
+
+### startTime
+
+The startTime property represents the beginning of the timeline in the `reearth` environment. It is an optional Date object that defines when the timeline starts. This property is useful for scenarios where the plugin needs to handle time-specific data or animations.
+
+#### Syntax
+
+```ts
+reearth.timeline.startTime?: Date;
+```
+
+###### `Date`
+
+A JavaScript Date object representing the start time of the timeline. If the startTime is not defined, the timeline's start time is either irrelevant or dynamically determined.
+
+#### Example
+
+import StartTimeCode from "@code/plugin-api/timeline/start-time?raw";
+
+<Code code={clearNoCheck(StartTimeCode)} lang="ts" />
+
+### stopTime
+
+The stopTime property represents the end of the timeline in the `reearth` environment. It is an optional Date object that defines when the timeline stops. This property is useful for managing time-bound data or animations within the plugin.
+
+#### Syntax
+
+```ts
+reearth.timeline.stopTime?: Date;
+```
+
+###### `Date`
+
+A JavaScript Date object representing the stop time of the timeline. If the stopTime is not defined, it may indicate that the timeline does not have a fixed end or is dynamically determined.
+
+#### Example
+
+import StopTimeCode from "@code/plugin-api/timeline/stop-time?raw";
+
+<Code code={clearNoCheck(StopTimeCode)} lang="ts" />
+
+### currentTime
+
+The currentTime property represents the current time on the timeline in the `reearth` environment. It is an optional Date object that updates as the timeline progresses. This property is useful for synchronizing plugin events or data visualization with the timeline's current position.
+
+#### Syntax
+
+```ts
+reearth.timeline.currentTime?: Date;
+```
+
+###### `Date`
+
+A JavaScript Date object representing the current time on the timeline. If the currentTime is not defined, it may indicate that the timeline is not initialized or currently inactive.
+
+#### Example
+
+import CurrentTimeCode from "@code/plugin-api/timeline/current-time?raw";
+
+<Code code={clearNoCheck(CurrentTimeCode)} lang="ts" />
+
+### isPlaying
+
+This property indicates whether the timeline is currently playing. It is a boolean value that reflects the playback state of the timeline. This property is useful for controlling or monitoring timeline animations and events.
+
+#### Syntax
+
+```ts
+reearth.timeline.isPlaying?: boolean;
+```
+
+**Type** `boolean`
+
+- `true`: The timeline is currently playing.
+- `false`: The timeline is paused.
+
+If `isPlaying` is not defined, it may indicate that the timeline has not been initialized.
+
+#### Example
+
+import TimelineIsPlayingCode from "@code/plugin-api/timeline/timeline-is-playing?raw";
+
+<Code code={clearNoCheck(TimelineIsPlayingCode)} lang="ts" />
+
+### speed
+
+The speed property represents the playback speed of the timeline in the `reearth` environment. It is a numeric value that determines how quickly the timeline progresses relative to real time. This property is useful for controlling the pace of animations or data updates tied to the timeline.
+
+#### Syntax
+
+```ts
+reearth.timeline.speed?: number;
+```
+
+**Type** `number`
+
+A numeric value representing the playback speed of the timeline. For example, `1.0`: Real-time playback, `>1.0`: Faster than real-time, `<1.0`: Slower than real-time. If the speed is not defined, it may indicate that the timeline's playback speed is not set or initialized.
+
+#### Example
+
+import TimelineSpeedCode from "@code/plugin-api/timeline/timeline-speed?raw";
+
+<Code code={clearNoCheck(TimelineSpeedCode)} lang="ts" />
+
+### stepType
+
+This property defines the type of stepping used by the timeline to progress through time. This determines whether the timeline advances at a variable rate (proportional to time) or at fixed intervals. It is useful for controlling how data or animations tied to the timeline are updated.
+
+#### Syntax
+
+```ts
+reearth.timeline.stepType?: "rate" | "fixed";
+```
+
+**Type** `rate`
+
+The timeline progresses at a variable rate. This means the timeline advances continuously, and the progression speed is determined by the speed property.
+
+**Type** `fixed`
+
+The timeline progresses at fixed time intervals (e.g., every second, minute, or hour). This type is ideal for timelines with discrete steps or evenly spaced updates.
+
+If stepType is not defined, the default stepping type may depend on the plugin's configuration or the Reearth environment.
+
+#### Example
+
+import TimelineStepTypeCode from "@code/plugin-api/timeline/timeline-step-type?raw";
+
+<Code code={clearNoCheck(TimelineStepTypeCode)} lang="ts" />
+
+### rangeType
+
+The rangeType property defines how the timeline handles its range of time progression. It determines whether the timeline can extend beyond its defined startTime and stopTime or if it is constrained within specific bounds. This property is crucial for controlling the behavior of animations and events tied to the timeline.
+
+#### Syntax
+
+```ts
+reearth.timeline.rangeType?: "unbounded" | "clamped" | "bounced";
+```
+
+**Type** `unbounded`
+
+The timeline can extend beyond its defined startTime and stopTime. This allows the timeline to progress indefinitely, even past its boundaries. This type is useful for continuous animations or data updates.
+
+**Type** `clamped`
+
+The timeline is restricted to the range between startTime and stopTime. It cannot progress before the start or beyond the stop time. This type is useful for time-bound animations or events.
+
+**Type** `bounced`
+
+The timeline "bounces" back and forth between the startTime and stopTime, creating a loop-like effect. When the timeline reaches the end, it reverses direction and moves back to the start. This type is useful for creating continuous animations or cycles.
+
+If rangeType is not defined, the behavior may default to the timeline’s configuration or remain unrestricted.
+
+#### Example
+
+import TimelineRangeTypeCode from "@code/plugin-api/timeline/timeline-range-type?raw";
+
+<Code code={clearNoCheck(TimelineRangeTypeCode)} lang="ts" />
+
+## Methods
+
+### tick
+
+The tick method retrieves the current timeline tick value as a Date object. This method is useful for synchronizing animations or plugin-specific events with the timeline’s progression.
+
+#### Syntax
+
+```ts
+reearth.timeline.tick?: () => Date | undefined;
+```
+
+#### Return Value:
+
+**Type** `Date | undefined`
+
+- `"Date"`: Represents the current tick value on the timeline as a Date object.
+- `"undefined"`: If the timeline is uninitialized or inactive, the method returns undefined.
+
+#### Example
+
+import TimelineTickCode from "@code/plugin-api/timeline/timeline-tick?raw";
+
+<Code code={clearNoCheck(TimelineTickCode)} lang="ts" />
+
+### play
+
+The play method starts the timeline's playback. It is used to trigger the timeline to begin progressing through its range, resuming from its current state. This method is useful for scenarios involving animations, time-based data visualizations, or user-triggered timeline actions.
+
+#### Syntax
+
+```ts
+reearth.timeline.play?: () => void;
+```
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import TimelinePlayCode from "@code/plugin-api/timeline/timeline-play?raw";
+
+<Code code={clearNoCheck(TimelinePlayCode)} lang="ts" />
+
+### pause
+
+The pause method halts the timeline's playback without resetting its current position. This method is useful for temporarily stopping animations or time-based processes tied to the timeline, allowing playback to resume later from the same position.
+
+#### Syntax
+
+```ts
+reearth.timeline.pause?: () => void;
+```
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import TimelinePauseCode from "@code/plugin-api/timeline/timeline-pause?raw";
+
+<Code code={clearNoCheck(TimelinePauseCode)} lang="ts" />
+
+### setTime
+
+This method allows users to set the start, stop, and current times of the timeline. This method is useful for dynamically controlling the timeline’s range and position, such as syncing animations or adjusting time-based data visualizations.
+
+#### Syntax
+
+```ts
+reearth.timeline.setTime?: (time: Options) => void;
+```
+
+#### Parameters
+
+##### `time`
+
+The time object in the setTime method allows users to define three key points in the timeline.
+
+**Type**:
+
+```ts
+type Options = {
+  start: Date | string;
+  stop: Date | string;
+  current: Date | string;
+};
+```
+
+- **`start: Date | string;`**: Defines the starting point of the timeline.
+- **`stop: Date | string;`**: Defines the ending point of the timeline.
+- **`current: Date | string;`**: Defines the current point of time on the timeline.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import SetTimeCode from "@code/plugin-api/timeline/set-time?raw";
+
+<Code code={clearNoCheck(SetTimeCode)} lang="ts" />
+
+### setSpeed
+
+This method allows users to dynamically adjust the playback speed of the timeline. This method is useful for controlling how quickly the timeline progresses through its range, providing flexibility for animations or time-based data visualizations.
+
+#### Syntax
+
+```ts
+reearth.timeline.setSpeed?: (speed: number) => void;
+```
+
+#### Parameters
+
+##### `speed`
+
+**Type**: `number`
+
+A numeric value representing the playback speed of the timeline. `1.0`: Real-time playback, `>1.0`: Faster than real-time (e.g., 2.0 doubles the speed), `<1.0`: Slower than real-time (e.g., 0.5 halves the speed).
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import SetSpeedCode from "@code/plugin-api/timeline/set-speed?raw";
+
+<Code code={clearNoCheck(SetSpeedCode)} lang="ts" />
+
+### setStepType
+
+The setStepType method allows users to dynamically adjust the stepping behavior of the timeline. This controls whether the timeline progresses at a variable rate (rate) or in fixed intervals (fixed). It is useful for customizing how the timeline handles time progression, such as for animations or data updates.
+
+#### Syntax
+
+```ts
+reearth.timeline.setStepType?: (stepType: "rate" | "fixed") => void;
+```
+
+#### Parameters
+
+##### `stepType`
+
+Specifies the stepping behavior.
+
+**Type**: `"rate" | "fixed"`
+
+- **`rate`**: The timeline progresses at a variable rate proportional to time, typically influenced by the playback speed (speed property).
+- **`fixed`**: The timeline progresses in fixed time intervals (e.g., every second, minute, or hour).
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import setStepTypeCode from "@code/plugin-api/timeline/set-step-type?raw";
+
+<Code code={clearNoCheck(setStepTypeCode)} lang="ts" />
+
+### setRangeType
+
+The setRangeType method allows users to dynamically define how the timeline handles its range of time progression. This method determines whether the timeline can extend beyond its defined startTime and stopTime, is restricted within those bounds, or "bounces" between the start and stop times in a looping effect.
+
+#### Syntax
+
+```ts
+reearth.timeline.setRangeType?: (
+  rangeType: "unbounded" | "clamped" | "bounced"
+) => void;
+```
+
+#### Parameters
+
+##### `rangeType`
+
+Specifies the range behavior.
+
+**Type**: `"unbounded" | "clamped" | "bounced"`
+
+- **`unbounded`**: The timeline can extend indefinitely beyond startTime and stopTime.
+- **`clamped`**: The timeline is restricted to the defined startTime and stopTime range.
+- **`bounced`**: The timeline "bounces" back and forth between startTime and stopTime, creating a loop-like effect.
+
+#### Return Value:
+
+None `(void)`. The method performs its operation without returning a value.
+
+#### Example
+
+import setRangeTypeCode from "@code/plugin-api/timeline/set-range-type?raw";
+
+<Code code={clearNoCheck(setRangeTypeCode)} lang="ts" />
+
+## Events
+
+### tick
+
+The tick event fires every time the timeline's current time updates. This is typically triggered as the timeline progresses or is manually adjusted.
+
+#### Syntax
+
+```ts
+reearth.timeline.on("tick", (event: Date) => void): void;
+```
+
+#### Parameters
+
+**event:** Date
+
+A JavaScript Date object representing the timeline's current time during the tick event.
+
+#### Example
+
+import TimelineTickEventCode from "@code/plugin-api/timeline/event-tick?raw";
+
+<Code code={clearNoCheck(TimelineTickEventCode)} lang="ts" />
+
+### commit
+
+The commit event fires whenever the timeline is modified due to an action, such as updates from widgets, plugins, or other timeline blocks.
+
+#### Syntax
+
+```ts
+reearth.timeline.on("commit", (event: TimelineCommitter) => void): void;
+```
+
+#### Parameters
+
+**event:** TimelineCommitter
+
+An object describing the source of the timeline modification and additional metadata.
+
+```ts
+type TimelineCommitter = {
+  source:
+    | "widgetContext" // Timeline modifications from widget interactions
+    | "pluginAPI" // Changes made through the plugin API
+    | "featureResource" // Updates from feature-specific resources
+    | "storyTimelineBlock" // Modifications from timeline blocks in stories
+    | "storyPage" // Changes triggered by story page navigation
+    | "initialize"; // Initial timeline setup
+  id?: string;
+};
+```
+
+- **`source: string`**: Specifies the origin of the commit action.
+- **`id?: string`**: An optional identifier for the source of the commit.
+
+#### Example
+
+import TimelineCommitEventCode from "@code/plugin-api/timeline/event-commit?raw";
+
+<Code code={clearNoCheck(TimelineCommitEventCode)} lang="ts" />
