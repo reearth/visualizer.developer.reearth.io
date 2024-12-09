@@ -14,13 +14,3 @@ if (currentPosition) {
 } else {
   console.log("Camera position is undefined.");
 }
-
-// Example 2: Set the camera to a new position and orientation
-reearth.camera.position = {
-  lat: 35.681236, // Latitude in degrees
-  lng: 139.767125, // Longitude in degrees
-  height: 1000, // Height in meters
-  heading: 0.785398163, // Heading in radians (equivalent to 45 degrees)
-  pitch: -0.523598776, // Pitch in radians (equivalent to -30 degrees)
-  roll: 0, // Roll in radians
-};

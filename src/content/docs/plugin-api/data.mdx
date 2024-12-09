@@ -45,14 +45,6 @@ The value to store.
 
 A promise that resolves when the key-value pair is saved.
 
-#### Example
-
-```ts
-// Store the value
-await clientStorage.setAsync("username", "Alice");
-console.log("Username stored successfully");
-```
-
 ### getAsync
 
 Retrieves the value associated with a specific key.
@@ -77,14 +69,6 @@ The key of the value to retrieve.
 
 A promise that resolves with the value associated with the key, or undefined if the key doesn't exist.
 
-#### Example
-
-```ts
-// Retrieve the value
-const username = await clientStorage.getAsync("username");
-console.log("Retrieved Username:", username);
-```
-
 ### keysAsync
 
 Retrieves all keys stored in the client storage.
@@ -100,14 +84,6 @@ reearth.data.clientStorage.keysAsync(): Promise<string[]>
 **Type** `Promise<string[]>`
 
 A promise that resolves with an array of strings, each representing a key.
-
-#### Example
-
-```ts
-// Retrieve all keys
-const keys = await clientStorage.keysAsync();
-console.log("Keys:", keys);
-```
 
 ### deleteAsync
 
@@ -133,14 +109,6 @@ The key of the value to delete.
 
 A promise that resolves when the key-value pair is deleted.
 
-#### Example
-
-```ts
-// Delete the value
-await clientStorage.deleteAsync("username");
-console.log("Username deleted successfully");
-```
-
 ### dropStoreAsync
 
 Clears all data from the client storage.
@@ -156,11 +124,3 @@ reearth.data.clientStorage.dropStoreAsync(): Promise<void>
 **Type** `Promise<void>`
 
 A promise that resolves when the storage is cleared.
-
-#### Example
-
-```ts
-// Clear all stored data
-await clientStorage.dropStoreAsync();
-console.log("Storage cleared successfully");
-```
