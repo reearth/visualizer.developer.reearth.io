@@ -1,0 +1,93 @@
+---
+title: Events
+description: Common event handling in Plugin API
+sidebar:
+  order: 2
+---
+
+The Re:Earth Visualizer Plugin API provides a consistent pattern for handling events across different components. Events allow your plugin to respond to user interactions and system changes in real-time.
+
+## Common Event Methods
+
+All event-enabled components in the Re:Earth Visualizer share the same pattern for subscribing to and unsubscribing from events.
+
+### on
+
+The `on` method allows you to register an event listener that will be called when the specified event occurs.
+
+#### Syntax
+
+```typescript
+on<T extends keyof EventType>(
+  type: T,
+  callback: (...args: EventType[T]) => void,
+  options?: { once?: boolean }
+): void
+```
+
+#### Parameters
+
+- **type**: The event type to listen for
+- **callback**: Function to execute when the event occurs
+- **options** (optional): Configuration options
+  - **once**: When set to `true`, the listener will be automatically removed after being invoked once
+
+#### Example
+
+```javascript
+// Basic event listener
+reearth.popup.on("close", () => {
+  console.log("Popup was closed");
+});
+
+// Event listener that only triggers once
+reearth.layers.on(
+  "select",
+  (layer) => {
+    console.log("Layer selected (this will only trigger once):", layer.id);
+  },
+  { once: true }
+);
+```
+
+### off
+
+The `off` method allows you to remove a previously registered event listener.
+
+:::caution
+The `off` method is currently not functional in the current version. This
+feature will be implemented in a future release.
+:::
+
+#### Syntax
+
+```typescript
+off<T extends keyof EventType>(
+  type: T,
+  callback: (...args: EventType[T]) => void
+): void
+```
+
+#### Parameters
+
+- **type**: The event type to unregister
+- **callback**: The function that was previously registered with `on`
+
+#### Example
+
+```javascript
+// Define the callback function
+const handleClose = () => {
+  console.log("Popup was closed");
+};
+
+// Register the event listener
+reearth.popup.on("close", handleClose);
+
+// Later, when you want to stop listening
+reearth.popup.off("close", handleClose);
+```
+
+## Event Types
+
+Each component in the Re:Earth Visualizer has its own set of event types. Refer to the individual component documentation for specific event details.
