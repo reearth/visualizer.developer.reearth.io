@@ -348,6 +348,49 @@ The longitude of the location.
 
 The height of the surface at the given location.
 
+### > getCurrentLocationAsync
+
+Return the current location of the user. This is an asynchronous function that uses the browser's Geolocation API.
+
+#### Syntax
+
+```ts
+reearth.viewer.tools.getCurrentLocationAsync: (
+  options?: Options
+) => Promise<Location | undefined>;
+```
+
+#### Parameters
+
+##### options
+
+**Type** `Options` (optional)
+
+An optional object including the following parameters:
+
+- **maximumAge:** Maximum age in milliseconds of a cached position. Default value is `0`.
+- **timeout:** Maximum time in milliseconds to wait for a position. Default value is `Infinity`.
+- **enableHighAccuracy:** Request high accuracy positioning. Default value is `false`.
+
+:::note
+
+For more information about the options, see [Geolocation.getCurrentPosition()](https://developer.mozilla.org/docs/Web/API/Geolocation/getCurrentPosition).
+:::
+
+#### Return Value
+
+**Type** `Promise<Location | undefined>`
+
+```ts
+type Location = {
+  lat: number;
+  lng: number;
+  height: number;
+};
+```
+
+The current location of the user.
+
 ### > cartographicToCartesian
 
 Converts a cartographic position to a Cartesian position.
